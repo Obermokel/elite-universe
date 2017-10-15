@@ -56,43 +56,43 @@ public class StarSystem implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZZ")
 	private Date updatedAt = null;
 
-	@Field(type = FieldType.String, analyzer = "keyword", searchAnalyzer = "keyword", store = true)
+	@Field(type = FieldType.keyword)
 	private String firstDiscoveredBy = null;
 
 	private Coord coord = null;
 
-	@Field(type = FieldType.String, analyzer = "keyword", searchAnalyzer = "keyword", store = true)
+	@Field(type = FieldType.keyword)
 	private String name = null;
 
 	@Field(type = FieldType.Long)
 	private BigDecimal population = null;
 
-	@Field(type = FieldType.String)
+	//@Field(type = FieldType.String)
 	private Government government = null;
 
-	@Field(type = FieldType.String)
+	//@Field(type = FieldType.String)
 	private Allegiance allegiance = null;
 
-	@Field(type = FieldType.String)
+	//@Field(type = FieldType.String)
 	private State state = null;
 
-	@Field(type = FieldType.String)
+	//@Field(type = FieldType.String)
 	private SystemSecurity security = null;
 
-	@Field(type = FieldType.String)
+	//@Field(type = FieldType.String)
 	private Economy economy = null;
 
-	@Field(type = FieldType.String)
+	//@Field(type = FieldType.String)
 	private SystemReserves reserves = null;
 
 	private List<Power> powers = null;
 
-	@Field(type = FieldType.String)
+	//@Field(type = FieldType.String)
 	private PowerState powerState = null;
 
 	private Boolean needsPermit = null;
 
-	@Field(type = FieldType.String, analyzer = "keyword", searchAnalyzer = "keyword", store = true)
+	@Field(type = FieldType.keyword)
 	private String controllingMinorFactionName = null;
 
 	@Field(type = FieldType.Nested)
@@ -104,12 +104,12 @@ public class StarSystem implements Serializable {
 
 		private static final long serialVersionUID = 7199415515520928969L;
 
-		@Field(type = FieldType.String, analyzer = "keyword", searchAnalyzer = "keyword", store = true)
+		@Field(type = FieldType.keyword)
 		private String name = null;
 
 		private List<State> recoveringStates = null;
 
-		@Field(type = FieldType.String)
+		//@Field(type = FieldType.String)
 		private State state = null;
 
 		private List<State> pendingStates = null;

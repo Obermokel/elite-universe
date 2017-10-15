@@ -53,13 +53,13 @@ public class Station implements Serializable {
 
 	private Coord coord = null;
 
-	@Field(type = FieldType.String, analyzer = "keyword", searchAnalyzer = "keyword", store = true)
+	@Field(type = FieldType.keyword)
 	private String name = null;
 
 	@Field(type = FieldType.Double)
 	private BigDecimal distanceToArrival = null;
 
-	@Field(type = FieldType.String, analyzer = "keyword", searchAnalyzer = "keyword", store = true)
+	@Field(type = FieldType.keyword)
 	private String controllingMinorFactionName = null;
 
 	// TODO isPlanetery, maxLandingPadSize etc

@@ -53,16 +53,16 @@ public class MinorFaction implements Serializable {
 
 	private Coord coord = null;
 
-	@Field(type = FieldType.String, analyzer = "keyword", searchAnalyzer = "keyword", store = true)
+	@Field(type = FieldType.keyword)
 	private String name = null;
 
-	@Field(type = FieldType.String)
+	//@Field(type = FieldType.String)
 	private Government government = null;
 
-	@Field(type = FieldType.String)
+	//@Field(type = FieldType.String)
 	private Allegiance allegiance = null;
 
-	@Field(type = FieldType.String)
+	//@Field(type = FieldType.String)
 	private State state = null;
 
 	private Boolean isPlayerFaction = null;
