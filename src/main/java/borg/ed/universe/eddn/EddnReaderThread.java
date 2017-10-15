@@ -40,6 +40,7 @@ public class EddnReaderThread extends Thread {
 	private static final String SCHEMA_JOURNAL_v1 = "https://eddn.edcd.io/schemas/journal/1";
 	private static final String SCHEMA_JOURNAL_v1_TEST = "https://eddn.edcd.io/schemas/journal/1/test";
 	private static final String SCHEMA_COMMODITY_v3 = "https://eddn.edcd.io/schemas/commodity/3";
+	private static final String SCHEMA_BLACKMARKET_v1 = "https://eddn.edcd.io/schemas/blackmarket/1";
 	private static final String SCHEMA_SHIPYARD_v2 = "https://eddn.edcd.io/schemas/shipyard/2";
 	private static final String SCHEMA_OUTFITTING_v2 = "https://eddn.edcd.io/schemas/outfitting/2";
 
@@ -142,6 +143,8 @@ public class EddnReaderThread extends Thread {
 		} else if (SCHEMA_JOURNAL_v1_TEST.equals(schemaRef)) {
 			// NOOP
 		} else if (SCHEMA_COMMODITY_v3.equals(schemaRef)) {
+			// NOOP
+		} else if (SCHEMA_BLACKMARKET_v1.equals(schemaRef)) {
 			// NOOP
 		} else if (SCHEMA_SHIPYARD_v2.equals(schemaRef)) {
 			// NOOP

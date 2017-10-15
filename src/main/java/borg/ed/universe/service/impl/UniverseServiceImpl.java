@@ -30,7 +30,7 @@ public class UniverseServiceImpl implements UniverseService {
 
 	@Override
 	public StarSystem findStarSystemByName(String name) throws NonUniqueResultException {
-		Page<StarSystem> page = this.starSystemRepository.findByName(name.replace("!", "\\!"), new PageRequest(0, 10));
+		Page<StarSystem> page = this.starSystemRepository.findByName(name, new PageRequest(0, 10));
 
 		if (page.getTotalElements() < 1) {
 			return null;
@@ -44,7 +44,7 @@ public class UniverseServiceImpl implements UniverseService {
 
 	@Override
 	public MinorFaction findMinorFactionByName(String name) throws NonUniqueResultException {
-		Page<MinorFaction> page = this.minorFactionRepository.findByName(name.replace("!", "\\!"), new PageRequest(0, 10));
+		Page<MinorFaction> page = this.minorFactionRepository.findByName(name, new PageRequest(0, 10));
 
 		if (page.getTotalElements() < 1) {
 			return null;
@@ -58,7 +58,7 @@ public class UniverseServiceImpl implements UniverseService {
 
 	@Override
 	public Body findBodyByName(String name) throws NonUniqueResultException {
-		Page<Body> page = this.bodyRepository.findByName(name.replace("!", "\\!"), new PageRequest(0, 10));
+		Page<Body> page = this.bodyRepository.findByName(name, new PageRequest(0, 10));
 
 		if (page.getTotalElements() < 1) {
 			return null;
