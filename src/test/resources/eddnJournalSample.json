@@ -1,0 +1,299 @@
+[
+	{
+		"header": {
+			"softwareVersion": "8.2.3.0",
+			"gatewayTimestamp": "2017-10-14T10:16:55.363608Z",
+			"softwareName": "EDDiscovery",
+			"uploaderID": "xlexious"
+		},
+		"$schemaRef": "https://eddn.edcd.io/schemas/journal/1",
+		"message": {
+			"StarSystem": "Votat",
+			"SystemFaction": "Votat Public Partners",
+			"timestamp": "2017-10-14T10:16:54Z",
+			"SystemSecurity": "$SYSTEM_SECURITY_low;",
+			"SystemAllegiance": "Federation",
+			"SystemEconomy": "$economy_Refinery;",
+			"StarPos": [
+				-53.75,
+				69.688,
+				67.969
+			],
+			"Factions": [
+				{
+					"Allegiance": "Federation",
+					"FactionState": "None",
+					"Influence": 0.163,
+					"Name": "Sotidji Purple Power Ltd",
+					"Government": "Corporate"
+				},
+				{
+					"Allegiance": "PilotsFederation",
+					"FactionState": "None",
+					"Influence": 0.0,
+					"Name": "Pilots Federation Local Branch",
+					"Government": "Democracy"
+				},
+				{
+					"Allegiance": "Federation",
+					"FactionState": "None",
+					"Influence": 0.227,
+					"Name": "Cao Guojiu Life Co",
+					"Government": "Corporate"
+				},
+				{
+					"Allegiance": "Federation",
+					"FactionState": "None",
+					"Influence": 0.478,
+					"Name": "Votat Public Partners",
+					"Government": "Corporate"
+				},
+				{
+					"Allegiance": "Independent",
+					"FactionState": "Outbreak",
+					"Influence": 0.066,
+					"Name": "Uniting Votat",
+					"Government": "Cooperative"
+				},
+				{
+					"Allegiance": "Independent",
+					"FactionState": "None",
+					"Influence": 0.066,
+					"Name": "Votat Blue Rats",
+					"Government": "Anarchy"
+				}
+			],
+			"event": "FSDJump",
+			"SystemGovernment": "$government_Corporate;",
+			"Population": 15494
+		}
+	},
+	{
+		"timestamp": "2017-10-11T19:04:46Z",
+		"event": "FSDJump",
+		"StarSystem": "Korovii",
+		"StarPos": [
+			-7.531,
+			-17.219,
+			46.281
+		],
+		"SystemAllegiance": "Federation",
+		"SystemEconomy": "$economy_Agri;",
+		"SystemEconomy_Localised": "Agriculture",
+		"SystemGovernment": "$government_Corporate;",
+		"SystemGovernment_Localised": "Corporate",
+		"SystemSecurity": "$SYSTEM_SECURITY_high;",
+		"SystemSecurity_Localised": "High Security",
+		"Population": 2078334212,
+		"JumpDist": 16.752,
+		"FuelUsed": 7.579320,
+		"FuelLevel": 24.420681,
+		"Factions": [
+			{
+				"Name": "Pilots Federation Local Branch",
+				"FactionState": "None",
+				"Government": "Democracy",
+				"Influence": 0.000000,
+				"Allegiance": "PilotsFederation"
+			},
+			{
+				"Name": "Korovii Free",
+				"FactionState": "Boom",
+				"Government": "Democracy",
+				"Influence": 0.070070,
+				"Allegiance": "Federation",
+				"PendingStates": [
+					{
+						"State": "Retreat",
+						"Trend": 0
+					}
+				]
+			},
+			{
+				"Name": "Korovii Jet Galactic Inc",
+				"FactionState": "Boom",
+				"Government": "Corporate",
+				"Influence": 0.039039,
+				"Allegiance": "Independent"
+			},
+			{
+				"Name": "Progressive Party of L 639-45",
+				"FactionState": "Boom",
+				"Government": "Democracy",
+				"Influence": 0.090090,
+				"Allegiance": "Federation",
+				"PendingStates": [
+					{
+						"State": "Bust",
+						"Trend": -1
+					},
+					{
+						"State": "CivilUnrest",
+						"Trend": 0
+					},
+					{
+						"State": "Lockdown",
+						"Trend": 1
+					}
+				]
+			},
+			{
+				"Name": "Liberals of Fusang",
+				"FactionState": "Boom",
+				"Government": "Democracy",
+				"Influence": 0.164164,
+				"Allegiance": "Federation",
+				"PendingStates": [
+					{
+						"State": "War",
+						"Trend": 0
+					}
+				]
+			},
+			{
+				"Name": "Korovii Defence Party",
+				"FactionState": "Boom",
+				"Government": "Dictatorship",
+				"Influence": 0.165165,
+				"Allegiance": "Independent",
+				"PendingStates": [
+					{
+						"State": "War",
+						"Trend": 0
+					}
+				]
+			},
+			{
+				"Name": "Korovii Blue Society",
+				"FactionState": "Boom",
+				"Government": "Anarchy",
+				"Influence": 0.037037,
+				"Allegiance": "Independent"
+			},
+			{
+				"Name": "Korovii Purple Comms Limited",
+				"FactionState": "None",
+				"Government": "Corporate",
+				"Influence": 0.434434,
+				"Allegiance": "Federation",
+				"RecoveringStates": [
+					{
+						"State": "Boom",
+						"Trend": 1
+					}
+				]
+			}
+		],
+		"SystemFaction": "Korovii Purple Comms Limited"
+	},
+	{
+		"header": {
+			"softwareVersion": "8.3.3.0",
+			"gatewayTimestamp": "2017-10-14T19:43:58.198219Z",
+			"softwareName": "EDDiscovery",
+			"uploaderID": "P-R-TRIDGE"
+		},
+		"$schemaRef": "https://eddn.edcd.io/schemas/journal/1",
+		"message": {
+			"AtmosphereComposition": [
+				{
+					"Percent": 72.968521,
+					"Name": "Hydrogen"
+				},
+				{
+					"Percent": 27.01667,
+					"Name": "Helium"
+				}
+			],
+			"Rings": [
+				{
+					"OuterRad": 50581000.0,
+					"InnerRad": 45481000.0,
+					"MassMT": 14450000000.0,
+					"Name": "Dryooe Flyou IK-E b55-47 1 A Ring",
+					"RingClass": "eRingClass_MetalRich"
+				},
+				{
+					"OuterRad": 74129000.0,
+					"InnerRad": 50681000.0,
+					"MassMT": 86628000000.0,
+					"Name": "Dryooe Flyou IK-E b55-47 1 B Ring",
+					"RingClass": "eRingClass_MetalRich"
+				}
+			],
+			"TerraformState": "",
+			"MassEM": 4.272916,
+			"PlanetClass": "Gas giant with ammonia based life",
+			"SurfacePressure": 0.0,
+			"ReserveLevel": "PristineResources",
+			"RotationPeriod": 16766470.0,
+			"event": "Scan",
+			"OrbitalPeriod": 16656655.0,
+			"StarPos": [
+				-9259.625,
+				-829.688,
+				19318.3125
+			],
+			"Eccentricity": 0.000463,
+			"DistanceFromArrivalLS": 243.328583,
+			"SurfaceTemperature": 145.615875,
+			"TidalLock": true,
+			"Periapsis": 176.611771,
+			"BodyName": "Dryooe Flyou IK-E b55-47 1",
+			"SemiMajorAxis": 72916361216.0,
+			"timestamp": "2017-10-01T19:12:13Z",
+			"Volcanism": "",
+			"AxialTilt": -0.298226,
+			"StarSystem": "Dryooe Flyou IK-E b55-47",
+			"Atmosphere": "",
+			"OrbitalInclination": 0.01687,
+			"Landable": false,
+			"Radius": 19793014.0,
+			"SurfaceGravity": 4.347202
+		}
+	},
+	{
+		"header": {
+			"softwareVersion": "2.4.0-b5",
+			"gatewayTimestamp": "2017-10-14T19:43:53.172569Z",
+			"softwareName": "EDDI",
+			"uploaderID": "Short Sir Kit"
+		},
+		"$schemaRef": "https://eddn.edcd.io/schemas/journal/1",
+		"message": {
+			"StellarMass": 0.503906,
+			"OrbitalInclination": -76.242783,
+			"BodyName": "Eoch Flyuae WV-U c3-30 A",
+			"SemiMajorAxis": 33275301888.0,
+			"timestamp": "2017-10-14T20:43:53Z",
+			"Periapsis": 292.630798,
+			"RotationPeriod": 220636.765625,
+			"Rings": [
+				{
+					"OuterRad": 1920200000.0,
+					"InnerRad": 860960000.0,
+					"MassMT": 77022000000000.0,
+					"Name": "Eoch Flyuae WV-U c3-30 A A Belt",
+					"RingClass": "eRingClass_Rocky"
+				}
+			],
+			"StarSystem": "Eoch Flyuae WV-U c3-30",
+			"StarType": "K",
+			"OrbitalPeriod": 14845223.0,
+			"StarPos": [
+				-9013.6875,
+				-883.6875,
+				17039.4375
+			],
+			"Radius": 444684416.0,
+			"AbsoluteMagnitude": 7.4263,
+			"Luminosity": "Va",
+			"Eccentricity": 0.390863,
+			"AxialTilt": 0.0,
+			"Age_MY": 4082,
+			"event": "Scan",
+			"DistanceFromArrivalLS": 0.0,
+			"SurfaceTemperature": 3975.0
+		}
+	}
+]
