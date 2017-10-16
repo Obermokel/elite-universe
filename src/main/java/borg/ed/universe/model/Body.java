@@ -34,7 +34,7 @@ import java.util.List;
 @Getter
 @Setter
 @Document(indexName = "universe", type = "body", replicas = 0)
-public class Body implements Serializable {
+public class Body implements Serializable, UniverseEntity {
 
     private static final long serialVersionUID = 4859358199300000217L;
 

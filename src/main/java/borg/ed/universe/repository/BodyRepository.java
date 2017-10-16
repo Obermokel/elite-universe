@@ -16,6 +16,9 @@ public interface BodyRepository extends ElasticsearchRepository<Body, String> {
     @Query("{\"bool\": {\"must\": [{\"term\": {\"name\": \"?0\"}}]}}")
     Page<Body> findByName(String name, Pageable pageable);
 
+    @Query("{\"bool\": {\"must\": [{\"term\": {\"starSystemName\": \"?0\"}}]}}")
+    Page<Body> findByStarSystemName(String starSystemName, Pageable pageable);
+
     Page<Body> findByEddbId(Long eddbId, Pageable pageable);
 
     Page<Body> findByEdsmId(Long edsmId, Pageable pageable);

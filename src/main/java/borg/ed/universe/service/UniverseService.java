@@ -1,11 +1,17 @@
 package borg.ed.universe.service;
 
+import borg.ed.universe.constants.PlanetClass;
+import borg.ed.universe.constants.StarClass;
+import borg.ed.universe.data.Coord;
 import borg.ed.universe.exceptions.NonUniqueResultException;
 import borg.ed.universe.model.Body;
 import borg.ed.universe.model.MinorFaction;
 import borg.ed.universe.model.StarSystem;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * UniverseService
@@ -20,6 +26,16 @@ public interface UniverseService {
 
     Body findBodyByName(String name) throws NonUniqueResultException;
 
+    List<Body> findBodiesByStarSystemName(String starSystemName);
+
     Page<StarSystem> findSystemsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Pageable pageable);
+
+    Page<Body> findStarsNear(Coord coord, float range, Boolean isMainStar, Collection<StarClass> starClasses, Pageable pageable);
+
+    Page<Body> findStarsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Boolean isMainStar, Collection<StarClass> starClasses, Pageable pageable);
+
+    Page<Body> findPlanetsNear(Coord coord, float range, Boolean isTerraformingCandidate, Collection<PlanetClass> planetClasses, Pageable pageable);
+
+    Page<Body> findPlanetsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Boolean isTerraformingCandidate, Collection<PlanetClass> planetClasses, Pageable pageable);
 
 }
