@@ -1,6 +1,9 @@
 package borg.ed.universe;
 
+import borg.ed.universe.eddn.EddnElasticUpdater;
 import borg.ed.universe.eddn.EddnReaderThread;
+import borg.ed.universe.journal.JournalEventReader;
+import borg.ed.universe.journal.JournalReaderThread;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
@@ -34,13 +37,30 @@ public class Application {
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
-            ctx.getBean(EddnReaderThread.class).start();
+            EddnReaderThread eddnReaderThread = ctx.getBean(EddnReaderThread.class);
+            eddnReaderThread.addListener(ctx.getBean(EddnElasticUpdater.class));
+            eddnReaderThread.start();
         };
+    }
+
+    @Bean
+    public JournalEventReader journalEventReader() {
+        return new JournalEventReader();
+    }
+
+    @Bean
+    public JournalReaderThread journalReaderThread() {
+        return new JournalReaderThread();
     }
 
     @Bean
     public EddnReaderThread eddnReaderThread() {
         return new EddnReaderThread();
+    }
+
+    @Bean
+    public EddnElasticUpdater eddnElasticUpdater() {
+        return new EddnElasticUpdater();
     }
 
     @Bean
