@@ -96,9 +96,7 @@ public class EddnReaderThread extends Thread {
 					} catch (NonUniqueResultException e) {
 						logger.error("NonUniqueResultException: " + e.getMessage() + "\n\t" + e.getOthers() + "\n\t" + jsonMessage);
 					} catch (SuspiciousDataException e) {
-						if (!jsonMessage.contains("\"EDDI\"")) {
-							logger.error("SuspiciousDataException: " + e.getMessage() + "\n\t" + jsonMessage);
-						}
+						//logger.warn("SuspiciousDataException: " + e.getMessage() + "\n\t" + jsonMessage);
 					}
 				}
 			} catch (IOException | DataFormatException e) {
@@ -182,7 +180,7 @@ public class EddnReaderThread extends Thread {
 
 			this.starSystemRepository.index(currentStarSystem);
 
-			logger.trace("New star system discovered by " + uploaderID + ": " + currentStarSystem);
+			logger.info("New star system discovered by " + uploaderID + ": " + currentStarSystem);
 
 			// TODO See if there is another starsystem at the same coords. If so, it may have been renamed. Delete the old, including bodies, stations etc.
 		} else if (!Date.from(timestamp.toInstant()).after(existingStarSystem.getUpdatedAt())) {
@@ -234,7 +232,6 @@ public class EddnReaderThread extends Thread {
 		oldData.setState(newData.getState());
 		oldData.setSecurity(newData.getSecurity());
 		oldData.setEconomy(newData.getEconomy());
-		oldData.setReserves(newData.getReserves());
 		oldData.setPowers(newData.getPowers());
 		oldData.setPowerState(newData.getPowerState());
 		oldData.setPopulation(newData.getPopulation());
@@ -324,6 +321,7 @@ public class EddnReaderThread extends Thread {
 		oldData.setTidallyLocked(newData.getTidallyLocked());
 		oldData.setAxisTilt(newData.getAxisTilt());
 		oldData.setIsLandable(newData.getIsLandable());
+		oldData.setReserves(newData.getReserves());
 		oldData.setRings(newData.getRings());
 		oldData.setAtmosphereShares(newData.getAtmosphereShares());
 		oldData.setMaterialShares(newData.getMaterialShares());

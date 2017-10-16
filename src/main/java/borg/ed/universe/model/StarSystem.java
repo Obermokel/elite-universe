@@ -21,7 +21,6 @@ import borg.ed.universe.constants.Government;
 import borg.ed.universe.constants.Power;
 import borg.ed.universe.constants.PowerState;
 import borg.ed.universe.constants.State;
-import borg.ed.universe.constants.SystemReserves;
 import borg.ed.universe.constants.SystemSecurity;
 import borg.ed.universe.data.Coord;
 import lombok.Getter;
@@ -81,9 +80,6 @@ public class StarSystem implements Serializable {
 
 	//@Field(type = FieldType.String)
 	private Economy economy = null;
-
-	//@Field(type = FieldType.String)
-	private SystemReserves reserves = null;
 
 	private List<Power> powers = null;
 

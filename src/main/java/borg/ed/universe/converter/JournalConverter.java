@@ -12,11 +12,15 @@ import org.springframework.stereotype.Service;
 
 import borg.ed.universe.constants.Allegiance;
 import borg.ed.universe.constants.AtmosphereType;
+import borg.ed.universe.constants.BodyAtmosphere;
 import borg.ed.universe.constants.Economy;
+import borg.ed.universe.constants.Element;
 import borg.ed.universe.constants.Government;
 import borg.ed.universe.constants.PlanetClass;
 import borg.ed.universe.constants.Power;
 import borg.ed.universe.constants.PowerState;
+import borg.ed.universe.constants.ReserveLevel;
+import borg.ed.universe.constants.RingClass;
 import borg.ed.universe.constants.StarClass;
 import borg.ed.universe.constants.State;
 import borg.ed.universe.constants.SystemSecurity;
@@ -25,6 +29,9 @@ import borg.ed.universe.constants.VolcanismType;
 import borg.ed.universe.data.Coord;
 import borg.ed.universe.exceptions.NonUniqueResultException;
 import borg.ed.universe.model.Body;
+import borg.ed.universe.model.Body.AtmosphereShare;
+import borg.ed.universe.model.Body.MaterialShare;
+import borg.ed.universe.model.Body.Ring;
 import borg.ed.universe.model.MinorFaction;
 import borg.ed.universe.model.StarSystem;
 import borg.ed.universe.model.StarSystem.FactionPresence;
@@ -60,7 +67,6 @@ public class JournalConverter {
 		result.setAllegiance(Allegiance.fromJournalValue(MiscUtil.getAsString(journalData.get("SystemAllegiance"))));
 		result.setSecurity(SystemSecurity.fromJournalValue(MiscUtil.getAsString(journalData.get("SystemSecurity"))));
 		result.setEconomy(Economy.fromJournalValue(MiscUtil.getAsString(journalData.get("SystemEconomy"))));
-		result.setReserves(null); // Only available in scan event
 		result.setPowers(Power.fromJournalValue((List<String>) (journalData.get("Powers"))));
 		result.setPowerState(PowerState.fromJournalValue(MiscUtil.getAsString(journalData.get("PowerplayState"))));
 		result.setNeedsPermit(null); // Manually edited
@@ -176,32 +182,94 @@ public class JournalConverter {
 		result.setEdsmId(null);
 		result.setCreatedAt(null);
 		result.setUpdatedAt(null);
-		result.setCoord(this.starPosToCoord((List<Number>) journalData.get("StarPos")));
-		result.setName(MiscUtil.getAsString(journalData.get("StarSystem")));
-		result.setDistanceToArrival(MiscUtil.getAsBigDecimal(journalData.get("DistanceFromArrivalLS")));
-		result.setStarClass(StarClass.fromJournalValue(MiscUtil.getAsString(journalData.get("StarType"))));
-		result.setPlanetClass(PlanetClass.fromJournalValue(MiscUtil.getAsString(journalData.get("PlanetClass"))));
-		result.setSurfaceTemperature(MiscUtil.getAsBigDecimal(journalData.get("SurfaceTemperature")));
-		result.setAge(MiscUtil.getAsBigDecimal(journalData.get("Age_MY")));
-		result.setSolarMasses(MiscUtil.getAsBigDecimal(journalData.get("StellarMass"))); // TODO Convert
-		result.setVolcanismType(VolcanismType.fromJournalValue(MiscUtil.getAsString(journalData.get("Volcanism"))));
-		result.setAtmosphereType(AtmosphereType.fromJournalValue(MiscUtil.getAsString(journalData.get("Atmosphere"))));
-		result.setTerraformingState(TerraformingState.fromJournalValue(MiscUtil.getAsString(journalData.get("TerraformState"))));
-		result.setEarthMasses(MiscUtil.getAsBigDecimal(journalData.get("MassEM"))); // TODO Convert
-		result.setRadius(MiscUtil.getAsBigDecimal(journalData.get("Radius"))); // TODO Unit
-		result.setGravity(MiscUtil.getAsBigDecimal(journalData.get("SurfaceGravity")));
-		result.setSurfacePressure(MiscUtil.getAsBigDecimal(journalData.get("SurfacePressure")));
-		result.setOrbitalPeriod(MiscUtil.getAsBigDecimal(journalData.get("OrbitalPeriod")));
-		result.setSemiMajorAxis(MiscUtil.getAsBigDecimal(journalData.get("SemiMajorAxis")));
-		result.setOrbitalEccentricity(MiscUtil.getAsBigDecimal(journalData.get("Eccentricity")));
-		result.setOrbitalInclination(MiscUtil.getAsBigDecimal(journalData.get("OrbitalInclination")));
-		result.setArgOfPeriapsis(MiscUtil.getAsBigDecimal(journalData.get("Periapsis")));
-		result.setRotationalPeriod(MiscUtil.getAsBigDecimal(journalData.get("RotationPeriod")));
-		result.setTidallyLocked(MiscUtil.getAsBoolean(journalData.get("TidalLock")));
-		result.setAxisTilt(MiscUtil.getAsBigDecimal(journalData.get("AxialTilt")));
-		result.setIsLandable(MiscUtil.getAsBoolean(journalData.get("Landable")));
+		result.setCoord(this.starPosToCoord((List<Number>) journalData.remove("StarPos")));
+		result.setName(MiscUtil.getAsString(journalData.remove("BodyName")));
+		result.setDistanceToArrival(MiscUtil.getAsBigDecimal(journalData.remove("DistanceFromArrivalLS")));
+		result.setStarClass(StarClass.fromJournalValue(MiscUtil.getAsString(journalData.remove("StarType"))));
+		result.setPlanetClass(PlanetClass.fromJournalValue(MiscUtil.getAsString(journalData.remove("PlanetClass"))));
+		result.setSurfaceTemperature(MiscUtil.getAsBigDecimal(journalData.remove("SurfaceTemperature")));
+		result.setAge(MiscUtil.getAsBigDecimal(journalData.remove("Age_MY")));
+		result.setSolarMasses(MiscUtil.getAsBigDecimal(journalData.remove("StellarMass"))); // TODO Convert
+		result.setVolcanismType(VolcanismType.fromJournalValue(MiscUtil.getAsString(journalData.remove("Volcanism"))));
+		result.setAtmosphereType(AtmosphereType.fromJournalValue(MiscUtil.getAsString(journalData.remove("Atmosphere"))));
+		result.setTerraformingState(TerraformingState.fromJournalValue(MiscUtil.getAsString(journalData.remove("TerraformState"))));
+		result.setEarthMasses(MiscUtil.getAsBigDecimal(journalData.remove("MassEM"))); // TODO Convert
+		result.setRadius(MiscUtil.getAsBigDecimal(journalData.remove("Radius"))); // TODO Unit
+		result.setGravity(MiscUtil.getAsBigDecimal(journalData.remove("SurfaceGravity")));
+		result.setSurfacePressure(MiscUtil.getAsBigDecimal(journalData.remove("SurfacePressure")));
+		result.setOrbitalPeriod(MiscUtil.getAsBigDecimal(journalData.remove("OrbitalPeriod")));
+		result.setSemiMajorAxis(MiscUtil.getAsBigDecimal(journalData.remove("SemiMajorAxis")));
+		result.setOrbitalEccentricity(MiscUtil.getAsBigDecimal(journalData.remove("Eccentricity")));
+		result.setOrbitalInclination(MiscUtil.getAsBigDecimal(journalData.remove("OrbitalInclination")));
+		result.setArgOfPeriapsis(MiscUtil.getAsBigDecimal(journalData.remove("Periapsis")));
+		result.setRotationalPeriod(MiscUtil.getAsBigDecimal(journalData.remove("RotationPeriod")));
+		result.setTidallyLocked(MiscUtil.getAsBoolean(journalData.remove("TidalLock")));
+		result.setAxisTilt(MiscUtil.getAsBigDecimal(journalData.remove("AxialTilt")));
+		result.setIsLandable(MiscUtil.getAsBoolean(journalData.remove("Landable")));
+		result.setReserves(ReserveLevel.fromJournalValue(MiscUtil.getAsString(journalData.remove("ReserveLevel"))));
+		result.setRings(this.ringsToRings((List<Map<String, Object>>) journalData.remove("Rings")));
+		result.setAtmosphereShares(this.atmosphereCompositionToAtmosphereShares((List<Map<String, Object>>) journalData.remove("AtmosphereComposition")));
+		result.setMaterialShares(this.materialsToMaterialShares((List<Map<String, Object>>) journalData.remove("Materials")));
+		//result.setCompositionShares(this.materialsToMaterialShares((List<Map<String, Object>>) journalData.remove("Materials")));
+
+		journalData.remove("timestamp");
+		journalData.remove("event");
+		journalData.remove("StarSystem");
+		journalData.remove("AbsoluteMagnitude");
+		journalData.remove("Luminosity");
+		journalData.remove("AtmosphereType");
+		if (!journalData.isEmpty())
+			logger.info("Scan remaining: " + journalData);
 
 		return result;
+	}
+
+	private List<Ring> ringsToRings(List<Map<String, Object>> rings) {
+		if (rings == null || rings.isEmpty()) {
+			return null;
+		} else {
+			List<Ring> result = new ArrayList<>(rings.size());
+			for (Map<String, Object> ringData : rings) {
+				Ring ring = new Ring();
+				ring.setName(MiscUtil.getAsString(ringData.get("Name")));
+				ring.setRingClass(RingClass.fromJournalValue(MiscUtil.getAsString(ringData.get("RingClass"))));
+				ring.setMassMT(MiscUtil.getAsBigDecimal(ringData.get("MassMT")));
+				ring.setInnerRadius(MiscUtil.getAsBigDecimal(ringData.get("InnerRad")));
+				ring.setOuterRadius(MiscUtil.getAsBigDecimal(ringData.get("OuterRad")));
+				result.add(ring);
+			}
+			return result;
+		}
+	}
+
+	private List<AtmosphereShare> atmosphereCompositionToAtmosphereShares(List<Map<String, Object>> dataList) {
+		if (dataList == null || dataList.isEmpty()) {
+			return null;
+		} else {
+			List<AtmosphereShare> result = new ArrayList<>(dataList.size());
+			for (Map<String, Object> data : dataList) {
+				AtmosphereShare ring = new AtmosphereShare();
+				ring.setName(BodyAtmosphere.fromJournalValue(MiscUtil.getAsString(data.get("Name"))));
+				ring.setPercent(MiscUtil.getAsBigDecimal(data.get("Percent")));
+				result.add(ring);
+			}
+			return result;
+		}
+	}
+
+	private List<MaterialShare> materialsToMaterialShares(List<Map<String, Object>> dataList) {
+		if (dataList == null || dataList.isEmpty()) {
+			return null;
+		} else {
+			List<MaterialShare> result = new ArrayList<>(dataList.size());
+			for (Map<String, Object> data : dataList) {
+				MaterialShare ring = new MaterialShare();
+				ring.setName(Element.fromJournalValue(MiscUtil.getAsString(data.get("Name"))));
+				ring.setPercent(MiscUtil.getAsBigDecimal(data.get("Percent")));
+				result.add(ring);
+			}
+			return result;
+		}
 	}
 
 }
