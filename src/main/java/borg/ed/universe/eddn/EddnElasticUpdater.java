@@ -49,7 +49,9 @@ public class EddnElasticUpdater implements EddnUpdateListener {
     @Override
     public void onNewJournalMessage(ZonedDateTime gatewayTimestamp, String uploaderID, AbstractJournalEvent event) {
         try {
-            if (event instanceof FSDJumpEvent) {
+            if (event == null) {
+                // NOOP
+            } else if (event instanceof FSDJumpEvent) {
                 this.handleFsdJump(gatewayTimestamp, uploaderID, (FSDJumpEvent) event);
             } else if (event instanceof ScanEvent) {
                 this.handleScan(gatewayTimestamp, uploaderID, (ScanEvent) event);

@@ -44,7 +44,7 @@ public class JournalReaderThread extends Thread {
     private final List<JournalUpdateListener> listeners = new ArrayList<>();
 
     public JournalReaderThread() {
-        this.setName("JournalWatcherThread");
+        this.setName("JournalReaderThread");
         this.setDaemon(false);
 
         journalDir = lookupJournalDir();
