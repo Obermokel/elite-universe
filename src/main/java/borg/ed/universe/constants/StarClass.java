@@ -33,6 +33,7 @@ public enum StarClass {
 			case "A_BlueWhiteSuperGiant":
 				return StarClass.A_BLUE_WHITE_SUPER_GIANT;
 			case "AeBe":
+                case "AEBE":
 				return StarClass.AeBe;
 			case "C":
 				return StarClass.C;
