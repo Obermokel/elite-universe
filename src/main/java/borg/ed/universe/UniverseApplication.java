@@ -26,12 +26,12 @@ import java.net.InetSocketAddress;
 @SpringBootApplication
 @EnableElasticsearchRepositories(basePackages = "borg.ed.universe.repository")
 @ComponentScan(basePackages = { "borg.ed.universe.service.impl", "borg.ed.universe.converter" })
-public class Application {
+public class UniverseApplication {
 
-    static final Logger logger = LoggerFactory.getLogger(Application.class);
+    static final Logger logger = LoggerFactory.getLogger(UniverseApplication.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(UniverseApplication.class, args);
     }
 
     @Bean
