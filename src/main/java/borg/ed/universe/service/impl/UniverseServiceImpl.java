@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +32,8 @@ import borg.ed.universe.service.UniverseService;
 
 @Service
 public class UniverseServiceImpl implements UniverseService {
+
+	static final Logger logger = LoggerFactory.getLogger(UniverseServiceImpl.class);
 
 	@Autowired
 	private ElasticsearchTemplate elasticsearchTemplate = null;
@@ -128,11 +132,11 @@ public class UniverseServiceImpl implements UniverseService {
 			qb.must(QueryBuilders.rangeQuery("distanceToArrival").gt(0));
 		}
 		if (starClasses == null || starClasses.isEmpty()) {
-			qb.must(QueryBuilders.existsQuery("starClass"));
+			qb.must(QueryBuilders.existsQuery("starClass.keyword"));
 		} else {
 			BoolQueryBuilder starClassIn = QueryBuilders.boolQuery();
 			for (StarClass starClass : starClasses) {
-				starClassIn.should(QueryBuilders.termQuery("starClass", starClass.name()));
+				starClassIn.should(QueryBuilders.termQuery("starClass.keyword", starClass.name()));
 			}
 			qb.must(starClassIn);
 		}
@@ -154,16 +158,16 @@ public class UniverseServiceImpl implements UniverseService {
 		qb.must(QueryBuilders.rangeQuery("coord.y").gte(yfrom).lte(yto));
 		qb.must(QueryBuilders.rangeQuery("coord.z").gte(zfrom).lte(zto));
 		if (Boolean.TRUE.equals(isTerraformingCandidate)) {
-			qb.must(QueryBuilders.termQuery("terraformingState", TerraformingState.TERRAFORMABLE.name()));
+			qb.must(QueryBuilders.termQuery("terraformingState.keyword", TerraformingState.TERRAFORMABLE.name()));
 		} else if (Boolean.FALSE.equals(isTerraformingCandidate)) {
-			qb.mustNot(QueryBuilders.termQuery("terraformingState", TerraformingState.TERRAFORMABLE.name()));
+			qb.mustNot(QueryBuilders.termQuery("terraformingState.keyword", TerraformingState.TERRAFORMABLE.name()));
 		}
 		if (planetClasses == null || planetClasses.isEmpty()) {
-			qb.must(QueryBuilders.existsQuery("planetClass"));
+			qb.must(QueryBuilders.existsQuery("planetClass.keyword"));
 		} else {
 			BoolQueryBuilder starClassIn = QueryBuilders.boolQuery();
 			for (PlanetClass planetClass : planetClasses) {
-				starClassIn.should(QueryBuilders.termQuery("planetClass", planetClass.name()));
+				starClassIn.should(QueryBuilders.termQuery("planetClass.keyword", planetClass.name()));
 			}
 			qb.must(starClassIn);
 		}
