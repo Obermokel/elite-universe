@@ -132,7 +132,7 @@ public class UniverseServiceImpl implements UniverseService {
 		} else {
 			BoolQueryBuilder starClassIn = QueryBuilders.boolQuery();
 			for (StarClass starClass : starClasses) {
-				starClassIn.should(QueryBuilders.termQuery("starClass", starClass));
+				starClassIn.should(QueryBuilders.termQuery("starClass", starClass.name()));
 			}
 			qb.must(starClassIn);
 		}
@@ -154,16 +154,16 @@ public class UniverseServiceImpl implements UniverseService {
 		qb.must(QueryBuilders.rangeQuery("coord.y").gte(yfrom).lte(yto));
 		qb.must(QueryBuilders.rangeQuery("coord.z").gte(zfrom).lte(zto));
 		if (Boolean.TRUE.equals(isTerraformingCandidate)) {
-			qb.must(QueryBuilders.termQuery("terraformingState", TerraformingState.TERRAFORMABLE));
+			qb.must(QueryBuilders.termQuery("terraformingState", TerraformingState.TERRAFORMABLE.name()));
 		} else if (Boolean.FALSE.equals(isTerraformingCandidate)) {
-			qb.mustNot(QueryBuilders.termQuery("terraformingState", TerraformingState.TERRAFORMABLE));
+			qb.mustNot(QueryBuilders.termQuery("terraformingState", TerraformingState.TERRAFORMABLE.name()));
 		}
 		if (planetClasses == null || planetClasses.isEmpty()) {
 			qb.must(QueryBuilders.existsQuery("planetClass"));
 		} else {
 			BoolQueryBuilder starClassIn = QueryBuilders.boolQuery();
 			for (PlanetClass planetClass : planetClasses) {
-				starClassIn.should(QueryBuilders.termQuery("planetClass", planetClass));
+				starClassIn.should(QueryBuilders.termQuery("planetClass", planetClass.name()));
 			}
 			qb.must(starClassIn);
 		}
