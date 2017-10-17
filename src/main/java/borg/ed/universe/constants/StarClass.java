@@ -9,7 +9,46 @@ import org.apache.commons.lang.StringUtils;
  */
 public enum StarClass {
 
-    O, B, A, F, G, K, M, A_BLUE_WHITE_SUPER_GIANT, AeBe, C, CN, D, DA, DAB, DAV, DAZ, DB, DBV, DC, DCV, DQ, DX, F_WHITE_SUPER_GIANT, H, K_ORANGE_GIANT, L, M_RED_GIANT, M_RED_SUPER_GIANT, MS, N, SUPER_MASSIVE_BLACK_HOLE, S, T, TTS, W, WC, WN, WNC, WO, Y;
+	O,
+	B,
+	A,
+	F,
+	G,
+	K,
+	M,
+	A_BLUE_WHITE_SUPER_GIANT,
+	AeBe,
+	C,
+	CN,
+	D,
+	DA,
+	DAB,
+	DAV,
+	DAZ,
+	DB,
+	DBV,
+	DC,
+	DCV,
+	DQ,
+	DX,
+	F_WHITE_SUPER_GIANT,
+	H,
+	K_ORANGE_GIANT,
+	L,
+	M_RED_GIANT,
+	M_RED_SUPER_GIANT,
+	MS,
+	N,
+	SUPER_MASSIVE_BLACK_HOLE,
+	S,
+	T,
+	TTS,
+	W,
+	WC,
+	WN,
+	WNC,
+	WO,
+	Y;
 
 	public static StarClass fromJournalValue(String value) {
 		if (StringUtils.isEmpty(value)) {
@@ -33,7 +72,7 @@ public enum StarClass {
 			case "A_BlueWhiteSuperGiant":
 				return StarClass.A_BLUE_WHITE_SUPER_GIANT;
 			case "AeBe":
-                case "AEBE":
+			case "AEBE":
 				return StarClass.AeBe;
 			case "C":
 				return StarClass.C;
@@ -51,16 +90,16 @@ public enum StarClass {
 				return StarClass.DAZ;
 			case "DB":
 				return StarClass.DB;
-                case "DBV":
-                    return StarClass.DBV;
+			case "DBV":
+				return StarClass.DBV;
 			case "DC":
 				return StarClass.DC;
 			case "DCV":
 				return StarClass.DCV;
 			case "DQ":
 				return StarClass.DQ;
-                case "DX":
-                    return StarClass.DX;
+			case "DX":
+				return StarClass.DX;
 			case "F_WhiteSuperGiant":
 				return StarClass.F_WHITE_SUPER_GIANT;
 			case "H":
