@@ -82,6 +82,7 @@ public enum AtmosphereType {
 		} else {
 			switch (value) {
 			case "No atmosphere":
+                case "Unknown atmosphere":
 			case "Metallic vapour": // GIGO
 			case "Suitable for water based life": // GIGO
 			case "Silicate vapour": // GIGO
