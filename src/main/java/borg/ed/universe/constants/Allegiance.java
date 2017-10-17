@@ -16,6 +16,8 @@ public enum Allegiance {
 			return null;
 		} else {
 			switch (value) {
+			case "None":
+				return null;
 			case "Independent":
 				return Allegiance.INDEPENDENT;
 			case "Alliance":

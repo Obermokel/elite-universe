@@ -16,11 +16,16 @@ public enum TerraformingState {
 			return null;
 		} else {
 			switch (value) {
+			case "Not terraformable":
+				return null;
 			case "Terraformable":
+			case "Candidate for terraforming":
 				return TerraformingState.TERRAFORMABLE;
 			case "Terraforming":
+			case "Being terraformed":
 				return TerraformingState.TERRAFORMING;
 			case "Terraformed":
+			case "Terraforming completed":
 				return TerraformingState.TERRAFORMED;
 			default:
 				throw new IllegalArgumentException("Unknown value '" + value + "' for TerraformingState");

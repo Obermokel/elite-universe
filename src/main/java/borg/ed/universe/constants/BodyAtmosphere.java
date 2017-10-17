@@ -21,6 +21,7 @@ public enum BodyAtmosphere {
 			case "Argon":
 				return BodyAtmosphere.ARGON;
 			case "CarbonDioxide":
+			case "Carbon dioxide":
 				return BodyAtmosphere.CARBON_DIOXIDE;
 			case "Helium":
 				return BodyAtmosphere.HELIUM;
@@ -39,6 +40,7 @@ public enum BodyAtmosphere {
 			case "Silicates":
 				return BodyAtmosphere.SILICATES;
 			case "SulphurDioxide":
+			case "Sulphur dioxide":
 				return BodyAtmosphere.SULPHUR_DIOXIDE;
 			case "Water":
 				return BodyAtmosphere.WATER;

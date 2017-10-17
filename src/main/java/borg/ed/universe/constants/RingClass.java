@@ -17,12 +17,16 @@ public enum RingClass {
 		} else {
 			switch (value) {
 			case "eRingClass_Icy":
+			case "Icy":
 				return RingClass.ICY;
 			case "eRingClass_MetalRich":
+			case "Metal Rich":
 				return RingClass.METAL_RICH;
 			case "eRingClass_Metalic":
+			case "Metallic":
 				return RingClass.METALLIC;
 			case "eRingClass_Rocky":
+			case "Rocky":
 				return RingClass.ROCKY;
 			default:
 				throw new IllegalArgumentException("Unknown value '" + value + "' for RingClass");

@@ -23,8 +23,10 @@ public enum State {
 			case "Bust":
 				return State.BUST;
 			case "CivilUnrest":
+			case "Civil Unrest":
 				return State.CIVIL_UNREST;
 			case "CivilWar":
+			case "Civil War":
 				return State.CIVIL_WAR;
 			case "Election":
 				return State.ELECTION;
