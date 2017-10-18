@@ -36,6 +36,7 @@ public enum AtmosphereType {
 	HOT_THIN_SILICATE_VAPOUR,
 	HOT_THIN_SULFUR_DIOXIDE,
 	HOT_WATER,
+	HOT_WATER_RICH,
 	METHANE,
 	METHANE_RICH,
 	NEON,
@@ -82,7 +83,7 @@ public enum AtmosphereType {
 		} else {
 			switch (value) {
 			case "No atmosphere":
-                case "Unknown atmosphere":
+			case "Unknown atmosphere":
 			case "Metallic vapour": // GIGO
 			case "Suitable for water based life": // GIGO
 			case "Silicate vapour": // GIGO
@@ -169,6 +170,8 @@ public enum AtmosphereType {
 			case "hot water atmosphere":
 			case "Hot water":
 				return AtmosphereType.HOT_WATER;
+			case "hot water rich atmosphere":
+				return AtmosphereType.HOT_WATER_RICH;
 			case "methane atmosphere":
 			case "Methane":
 				return AtmosphereType.METHANE;
