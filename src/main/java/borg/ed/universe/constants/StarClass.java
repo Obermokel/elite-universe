@@ -16,9 +16,10 @@ public enum StarClass {
 	G,
 	K,
 	M,
-	A_BLUE_WHITE_SUPER_GIANT,
-	AeBe,
+	//A_BLUE_WHITE_SUPER_GIANT,
+	AEBE,
 	C,
+	CJ,
 	CN,
 	D,
 	DA,
@@ -27,19 +28,20 @@ public enum StarClass {
 	DAZ,
 	DB,
 	DBV,
+	DBZ,
 	DC,
 	DCV,
 	DQ,
 	DX,
-	F_WHITE_SUPER_GIANT,
+	//F_WHITE_SUPER_GIANT,
 	H,
-	K_ORANGE_GIANT,
+	//K_ORANGE_GIANT,
 	L,
-	M_RED_GIANT,
-	M_RED_SUPER_GIANT,
+	//M_RED_GIANT,
+	//M_RED_SUPER_GIANT,
 	MS,
 	N,
-	SUPER_MASSIVE_BLACK_HOLE,
+	//SUPER_MASSIVE_BLACK_HOLE,
 	S,
 	T,
 	TTS,
@@ -70,12 +72,14 @@ public enum StarClass {
 			case "M":
 				return StarClass.M;
 			case "A_BlueWhiteSuperGiant":
-				return StarClass.A_BLUE_WHITE_SUPER_GIANT;
+				return StarClass.A;
 			case "AeBe":
 			case "AEBE":
-				return StarClass.AeBe;
+				return StarClass.AEBE;
 			case "C":
 				return StarClass.C;
+			case "CJ":
+				return StarClass.CJ;
 			case "CN":
 				return StarClass.CN;
 			case "D":
@@ -92,6 +96,8 @@ public enum StarClass {
 				return StarClass.DB;
 			case "DBV":
 				return StarClass.DBV;
+			case "DBZ":
+				return StarClass.DBZ;
 			case "DC":
 				return StarClass.DC;
 			case "DCV":
@@ -101,17 +107,17 @@ public enum StarClass {
 			case "DX":
 				return StarClass.DX;
 			case "F_WhiteSuperGiant":
-				return StarClass.F_WHITE_SUPER_GIANT;
+				return StarClass.F;
 			case "H":
 				return StarClass.H;
 			case "K_OrangeGiant":
-				return StarClass.K_ORANGE_GIANT;
+				return StarClass.K;
 			case "L":
 				return StarClass.L;
 			case "M_RedGiant":
-				return StarClass.M_RED_GIANT;
+				return StarClass.M;
 			case "M_RedSuperGiant":
-				return StarClass.M_RED_SUPER_GIANT;
+				return StarClass.M;
 			case "MS":
 				return StarClass.MS;
 			case "N":
@@ -119,7 +125,7 @@ public enum StarClass {
 			case "S":
 				return StarClass.S;
 			case "SupermassiveBlackHole":
-				return StarClass.SUPER_MASSIVE_BLACK_HOLE;
+				return StarClass.H;
 			case "T":
 				return StarClass.T;
 			case "TTS":
