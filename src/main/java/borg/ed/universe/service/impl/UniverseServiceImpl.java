@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.NestedQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +18,13 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
-
 import borg.ed.universe.constants.PlanetClass;
 import borg.ed.universe.constants.StarClass;
 import borg.ed.universe.constants.TerraformingState;
 import borg.ed.universe.data.Coord;
 import borg.ed.universe.exceptions.NonUniqueResultException;
 import borg.ed.universe.model.Body;
+import borg.ed.universe.model.Body.MaterialShare;
 import borg.ed.universe.model.MinorFaction;
 import borg.ed.universe.model.StarSystem;
 import borg.ed.universe.repository.BodyRepository;
@@ -49,7 +51,7 @@ public class UniverseServiceImpl implements UniverseService {
 
 	@Override
 	public StarSystem findStarSystemByName(String name) throws NonUniqueResultException {
-		Page<StarSystem> page = this.starSystemRepository.findByName(name, new PageRequest(0, 10));
+        Page<StarSystem> page = this.starSystemRepository.findByName(name, PageRequest.of(0, 10));
 
 		if (page.getTotalElements() < 1) {
 			return null;
@@ -63,7 +65,7 @@ public class UniverseServiceImpl implements UniverseService {
 
 	@Override
 	public StarSystem findStarSystemByEddbId(Long eddbId) throws NonUniqueResultException {
-		Page<StarSystem> page = this.starSystemRepository.findByEddbId(eddbId, new PageRequest(0, 10));
+        Page<StarSystem> page = this.starSystemRepository.findByEddbId(eddbId, PageRequest.of(0, 10));
 
 		if (page.getTotalElements() < 1) {
 			return null;
@@ -77,7 +79,7 @@ public class UniverseServiceImpl implements UniverseService {
 
 	@Override
 	public MinorFaction findMinorFactionByName(String name) throws NonUniqueResultException {
-		Page<MinorFaction> page = this.minorFactionRepository.findByName(name, new PageRequest(0, 10));
+        Page<MinorFaction> page = this.minorFactionRepository.findByName(name, PageRequest.of(0, 10));
 
 		if (page.getTotalElements() < 1) {
 			return null;
@@ -91,7 +93,7 @@ public class UniverseServiceImpl implements UniverseService {
 
 	@Override
 	public Body findBodyByName(String name) throws NonUniqueResultException {
-		Page<Body> page = this.bodyRepository.findByName(name, new PageRequest(0, 10));
+        Page<Body> page = this.bodyRepository.findByName(name, PageRequest.of(0, 10));
 
 		if (page.getTotalElements() < 1) {
 			return null;
@@ -140,6 +142,7 @@ public class UniverseServiceImpl implements UniverseService {
 			}
 			qb.must(starClassIn);
 		}
+        logger.trace("findStarsWithin.qb={}", qb);
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("body").withPageable(pageable).build();
 		return this.elasticsearchTemplate.queryForPage(searchQuery, Body.class);
 	}
@@ -171,8 +174,35 @@ public class UniverseServiceImpl implements UniverseService {
 			}
 			qb.must(starClassIn);
 		}
+        logger.trace("findPlanetsWithin.qb={}", qb);
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("body").withPageable(pageable).build();
 		return this.elasticsearchTemplate.queryForPage(searchQuery, Body.class);
 	}
+
+    @Override
+    public Page<Body> findPlanetsHavingElementsNear(Coord coord, float range, Collection<MaterialShare> elements, Pageable pageable) {
+        return this.findPlanetsHavingElementsWithin(coord.getX() - range, coord.getX() + range, coord.getY() - range, coord.getY() + range, coord.getZ() - range, coord.getZ() + range, elements, pageable);
+    }
+
+    @Override
+    public Page<Body> findPlanetsHavingElementsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Collection<MaterialShare> elements, Pageable pageable) {
+        BoolQueryBuilder qb = QueryBuilders.boolQuery();
+        qb.must(QueryBuilders.rangeQuery("coord.x").gte(xfrom).lte(xto));
+        qb.must(QueryBuilders.rangeQuery("coord.y").gte(yfrom).lte(yto));
+        qb.must(QueryBuilders.rangeQuery("coord.z").gte(zfrom).lte(zto));
+        qb.must(QueryBuilders.termQuery("isLandable", Boolean.TRUE));
+        for (MaterialShare element : elements) {
+            BoolQueryBuilder elementAndPercentQuery = QueryBuilders.boolQuery();
+            elementAndPercentQuery.must(QueryBuilders.termQuery("materialShares.name.keyword", element.getName().name()));
+            if (element.getPercent() != null) {
+                elementAndPercentQuery.must(QueryBuilders.rangeQuery("materialShares.percent").gte(element.getPercent().doubleValue()));
+            }
+            NestedQueryBuilder nestedQuery = QueryBuilders.nestedQuery("materialShares", elementAndPercentQuery, ScoreMode.None);
+            qb.must(nestedQuery);
+        }
+        logger.trace("findPlanetsHavingElementsWithin.qb={}", qb);
+        SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("body").withPageable(pageable).build();
+        return this.elasticsearchTemplate.queryForPage(searchQuery, Body.class);
+    }
 
 }
