@@ -59,7 +59,9 @@ public class EddnElasticUpdater implements EddnUpdateListener {
 			} else {
 				//logger.warn("Unknown journal event: " + event);
 			}
-		} catch (SuspiciousDataException | NonUniqueResultException e) {
+		} catch (SuspiciousDataException e) {
+			//logger.error("Elasticsearch update failed", e);
+		} catch (NonUniqueResultException e) {
 			logger.error("Elasticsearch update failed", e);
 		}
 	}
