@@ -3,6 +3,7 @@ package borg.ed.universe.journal;
 import borg.ed.universe.data.Coord;
 import borg.ed.universe.journal.events.AbstractJournalEvent;
 import borg.ed.universe.journal.events.CargoEvent;
+import borg.ed.universe.journal.events.DiedEvent;
 import borg.ed.universe.journal.events.DockedEvent;
 import borg.ed.universe.journal.events.FSDJumpEvent;
 import borg.ed.universe.journal.events.FuelScoopEvent;
@@ -11,6 +12,7 @@ import borg.ed.universe.journal.events.LoadoutEvent;
 import borg.ed.universe.journal.events.LocationEvent;
 import borg.ed.universe.journal.events.MaterialsEvent;
 import borg.ed.universe.journal.events.ScanEvent;
+import borg.ed.universe.journal.events.SellExplorationDataEvent;
 import borg.ed.universe.journal.events.StartJumpEvent;
 import borg.ed.universe.journal.events.SupercruiseEntryEvent;
 import borg.ed.universe.journal.events.SupercruiseExitEvent;
@@ -72,6 +74,10 @@ public class JournalEventReader {
                     return this.gson.fromJson(line, CargoEvent.class);
                 case "Materials":
                     return this.gson.fromJson(line, MaterialsEvent.class);
+                case "SellExplorationData":
+                    return this.gson.fromJson(line, SellExplorationDataEvent.class);
+                case "Died":
+                    return this.gson.fromJson(line, DiedEvent.class);
                 case "ReceiveText":
                 case "SendText":
                 case "Scanned":
