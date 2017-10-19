@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.util.CloseableIterator;
 import borg.ed.universe.constants.PlanetClass;
 import borg.ed.universe.constants.StarClass;
 import borg.ed.universe.data.Coord;
@@ -31,12 +32,11 @@ public interface UniverseService {
 
 	List<Body> findBodiesByStarSystemName(String starSystemName);
 
-	Page<StarSystem> findSystemsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Pageable pageable);
+    CloseableIterator<StarSystem> streamAllSystemsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto);
 
-	Page<Body> findStarsNear(Coord coord, float range, Boolean isMainStar, Collection<StarClass> starClasses, Pageable pageable);
+    CloseableIterator<Body> streamStarsNear(Coord coord, float range, Boolean isMainStar, Collection<StarClass> starClasses);
 
-	Page<Body> findStarsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Boolean isMainStar, Collection<StarClass> starClasses,
-			Pageable pageable);
+    CloseableIterator<Body> streamStarsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Boolean isMainStar, Collection<StarClass> starClasses);
 
     /**
      * @param coord

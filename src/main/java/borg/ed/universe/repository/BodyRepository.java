@@ -23,7 +23,4 @@ public interface BodyRepository extends ElasticsearchRepository<Body, String> {
 
     Page<Body> findByEdsmId(Long edsmId, Pageable pageable);
 
-    @Query("{\"bool\": {\"must\": [{\"range\": {\"coord.x\": {\"gte\": ?0, \"lte\": ?1}}}, {\"range\": {\"coord.y\": {\"gte\": ?2, \"lte\": ?3}}}, {\"range\": {\"coord.z\": {\"gte\": ?4, \"lte\": ?5}}}]}}]}}")
-    Page<Body> findByCoordWithin(float xmin, float xmax, float ymin, float ymax, float zmin, float zmax, Pageable pageable);
-
 }

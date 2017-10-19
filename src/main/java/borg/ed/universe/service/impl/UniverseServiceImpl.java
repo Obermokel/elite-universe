@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
+import org.springframework.data.util.CloseableIterator;
 import org.springframework.stereotype.Service;
 import borg.ed.universe.constants.PlanetClass;
 import borg.ed.universe.constants.StarClass;
@@ -110,20 +111,26 @@ public class UniverseServiceImpl implements UniverseService {
 		return this.bodyRepository.findByStarSystemName(starSystemName, PageRequest.of(0, 1000)).getContent();
 	}
 
-	@Override
-	public Page<StarSystem> findSystemsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Pageable pageable) {
-		return this.starSystemRepository.findByCoordWithin(xfrom, xto, yfrom, yto, zfrom, zto, pageable);
+    @Override
+    public CloseableIterator<StarSystem> streamAllSystemsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto) {
+        BoolQueryBuilder qb = QueryBuilders.boolQuery();
+        qb.must(QueryBuilders.rangeQuery("coord.x").gte(xfrom).lte(xto));
+        qb.must(QueryBuilders.rangeQuery("coord.y").gte(yfrom).lte(yto));
+        qb.must(QueryBuilders.rangeQuery("coord.z").gte(zfrom).lte(zto));
+        logger.trace("streamAllSystemsWithin.qb={}", qb);
+        SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("starsystem").withPageable(PageRequest.of(0, 1000)).build();
+        return this.elasticsearchTemplate.stream(searchQuery, StarSystem.class);
+    }
+
+    @Override
+    public CloseableIterator<Body> streamStarsNear(Coord coord, float range, Boolean isMainStar, Collection<StarClass> starClasses) {
+		return this.streamStarsWithin(coord.getX() - range, coord.getX() + range, coord.getY() - range, coord.getY() + range, coord.getZ() - range,
+                coord.getZ() + range, isMainStar, starClasses);
 	}
 
 	@Override
-	public Page<Body> findStarsNear(Coord coord, float range, Boolean isMainStar, Collection<StarClass> starClasses, Pageable pageable) {
-		return this.findStarsWithin(coord.getX() - range, coord.getX() + range, coord.getY() - range, coord.getY() + range, coord.getZ() - range,
-				coord.getZ() + range, isMainStar, starClasses, pageable);
-	}
-
-	@Override
-	public Page<Body> findStarsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Boolean isMainStar,
-			Collection<StarClass> starClasses, Pageable pageable) {
+    public CloseableIterator<Body> streamStarsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Boolean isMainStar,
+            Collection<StarClass> starClasses) {
 		BoolQueryBuilder qb = QueryBuilders.boolQuery();
 		qb.must(QueryBuilders.rangeQuery("coord.x").gte(xfrom).lte(xto));
 		qb.must(QueryBuilders.rangeQuery("coord.y").gte(yfrom).lte(yto));
@@ -142,9 +149,9 @@ public class UniverseServiceImpl implements UniverseService {
 			}
 			qb.must(starClassIn);
 		}
-        logger.trace("findStarsWithin.qb={}", qb);
-		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("body").withPageable(pageable).build();
-		return this.elasticsearchTemplate.queryForPage(searchQuery, Body.class);
+        logger.trace("streamStarsWithin.qb={}", qb);
+        SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("body").build();
+        return this.elasticsearchTemplate.stream(searchQuery, Body.class);
 	}
 
 	@Override
