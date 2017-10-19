@@ -3,10 +3,12 @@ package borg.ed.universe.journal;
 import borg.ed.universe.journal.events.AbstractJournalEvent;
 import borg.ed.universe.journal.events.FSDJumpEvent;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.mutable.MutableLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -17,12 +19,14 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * JournalReaderThread
@@ -71,6 +75,36 @@ public class JournalReaderThread extends Thread {
     public void run() {
         logger.info(this.getName() + " started");
 
+        //this.watchUsingWatcherService();
+        this.watchUsingThreadSleep();
+
+        logger.info(this.getName() + " terminated");
+    }
+
+    void watchUsingThreadSleep() {
+        long lastProcessedModification = System.currentTimeMillis();
+
+        while (!Thread.currentThread().isInterrupted()) {
+            try {
+                for (Path file : Files.list(journalDir).collect(Collectors.toList())) {
+                    long lastModified = Files.getLastModifiedTime(file).toMillis();
+                    if (lastModified > lastProcessedModification) {
+                        this.updateJournal(file.getFileName().toString());
+                        lastProcessedModification = lastModified;
+                        break;
+                    }
+                }
+
+                Thread.sleep(250);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } catch (IOException e) {
+                logger.error("IOException in " + this.getName(), e);
+            }
+        }
+    }
+
+    void watchUsingWatcherService() {
         try (WatchService watcher = journalDir.getFileSystem().newWatchService()) {
             journalDir.register(watcher, StandardWatchEventKinds.ENTRY_MODIFY);
 
@@ -98,8 +132,6 @@ public class JournalReaderThread extends Thread {
         } catch (IOException e) {
             throw new RuntimeException(this.getName() + " crashed", e);
         }
-
-        logger.info(this.getName() + " terminated");
     }
 
     private void updateJournal(String filename) {
