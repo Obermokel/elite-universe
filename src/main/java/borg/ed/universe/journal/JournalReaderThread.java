@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.nio.channels.ClosedByInterruptException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -107,7 +108,7 @@ public class JournalReaderThread extends Thread {
                 }
 
 				Thread.sleep(250);
-			} catch (InterruptedException e) {
+            } catch (InterruptedException | ClosedByInterruptException e) {
 				Thread.currentThread().interrupt();
 			} catch (IOException e) {
 				logger.error("IOException in " + this.getName(), e);
