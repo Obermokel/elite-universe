@@ -57,7 +57,7 @@ public class EddnElasticUpdater implements EddnUpdateListener {
             if (event == null) {
                 // NOOP
             } else if (event.getTimestamp().isAfter(nowPlusTenMinutes)) {
-                throw new SuspiciousDataException("Received data from the future: " + event.getTimestamp() + " > " + nowPlusTenMinutes);
+                logger.warn("Received data from the future: " + event.getTimestamp() + " > " + nowPlusTenMinutes + ", uploaderID=" + uploaderID);
             } else if (event instanceof FSDJumpEvent) {
                 this.handleFsdJump(gatewayTimestamp, uploaderID, (FSDJumpEvent) event);
             } else if (event instanceof ScanEvent) {
@@ -65,14 +65,12 @@ public class EddnElasticUpdater implements EddnUpdateListener {
             } else {
                 //logger.warn("Unknown journal event: " + event);
             }
-        } catch (SuspiciousDataException e) {
-            //logger.error("Elasticsearch update failed", e);
         } catch (NonUniqueResultException e) {
             logger.error("Elasticsearch update failed", e);
         }
     }
 
-    void handleFsdJump(ZonedDateTime gatewayTimestamp, String uploaderID, FSDJumpEvent event) throws SuspiciousDataException, NonUniqueResultException {
+    void handleFsdJump(ZonedDateTime gatewayTimestamp, String uploaderID, FSDJumpEvent event) throws NonUniqueResultException {
         try {
             this.readStarSystem(uploaderID, event);
             this.readMinorFactions(uploaderID, event);
@@ -166,7 +164,7 @@ public class EddnElasticUpdater implements EddnUpdateListener {
         //oldData.setIsPlayerFaction(newData.getIsPlayerFaction());
     }
 
-    void handleScan(ZonedDateTime gatewayTimestamp, String uploaderID, ScanEvent event) throws SuspiciousDataException, NonUniqueResultException {
+    void handleScan(ZonedDateTime gatewayTimestamp, String uploaderID, ScanEvent event) throws NonUniqueResultException {
         try {
             this.readBody(uploaderID, event);
         } catch (IllegalArgumentException e) {
