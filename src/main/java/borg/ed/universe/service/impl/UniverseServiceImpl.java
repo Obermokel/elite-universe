@@ -118,7 +118,7 @@ public class UniverseServiceImpl implements UniverseService {
         qb.must(QueryBuilders.rangeQuery("coord.y").gte(yfrom).lte(yto));
         qb.must(QueryBuilders.rangeQuery("coord.z").gte(zfrom).lte(zto));
         logger.trace("streamAllSystemsWithin.qb={}", qb);
-        SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("starsystem").withPageable(PageRequest.of(0, 1000)).build();
+        SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("starsystem").withPageable(PageRequest.of(0, 10000)).build();
         return this.elasticsearchTemplate.stream(searchQuery, StarSystem.class);
     }
 
@@ -150,7 +150,7 @@ public class UniverseServiceImpl implements UniverseService {
 			qb.must(starClassIn);
 		}
         logger.trace("streamStarsWithin.qb={}", qb);
-        SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("body").withPageable(PageRequest.of(0, 1000)).build();
+        SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("body").withPageable(PageRequest.of(0, 10000)).build();
         return this.elasticsearchTemplate.stream(searchQuery, Body.class);
 	}
 
