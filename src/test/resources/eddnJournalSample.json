@@ -295,5 +295,6 @@
 			"DistanceFromArrivalLS": 0.0,
 			"SurfaceTemperature": 3975.0
 		}
-	}
+	},
+	{"TerraformState":"","MassEM":0.001922,"PlanetClass":"Rocky body","SurfacePressure":0.0,"RotationPeriod":254180.609375,"event":"Scan","OrbitalPeriod":254178.46875,"StarPos":[357.344,-49.344,-74.75],"Eccentricity":3.02E-4,"AtmosphereType":"None","SurfaceTemperature":309.32785,"TidalLock":true,"Periapsis":110.103279,"BodyName":"Synuefe XR-H d11-102 1 a","SemiMajorAxis":1.511987328E9,"timestamp":"2017-02-14T20:45:50Z","Materials":{"mercury":0.9,"nickel":15.1,"vanadium":4.9,"ruthenium":1.2,"selenium":3.0,"manganese":8.2,"iron":19.9,"tungsten":1.1,"carbon":16.2,"sulphur":19.2,"phosphorus":10.3},"Volcanism":"","StarSystem":"Synuefe XR-H d11-102","Atmosphere":"","OrbitalInclination":0.350356,"Landable":true,"Radius":873067.25,"DistanceFromArrivalLS":803.719299,"SurfaceGravity":1.005261}
 ]

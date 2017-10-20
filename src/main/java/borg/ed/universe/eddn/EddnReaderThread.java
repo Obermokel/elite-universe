@@ -15,9 +15,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zeromq.ZMQ;
+import org.zeromq.ZMQException;
 import org.zeromq.ZMQ.Context;
 import org.zeromq.ZMQ.Socket;
-
+import zmq.ZError;
 import com.google.gson.Gson;
 
 import borg.ed.universe.exceptions.NonUniqueResultException;
@@ -81,8 +82,13 @@ public class EddnReaderThread extends Thread {
             } catch (ClosedByInterruptException e) {
                 this.disconnect();
                 Thread.currentThread().interrupt();
-            } catch (IOException | DataFormatException e) {
-                logger.error("Exception in " + this.getName(), e);
+            } catch (ZMQException e) {
+                if (ZError.EINTR == e.getErrorCode()) {
+                    this.disconnect();
+                    Thread.currentThread().interrupt();
+                } else {
+                    logger.error("Exception in " + this.getName(), e);
+                }
             } catch (Exception e) {
                 logger.error("Exception in " + this.getName(), e);
             }
@@ -141,13 +147,15 @@ public class EddnReaderThread extends Thread {
     }
 
     private void disconnect() {
-        if (socket != null || context != null) {
+        if (socket != null) {
             logger.debug("Disconnecting");
             socket.close();
+            socket = null;
             logger.debug("Disconnected");
         }
         if (context != null) {
             context.term();
+            context = null;
         }
     }
 
