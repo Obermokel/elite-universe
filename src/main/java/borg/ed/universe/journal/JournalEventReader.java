@@ -12,6 +12,7 @@ import borg.ed.universe.journal.events.LoadoutEvent;
 import borg.ed.universe.journal.events.LocationEvent;
 import borg.ed.universe.journal.events.MaterialsEvent;
 import borg.ed.universe.journal.events.ScanEvent;
+import borg.ed.universe.journal.events.ScanEventOld;
 import borg.ed.universe.journal.events.SellExplorationDataEvent;
 import borg.ed.universe.journal.events.StartJumpEvent;
 import borg.ed.universe.journal.events.SupercruiseEntryEvent;
@@ -41,7 +42,8 @@ public class JournalEventReader {
 	private final Gson gson = new GsonBuilder().registerTypeAdapter(ZonedDateTime.class, new GsonZonedDateTime())
 			.registerTypeAdapter(Coord.class, new GsonCoord()).create();
 
-	public AbstractJournalEvent readLine(String line) {
+    @SuppressWarnings("deprecation")
+    public AbstractJournalEvent readLine(String line) {
 		if (StringUtils.isBlank(line)) {
 			return null;
 		} else {
@@ -57,7 +59,11 @@ public class JournalEventReader {
                 case "FSDJump":
                 	return this.gson.fromJson(line, FSDJumpEvent.class);
                     case "Scan":
-                        return this.gson.fromJson(line, ScanEvent.class);
+                        try {
+                            return this.gson.fromJson(line, ScanEvent.class);
+                        } catch (JsonSyntaxException e) {
+                            return this.gson.fromJson(line, ScanEventOld.class).toNewScanEvent();
+                        }
                     case "FuelScoop":
                         return this.gson.fromJson(line, FuelScoopEvent.class);
                     case "SupercruiseEntry":
