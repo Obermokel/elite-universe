@@ -1,19 +1,8 @@
 package borg.ed.universe.eddn;
 
-import java.sql.Date;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Locale;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import borg.ed.universe.converter.JournalConverter;
 import borg.ed.universe.data.Coord;
 import borg.ed.universe.exceptions.NonUniqueResultException;
-import borg.ed.universe.exceptions.SuspiciousDataException;
 import borg.ed.universe.journal.events.AbstractJournalEvent;
 import borg.ed.universe.journal.events.FSDJumpEvent;
 import borg.ed.universe.journal.events.ScanEvent;
@@ -24,6 +13,17 @@ import borg.ed.universe.repository.BodyRepository;
 import borg.ed.universe.repository.MinorFactionRepository;
 import borg.ed.universe.repository.StarSystemRepository;
 import borg.ed.universe.service.UniverseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+import java.sql.Date;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * EddnElasticUpdater
@@ -72,7 +72,17 @@ public class EddnElasticUpdater implements EddnUpdateListener {
 
     void handleFsdJump(ZonedDateTime gatewayTimestamp, String uploaderID, FSDJumpEvent event) throws NonUniqueResultException {
         try {
-            this.readStarSystem(uploaderID, event);
+            try {
+                this.readStarSystem(uploaderID, event);
+            } catch (NonUniqueResultException e) {
+                // Delete all existing and try again
+                Page<StarSystem> page = this.starSystemRepository.findByName(event.getStarSystem(), PageRequest.of(0, 10));
+                if (page.hasContent()) {
+                    this.starSystemRepository.deleteAll(page.getContent());
+                }
+                this.readStarSystem(uploaderID, event);
+            }
+
             this.readMinorFactions(uploaderID, event);
         } catch (IllegalArgumentException e) {
             logger.error(e.getMessage());
@@ -166,7 +176,16 @@ public class EddnElasticUpdater implements EddnUpdateListener {
 
     void handleScan(ZonedDateTime gatewayTimestamp, String uploaderID, ScanEvent event) throws NonUniqueResultException {
         try {
-            this.readBody(uploaderID, event);
+            try {
+                this.readBody(uploaderID, event);
+            } catch (NonUniqueResultException e) {
+                // Delete all existing and try again
+                Page<Body> page = this.bodyRepository.findByName(event.getBodyName(), PageRequest.of(0, 10));
+                if (page.hasContent()) {
+                    this.bodyRepository.deleteAll(page.getContent());
+                }
+                this.readBody(uploaderID, event);
+            }
         } catch (IllegalArgumentException e) {
             logger.error(e.getMessage());
         }
