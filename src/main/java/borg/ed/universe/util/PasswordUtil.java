@@ -22,26 +22,36 @@ public abstract class PasswordUtil {
 			return null;
 		} else {
 			try {
-				// Compute the MD5 hash
-				MessageDigest digest = MessageDigest.getInstance("MD5");
-				digest.update(cleartext.getBytes("UTF-8"));
-				byte[] md5Hash = digest.digest();
+                // Compute the MD5 hash
+                byte[] md5Hash = PasswordUtil.md5(cleartext.getBytes("UTF-8"));
 
-				// Convert to a hex string with prepadded 0s
-				StringBuilder md5Hex = new StringBuilder();
-				for (byte b : md5Hash) {
-					md5Hex.append(Integer.toHexString((0xF0 & b) >> 4));
-					md5Hex.append(Integer.toHexString(0x0F & b));
-				}
+                // Convert to a hex string with prepadded 0s
+                StringBuilder md5Hex = new StringBuilder();
+                for (byte b : md5Hash) {
+                    md5Hex.append(Integer.toHexString((0xF0 & b) >> 4));
+                    md5Hex.append(Integer.toHexString(0x0F & b));
+                }
 
-				// Return
-				return md5Hex.toString().toUpperCase();
-			} catch (NoSuchAlgorithmException e) {
-				throw new RuntimeException("MD5 algorith is not available");
-			} catch (UnsupportedEncodingException e) {
+                // Return
+                return md5Hex.toString().toUpperCase();
+            } catch (UnsupportedEncodingException e) {
 				throw new RuntimeException("UTF-8 encoding is not supported");
 			}
 		}
 	}
+
+    public static byte[] md5(byte[] data) {
+        if (data == null) {
+            return null;
+        } else {
+            try {
+                MessageDigest digest = MessageDigest.getInstance("MD5");
+                digest.update(data);
+                return digest.digest();
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException("MD5 algorith is not available");
+            }
+        }
+    }
 
 }

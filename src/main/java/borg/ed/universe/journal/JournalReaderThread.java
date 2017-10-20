@@ -1,5 +1,13 @@
 package borg.ed.universe.journal;
 
+import borg.ed.universe.journal.events.AbstractJournalEvent;
+import borg.ed.universe.journal.events.FSDJumpEvent;
+import borg.ed.universe.util.PasswordUtil;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -15,16 +23,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import borg.ed.universe.journal.events.AbstractJournalEvent;
-import borg.ed.universe.journal.events.FSDJumpEvent;
+import java.util.Optional;
 
 /**
  * JournalReaderThread
@@ -73,25 +74,37 @@ public class JournalReaderThread extends Thread {
 	public void run() {
 		logger.info(this.getName() + " started");
 
-		this.watchUsingWatcherService();
-		//this.watchUsingThreadSleep();
+        //this.watchUsingWatcherService();
+        this.watchUsingThreadSleep();
 
 		logger.info(this.getName() + " terminated");
 	}
 
 	void watchUsingThreadSleep() {
-		long lastProcessedModification = System.currentTimeMillis();
+        byte[] lastMd5 = null;
 
 		while (!Thread.currentThread().isInterrupted()) {
 			try {
-				for (Path file : Files.list(journalDir).collect(Collectors.toList())) {
-					long lastModified = Files.getLastModifiedTime(file).toMillis();
-					if (lastModified > lastProcessedModification) {
-						this.updateJournal(file.getFileName().toString());
-						lastProcessedModification = lastModified;
-						break;
-					}
-				}
+                Optional<Path> lastModifiedFile = Files.list(journalDir) //
+                        .sorted((f1, f2) -> {
+                            try {
+                                return -1 * Files.getLastModifiedTime(f1).compareTo(Files.getLastModifiedTime(f2));
+                            } catch (Exception e) {
+                                return 0;
+                            }
+                        }).findFirst();
+
+                if (lastModifiedFile.isPresent()) {
+                    byte[] currentMd5 = PasswordUtil.md5(Files.readAllBytes(lastModifiedFile.get()));
+
+                    if (lastMd5 == null || !Arrays.equals(lastMd5, currentMd5)) {
+                        try {
+                            this.updateJournal(lastModifiedFile.get().getFileName().toString());
+                        } finally {
+                            lastMd5 = currentMd5;
+                        }
+                    }
+                }
 
 				Thread.sleep(250);
 			} catch (InterruptedException e) {
