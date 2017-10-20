@@ -73,7 +73,7 @@ public class UniverseApplication {
 	public Client client() {
 		Settings settings = Settings.builder().put("cluster.name", "eddbmirror").build();
 		TransportClient client = new PreBuiltTransportClient(settings);
-		client.addTransportAddress(new InetSocketTransportAddress(new InetSocketAddress("192.168.178.3", 9300))); // 192.168.178.3 = T410s
+        client.addTransportAddress(new InetSocketTransportAddress(new InetSocketAddress("127.0.0.1", 9300))); // 192.168.178.3 = T410s
 		return client;
 		//		TransportClient client = TransportClient.builder().settings(settings).build();
 		//		client.addTransportAddress(new InetSocketTransportAddress(new InetSocketAddress("192.168.178.31", 9300)));
