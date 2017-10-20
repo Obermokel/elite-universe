@@ -150,7 +150,7 @@ public class UniverseServiceImpl implements UniverseService {
 			qb.must(starClassIn);
 		}
         logger.trace("streamStarsWithin.qb={}", qb);
-        SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("body").build();
+        SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("body").withPageable(PageRequest.of(0, 1000)).build();
         return this.elasticsearchTemplate.stream(searchQuery, Body.class);
 	}
 
