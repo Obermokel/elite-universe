@@ -101,8 +101,10 @@ public class EddnElasticUpdater implements EddnUpdateListener {
 
 			this.starSystemRepository.index(currentStarSystem);
 
-			logger.info(String.format(Locale.US, "New star system discovered by %s: '%s' %,.1f Ly from Sol", uploaderID, currentStarSystem.getName(),
-					currentStarSystem.getCoord().distanceTo(new Coord())));
+			if (logger.isTraceEnabled()) {
+				logger.trace(String.format(Locale.US, "New star system discovered by %s: '%s' %,.1f Ly from Sol", uploaderID, currentStarSystem.getName(),
+						currentStarSystem.getCoord().distanceTo(new Coord())));
+			}
 
 			// TODO See if there is another starsystem at the same coords. If so, it may have been renamed. Delete the old, including bodies, stations etc.
 		} else if (!Date.from(event.getTimestamp().toInstant()).after(existingStarSystem.getUpdatedAt())) {
@@ -130,7 +132,9 @@ public class EddnElasticUpdater implements EddnUpdateListener {
 
 					this.minorFactionRepository.index(currentMinorFaction);
 
-					logger.info(String.format(Locale.US, "New minor faction discovered by %s: '%s'", uploaderID, currentMinorFaction.getName()));
+					if (logger.isTraceEnabled()) {
+						logger.trace(String.format(Locale.US, "New minor faction discovered by %s: '%s'", uploaderID, currentMinorFaction.getName()));
+					}
 
 					// TODO See if there is another starsystem at the same coords. If so, it may have been renamed. Delete the old, including bodies, stations etc.
 				} else if (!Date.from(event.getTimestamp().toInstant()).after(existingMinorFaction.getUpdatedAt())) {
@@ -204,12 +208,14 @@ public class EddnElasticUpdater implements EddnUpdateListener {
 
 			this.bodyRepository.index(currentBody);
 
-			if (currentBody.getStarClass() != null) {
-				logger.info(String.format(Locale.US, "New class %s star discovered by %s: '%s' %,.1f Ly from Sol", currentBody.getStarClass(), uploaderID,
-						currentBody.getName(), currentBody.getCoord().distanceTo(new Coord())));
-			} else {
-				logger.info(String.format(Locale.US, "New %s discovered by %s: '%s' %,.1f Ly from Sol", currentBody.getPlanetClass(), uploaderID,
-						currentBody.getName(), currentBody.getCoord().distanceTo(new Coord())));
+			if (logger.isTraceEnabled()) {
+				if (currentBody.getStarClass() != null) {
+					logger.trace(String.format(Locale.US, "New class %s star discovered by %s: '%s' %,.1f Ly from Sol", currentBody.getStarClass(), uploaderID,
+							currentBody.getName(), currentBody.getCoord().distanceTo(new Coord())));
+				} else {
+					logger.trace(String.format(Locale.US, "New %s discovered by %s: '%s' %,.1f Ly from Sol", currentBody.getPlanetClass(), uploaderID,
+							currentBody.getName(), currentBody.getCoord().distanceTo(new Coord())));
+				}
 			}
 
 			// TODO See if there is another starsystem at the same coords. If so, it may have been renamed. Delete the old, including bodies, stations etc.
