@@ -154,4 +154,8 @@ public class StarSystem implements Serializable, UniverseEntity {
 		return "[" + id + "] " + name + " (" + coord + ")";
 	}
 
+	public float distanceTo(StarSystem other) {
+		return this.getCoord().distanceTo(other.getCoord());
+	}
+
 }
