@@ -28,6 +28,7 @@ public enum AtmosphereType {
 	HOT_THICK_METALLIC_VAPOUR,
 	HOT_THICK_METHANE,
 	HOT_THICK_METHANE_RICH,
+	HOT_THICK_NITROGEN,
 	HOT_THICK_SILICATE_VAPOUR,
 	HOT_THICK_SULFUR_DIOXIDE,
 	HOT_THICK_WATER,
@@ -146,6 +147,9 @@ public enum AtmosphereType {
 			case "hot thick methane rich atmosphere":
 			case "Hot thick methane-rich":
 				return AtmosphereType.HOT_THICK_METHANE_RICH;
+			case "hot thick nitrogen atmosphere":
+			case "Hot thick nitrogen":
+				return AtmosphereType.HOT_THICK_NITROGEN;
 			case "hot thick silicate vapour atmosphere":
 			case "Hot thick silicate vapour":
 				return AtmosphereType.HOT_THICK_SILICATE_VAPOUR;
@@ -227,6 +231,7 @@ public enum AtmosphereType {
 			case "Thick nitrogen":
 				return AtmosphereType.THICK_NITROGEN;
 			case "thick sulfur dioxide atmosphere":
+			case "thick sulphur dioxide atmosphere":
 			case "Thick sulfur dioxide":
 				return AtmosphereType.THICK_SULFUR_DIOXIDE;
 			case "thin neon rich atmosphere":
