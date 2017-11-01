@@ -67,6 +67,10 @@ public interface UniverseService {
 	Page<Body> findPlanetsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Boolean isTerraformingCandidate,
 			Collection<PlanetClass> planetClasses, Pageable pageable);
 
+    CloseableIterator<Body> streamPlanetsNear(Coord coord, float range, Boolean isTerraformingCandidate, Collection<PlanetClass> planetClasses);
+
+    CloseableIterator<Body> streamPlanetsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Boolean isTerraformingCandidate, Collection<PlanetClass> planetClasses);
+
 	/**
 	 * @param coord
 	 * @param range

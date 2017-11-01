@@ -339,6 +339,36 @@ public class UniverseServiceImpl implements UniverseService {
 	}
 
 	@Override
+    public CloseableIterator<Body> streamPlanetsNear(Coord coord, float range, Boolean isTerraformingCandidate, Collection<PlanetClass> planetClasses) {
+        return this.streamPlanetsWithin(coord.getX() - range, coord.getX() + range, coord.getY() - range, coord.getY() + range, coord.getZ() - range, coord.getZ() + range, isTerraformingCandidate, planetClasses);
+    }
+
+    @Override
+    public CloseableIterator<Body> streamPlanetsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Boolean isTerraformingCandidate, Collection<PlanetClass> planetClasses) {
+        BoolQueryBuilder qb = QueryBuilders.boolQuery();
+        qb.must(QueryBuilders.rangeQuery("coord.x").gte(xfrom).lte(xto));
+        qb.must(QueryBuilders.rangeQuery("coord.y").gte(yfrom).lte(yto));
+        qb.must(QueryBuilders.rangeQuery("coord.z").gte(zfrom).lte(zto));
+        if (Boolean.TRUE.equals(isTerraformingCandidate)) {
+            qb.must(QueryBuilders.termQuery("terraformingState.keyword", TerraformingState.TERRAFORMABLE.name()));
+        } else if (Boolean.FALSE.equals(isTerraformingCandidate)) {
+            qb.mustNot(QueryBuilders.termQuery("terraformingState.keyword", TerraformingState.TERRAFORMABLE.name()));
+        }
+        if (planetClasses == null || planetClasses.isEmpty()) {
+            qb.must(QueryBuilders.existsQuery("planetClass.keyword"));
+        } else {
+            BoolQueryBuilder starClassIn = QueryBuilders.boolQuery();
+            for (PlanetClass planetClass : planetClasses) {
+                starClassIn.should(QueryBuilders.termQuery("planetClass.keyword", planetClass.name()));
+            }
+            qb.must(starClassIn);
+        }
+        logger.trace("streamPlanetsWithin.qb={}", qb);
+        SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("body").withPageable(PageRequest.of(0, 10000)).build();
+        return this.elasticsearchTemplate.stream(searchQuery, Body.class);
+    }
+
+    @Override
 	public Page<Body> findPlanetsHavingElementsNear(Coord coord, float range, Collection<MaterialShare> elements, Pageable pageable) {
 		return this.findPlanetsHavingElementsWithin(coord.getX() - range, coord.getX() + range, coord.getY() - range, coord.getY() + range,
 				coord.getZ() - range, coord.getZ() + range, elements, pageable);
