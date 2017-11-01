@@ -22,6 +22,7 @@ public enum AtmosphereType {
 	HOT_SULFUR_DIOXIDE,
 	HOT_THICK_AMMONIA,
 	HOT_THICK_AMMONIA_RICH,
+	HOT_THICK_ARGON,
 	HOT_THICK_ARGON_RICH,
 	HOT_THICK_CARBON_DIOXIDE,
 	HOT_THICK_CARBON_DIOXIDE_RICH,
@@ -129,6 +130,9 @@ public enum AtmosphereType {
 			case "hot thick ammonia rich atmosphere":
 			case "Hot thick ammonia-rich":
 				return AtmosphereType.HOT_THICK_AMMONIA_RICH;
+			case "hot thick argon atmosphere":
+			case "Hot thick argon":
+				return AtmosphereType.HOT_THICK_ARGON;
 			case "hot thick argon rich atmosphere":
 			case "Hot thick argon-rich":
 				return AtmosphereType.HOT_THICK_ARGON_RICH;
