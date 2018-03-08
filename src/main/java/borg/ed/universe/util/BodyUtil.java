@@ -44,11 +44,11 @@ public abstract class BodyUtil {
 		} else if (planetClass != null) {
 			switch (planetClass) {
 			case EARTHLIKE_BODY:
-				return 630000;
+				return 650000;
 			case WATER_WORLD:
-				return terraformingCandidate ? 700000 : 300000;
+				return terraformingCandidate ? 600000 : 250000;
 			case HIGH_METAL_CONTENT_BODY:
-				return terraformingCandidate ? 410000 : 34000;
+				return terraformingCandidate ? 375000 : 34000;
 			case ROCKY_BODY:
 				return terraformingCandidate ? 180000 : 1000;
 			case AMMONIA_WORLD:
