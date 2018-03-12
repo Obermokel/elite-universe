@@ -66,7 +66,7 @@ public class EddnGoogleBgsUpdater implements EddnUpdateListener {
                     String factionName = faction.getName().toUpperCase();
 
                     if (faction.getInfluence() != null && faction.getInfluence().floatValue() > 0) {
-                        String influence = String.format(Locale.GERMANY, "%.1f%%", faction.getInfluence().multiply(new BigDecimal(100)));
+                        String influence = String.format(Locale.GERMANY, "%.4f%%", faction.getInfluence().multiply(new BigDecimal(100)));
                         int colIdx = tblInfluence.getColumnIndex(factionName);
                         if (colIdx < 0) {
                             logger.info("Adding column '" + factionName + "' to table '" + tableNameInfluence + "'");
