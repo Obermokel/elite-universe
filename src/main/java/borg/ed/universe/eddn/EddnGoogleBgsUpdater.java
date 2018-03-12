@@ -16,8 +16,8 @@ import borg.ed.universe.exceptions.NonUniqueResultException;
 import borg.ed.universe.google.GoogleSpreadsheet;
 import borg.ed.universe.google.GoogleTable;
 import borg.ed.universe.journal.events.AbstractJournalEvent;
-import borg.ed.universe.journal.events.FSDJumpEvent;
-import borg.ed.universe.journal.events.FSDJumpEvent.Faction;
+import borg.ed.universe.journal.events.AbstractSystemJournalEvent;
+import borg.ed.universe.journal.events.AbstractSystemJournalEvent.Faction;
 
 /**
  * EddnGoogleBgsUpdater
@@ -39,8 +39,8 @@ public class EddnGoogleBgsUpdater implements EddnUpdateListener {
                 // NOOP
             } else if (event.getTimestamp().isAfter(nowPlusTenMinutes)) {
                 logger.warn("Received data from the future: " + event.getTimestamp() + " > " + nowPlusTenMinutes + ", uploaderID=" + uploaderID);
-            } else if (event instanceof FSDJumpEvent) {
-                this.handleFsdJump(gatewayTimestamp, uploaderID, (FSDJumpEvent) event);
+            } else if (event instanceof AbstractSystemJournalEvent) {
+                this.handleSystemEvent(gatewayTimestamp, uploaderID, (AbstractSystemJournalEvent) event);
             } else {
                 //logger.warn("Unknown journal event: " + event);
             }
@@ -49,7 +49,7 @@ public class EddnGoogleBgsUpdater implements EddnUpdateListener {
         }
     }
 
-    void handleFsdJump(ZonedDateTime gatewayTimestamp, String uploaderID, FSDJumpEvent event) throws NonUniqueResultException, IOException {
+    void handleSystemEvent(ZonedDateTime gatewayTimestamp, String uploaderID, AbstractSystemJournalEvent event) throws NonUniqueResultException, IOException {
         try {
             // GPL present?
             if (isGplPresent(event.getFactions())) {

@@ -1,5 +1,14 @@
 package borg.ed.universe.converter;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import borg.ed.universe.constants.Allegiance;
 import borg.ed.universe.constants.AtmosphereType;
 import borg.ed.universe.constants.BodyAtmosphere;
@@ -17,8 +26,8 @@ import borg.ed.universe.constants.SystemSecurity;
 import borg.ed.universe.constants.TerraformingState;
 import borg.ed.universe.constants.VolcanismType;
 import borg.ed.universe.exceptions.NonUniqueResultException;
+import borg.ed.universe.journal.events.AbstractSystemJournalEvent.Faction;
 import borg.ed.universe.journal.events.FSDJumpEvent;
-import borg.ed.universe.journal.events.FSDJumpEvent.Faction;
 import borg.ed.universe.journal.events.ScanEvent;
 import borg.ed.universe.journal.events.ScanEvent.Share;
 import borg.ed.universe.model.Body;
@@ -29,14 +38,6 @@ import borg.ed.universe.model.MinorFaction;
 import borg.ed.universe.model.StarSystem;
 import borg.ed.universe.model.StarSystem.FactionPresence;
 import borg.ed.universe.service.UniverseService;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * JournalConverter
