@@ -9,7 +9,19 @@ import org.apache.commons.lang.StringUtils;
  */
 public enum Government {
 
-	NONE, ANARCHY, COMMUNISM, CONFEDERACY, COOPERATIVE, CORPORATE, DEMOCRACY, ENGINEER, DICTATORSHIP, FEUDAL, PATRONAGE, PRISON_COLONY, THEOCRACY;
+	NONE,
+	ANARCHY,
+	COMMUNISM,
+	CONFEDERACY,
+	COOPERATIVE,
+	CORPORATE,
+	DEMOCRACY,
+	ENGINEER,
+	DICTATORSHIP,
+	FEUDAL,
+	PATRONAGE,
+	PRISON_COLONY,
+	THEOCRACY;
 
 	public static Government fromJournalValue(String value) {
 		if (StringUtils.isEmpty(value)) {
@@ -49,6 +61,7 @@ public enum Government {
 			case "Patronage":
 				return Government.PATRONAGE;
 			case "$government_PrisonColony;":
+			case "$government_Prison;":
 			case "PrisonColony":
 			case "Prison Colony":
 				return Government.PRISON_COLONY;

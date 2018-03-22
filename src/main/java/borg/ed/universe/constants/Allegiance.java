@@ -9,7 +9,14 @@ import org.apache.commons.lang.StringUtils;
  */
 public enum Allegiance {
 
-	INDEPENDENT, ALLIANCE, EMPIRE, FEDERATION, PILOTS_FEDERATION, PLAYER_PILOTS;
+	INDEPENDENT,
+	ALLIANCE,
+	EMPIRE,
+	FEDERATION,
+	PILOTS_FEDERATION,
+	PLAYER_PILOTS,
+	THARGOID,
+	GUARDIAN;
 
 	public static Allegiance fromJournalValue(String value) {
 		if (StringUtils.isEmpty(value)) {
@@ -30,6 +37,10 @@ public enum Allegiance {
 				return Allegiance.PILOTS_FEDERATION;
 			case "PlayerPilots":
 				return Allegiance.PLAYER_PILOTS;
+			case "Thargoid":
+				return Allegiance.THARGOID;
+			case "Guardian":
+				return Allegiance.GUARDIAN;
 			default:
 				throw new IllegalArgumentException("Unknown value '" + value + "' for Allegiance");
 			}
