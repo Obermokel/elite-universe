@@ -1,6 +1,7 @@
 package borg.ed.universe.converter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -26,14 +27,18 @@ import borg.ed.universe.constants.SystemSecurity;
 import borg.ed.universe.constants.TerraformingState;
 import borg.ed.universe.constants.VolcanismType;
 import borg.ed.universe.exceptions.NonUniqueResultException;
+import borg.ed.universe.journal.events.AbstractSystemJournalEvent;
 import borg.ed.universe.journal.events.AbstractSystemJournalEvent.Faction;
 import borg.ed.universe.journal.events.FSDJumpEvent;
+import borg.ed.universe.journal.events.LocationEvent;
 import borg.ed.universe.journal.events.ScanEvent;
 import borg.ed.universe.journal.events.ScanEvent.Share;
 import borg.ed.universe.model.Body;
 import borg.ed.universe.model.Body.AtmosphereShare;
 import borg.ed.universe.model.Body.MaterialShare;
 import borg.ed.universe.model.Body.Ring;
+import borg.ed.universe.model.FsdJump;
+import borg.ed.universe.model.Location;
 import borg.ed.universe.model.MinorFaction;
 import borg.ed.universe.model.StarSystem;
 import borg.ed.universe.model.StarSystem.FactionPresence;
@@ -52,7 +57,7 @@ public class JournalConverter {
     @Autowired
     private UniverseService universeService = null;
 
-    public StarSystem fsdJumpToStarSystem(FSDJumpEvent event) {
+    public StarSystem abstractSystemJournalEventToStarSystem(AbstractSystemJournalEvent event) {
         StarSystem result = new StarSystem();
 
         result.setId(null);
@@ -125,7 +130,7 @@ public class JournalConverter {
     }
 
     @SuppressWarnings("unchecked")
-    public List<MinorFaction> fsdJumpToMinorFactions(FSDJumpEvent event) {
+    public List<MinorFaction> abstractSystemJournalEventToMinorFactions(AbstractSystemJournalEvent event) {
         if (event.getFactions() == null || event.getFactions().isEmpty()) {
             return null;
         } else {
@@ -251,6 +256,35 @@ public class JournalConverter {
             }
             return result;
         }
+    }
+
+    public FsdJump fsdJump(FSDJumpEvent event) {
+        FsdJump result = new FsdJump();
+
+        result.setTimestamp(Date.from(event.getTimestamp().toInstant()));
+        result.setCoord(event.getStarPos());
+        result.setStarSystem(event.getStarSystem());
+        result.setFaction(event.getSystemFaction());
+        result.setAllegiance(Allegiance.fromJournalValue(event.getSystemAllegiance()));
+        result.setState(State.fromJournalValue(event.getFactionState()));
+
+        return result;
+    }
+
+    public Location location(LocationEvent event) {
+        Location result = new Location();
+
+        result.setTimestamp(Date.from(event.getTimestamp().toInstant()));
+        result.setDocked(event.getDocked());
+        result.setCoord(event.getStarPos());
+        result.setStarSystem(event.getStarSystem());
+        result.setBody(event.getBody());
+        result.setStation(event.getStationName());
+        result.setFaction(event.getSystemFaction());
+        result.setAllegiance(Allegiance.fromJournalValue(event.getSystemAllegiance()));
+        result.setState(State.fromJournalValue(event.getFactionState()));
+
+        return result;
     }
 
 }

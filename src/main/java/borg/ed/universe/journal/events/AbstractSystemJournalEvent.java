@@ -28,6 +28,10 @@ public abstract class AbstractSystemJournalEvent extends AbstractJournalEvent {
 
     private BigDecimal Population = null;
 
+    private List<String> Powers = null;
+
+    private String PowerplayState = null;
+
     private List<AbstractSystemJournalEvent.Faction> Factions = null;
 
     private String SystemFaction = null;

@@ -1,7 +1,6 @@
 package borg.ed.universe.journal.events;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +26,5 @@ public class FSDJumpEvent extends AbstractSystemJournalEvent {
     private BigDecimal FuelUsed = null;
 
     private BigDecimal FuelLevel = null;
-
-    private List<String> Powers = null;
-
-    private String PowerplayState = null;
 
 }
