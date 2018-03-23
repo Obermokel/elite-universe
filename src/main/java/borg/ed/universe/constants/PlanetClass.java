@@ -13,6 +13,7 @@ public enum PlanetClass {
 	EARTHLIKE_BODY,
 	GAS_GIANT_WITH_AMMONIA_BASED_LIFE,
 	GAS_GIANT_WITH_WATER_BASED_LIFE,
+	HELIUM_GAS_GIANT,
 	HELIUM_RICH_GAS_GIANT,
 	HIGH_METAL_CONTENT_BODY,
 	ICY_BODY,
@@ -43,6 +44,8 @@ public enum PlanetClass {
 			case "Gas giant with water based life":
 			case "Gas giant with water-based life":
 				return PlanetClass.GAS_GIANT_WITH_WATER_BASED_LIFE;
+			case "Helium gas giant":
+				return PlanetClass.HELIUM_GAS_GIANT;
 			case "Helium rich gas giant":
 			case "Helium-rich gas giant":
 				return PlanetClass.HELIUM_RICH_GAS_GIANT;

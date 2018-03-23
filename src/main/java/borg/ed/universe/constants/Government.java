@@ -20,6 +20,7 @@ public enum Government {
 	DICTATORSHIP,
 	FEUDAL,
 	PATRONAGE,
+	PRISON,
 	PRISON_COLONY,
 	THEOCRACY;
 
@@ -60,8 +61,10 @@ public enum Government {
 			case "$government_Patronage;":
 			case "Patronage":
 				return Government.PATRONAGE;
-			case "$government_PrisonColony;":
 			case "$government_Prison;":
+			case "Prison":
+				return Government.PRISON;
+			case "$government_PrisonColony;":
 			case "PrisonColony":
 			case "Prison Colony":
 				return Government.PRISON_COLONY;
