@@ -3,6 +3,8 @@ package borg.ed.universe.journal.events;
 import borg.ed.universe.data.Coord;
 import lombok.Getter;
 import lombok.Setter;
+
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -109,6 +111,17 @@ public class ScanEvent extends AbstractJournalEvent {
 
         private BigDecimal Percent = null;
 
+    }
+
+    @Override
+    public String toString() {
+        if(StringUtils.isNotEmpty(this.StarType)) {
+            return super.toString() + " (Body: "+this.BodyName+" | "+this.StarType+")";
+        } else if(StringUtils.isNotEmpty(this.PlanetClass)) {
+            return super.toString() + " (Body: "+this.BodyName+" | "+this.PlanetClass+")";
+        } else {
+            return super.toString() + " (Body: "+this.BodyName+")";
+        }
     }
 
 }

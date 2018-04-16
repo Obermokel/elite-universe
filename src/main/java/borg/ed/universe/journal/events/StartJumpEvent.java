@@ -24,4 +24,9 @@ public class StartJumpEvent extends AbstractJournalEvent {
     
     private String StarClass = null;
 
+    @Override
+    public String toString() {
+        return super.toString() + " (To: "+this.StarSystem+" | Star Class: "+this.StarClass+")";
+    }
+
 }

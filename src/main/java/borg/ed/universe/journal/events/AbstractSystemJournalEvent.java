@@ -72,4 +72,9 @@ public abstract class AbstractSystemJournalEvent extends AbstractJournalEvent {
 
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + " (At: "+this.StarSystem+")";
+    }
+
 }

@@ -24,4 +24,9 @@ public class FuelScoopEvent extends AbstractJournalEvent {
     
     private BigDecimal Total = null;
 
+    @Override
+    public String toString() {
+        return super.toString() + " (+ "+this.Scooped.setScale(1, BigDecimal.ROUND_HALF_UP)+"t = "+this.Total.setScale(1, BigDecimal.ROUND_HALF_UP)+"t)";
+    }
+
 }
