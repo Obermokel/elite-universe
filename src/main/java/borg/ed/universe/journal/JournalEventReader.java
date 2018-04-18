@@ -23,9 +23,11 @@ import borg.ed.universe.journal.events.LoadGameEvent;
 import borg.ed.universe.journal.events.LoadoutEvent;
 import borg.ed.universe.journal.events.LocationEvent;
 import borg.ed.universe.journal.events.MaterialsEvent;
+import borg.ed.universe.journal.events.ReceiveTextEvent;
 import borg.ed.universe.journal.events.ScanEvent;
 import borg.ed.universe.journal.events.ScanEventOld;
 import borg.ed.universe.journal.events.SellExplorationDataEvent;
+import borg.ed.universe.journal.events.SendTextEvent;
 import borg.ed.universe.journal.events.StartJumpEvent;
 import borg.ed.universe.journal.events.SupercruiseEntryEvent;
 import borg.ed.universe.journal.events.SupercruiseExitEvent;
@@ -92,7 +94,9 @@ public class JournalEventReader {
                     case "Died":
                         return this.gson.fromJson(line, DiedEvent.class);
                     case "ReceiveText":
+                        return this.gson.fromJson(line, ReceiveTextEvent.class);
                     case "SendText":
+                        return this.gson.fromJson(line, SendTextEvent.class);
                     case "Scanned":
                     case "CommitCrime":
                     case "Bounty":
