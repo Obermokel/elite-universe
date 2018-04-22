@@ -75,7 +75,7 @@ public class Status implements Serializable {
 
 	@Override
 	public String toString() {
-		return this.timestamp.format(DateTimeFormatter.ISO_INSTANT) + ": " + this.event;
+		return this.timestamp.format(DateTimeFormatter.ISO_INSTANT) + ": " + this.event + " (" + this.Flags + ")";
 	}
 
 	/**
