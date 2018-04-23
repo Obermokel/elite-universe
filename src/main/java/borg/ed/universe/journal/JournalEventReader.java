@@ -23,6 +23,7 @@ import borg.ed.universe.journal.events.LoadGameEvent;
 import borg.ed.universe.journal.events.LoadoutEvent;
 import borg.ed.universe.journal.events.LocationEvent;
 import borg.ed.universe.journal.events.MaterialsEvent;
+import borg.ed.universe.journal.events.MusicEvent;
 import borg.ed.universe.journal.events.ReceiveTextEvent;
 import borg.ed.universe.journal.events.ScanEvent;
 import borg.ed.universe.journal.events.ScanEventOld;
@@ -97,12 +98,13 @@ public class JournalEventReader {
                         return this.gson.fromJson(line, ReceiveTextEvent.class);
                     case "SendText":
                         return this.gson.fromJson(line, SendTextEvent.class);
+                    case "Music":
+                        return this.gson.fromJson(line, MusicEvent.class);
                     case "Scanned":
                     case "CommitCrime":
                     case "Bounty":
                     case "RedeemVoucher":
                     case "Screenshot":
-                    case "Music":
                     case "Friends":
                     case "Fileheader":
                     case "Progress":
