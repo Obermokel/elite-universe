@@ -36,187 +36,189 @@ import borg.ed.universe.util.PasswordUtil;
  */
 public class JournalReaderThread extends Thread {
 
-	static final Logger logger = LoggerFactory.getLogger(JournalReaderThread.class);
+    static final Logger logger = LoggerFactory.getLogger(JournalReaderThread.class);
 
-	private final Path journalDir;
+    public volatile boolean shutdown = false;
 
-	@Autowired
-	private JournalEventReader journalEventReader = null;
+    private final Path journalDir;
 
-	private String currentFilename = null;
-	private int lastProcessedLineNumber = 0;
-	private ZonedDateTime lastProcessedTimestamp = ZonedDateTime.ofInstant(Instant.EPOCH, ZoneId.of("Z"));
-	private final List<JournalUpdateListener> listeners = new ArrayList<>();
+    @Autowired
+    private JournalEventReader journalEventReader = null;
 
-	public JournalReaderThread() {
-		this.setName("JournalReaderThread");
-		this.setDaemon(false);
+    private String currentFilename = null;
+    private int lastProcessedLineNumber = 0;
+    private ZonedDateTime lastProcessedTimestamp = ZonedDateTime.ofInstant(Instant.EPOCH, ZoneId.of("Z"));
+    private final List<JournalUpdateListener> listeners = new ArrayList<>();
 
-		journalDir = lookupJournalDir();
-	}
+    public JournalReaderThread() {
+        this.setName("JournalReaderThread");
+        this.setDaemon(true);
 
-	private Path lookupJournalDir() {
-		Path homeDir = Paths.get(System.getProperty("user.home"));
-		Path journalDir = homeDir.resolve("Saved Games\\Frontier Developments\\Elite Dangerous");
+        journalDir = lookupJournalDir();
+    }
 
-		if (Files.exists(journalDir)) {
-			return journalDir;
-		} else {
-			journalDir = homeDir.resolve("Google Drive\\Elite Dangerous\\Journal");
+    private Path lookupJournalDir() {
+        Path homeDir = Paths.get(System.getProperty("user.home"));
+        Path journalDir = homeDir.resolve("Saved Games\\Frontier Developments\\Elite Dangerous");
 
-			if (Files.exists(journalDir)) {
-				return journalDir;
-			} else {
-				throw new RuntimeException("Journal directory not found");
-			}
-		}
-	}
+        if (Files.exists(journalDir)) {
+            return journalDir;
+        } else {
+            journalDir = homeDir.resolve("Google Drive\\Elite Dangerous\\Journal");
 
-	@Override
-	public void run() {
-		logger.info(this.getName() + " started");
+            if (Files.exists(journalDir)) {
+                return journalDir;
+            } else {
+                throw new RuntimeException("Journal directory not found");
+            }
+        }
+    }
 
-		//this.watchUsingWatcherService();
-		this.watchUsingThreadSleep();
+    @Override
+    public void run() {
+        logger.info(this.getName() + " started");
 
-		logger.info(this.getName() + " terminated");
-	}
+        //this.watchUsingWatcherService();
+        this.watchUsingThreadSleep();
 
-	void watchUsingThreadSleep() {
-		byte[] lastMd5 = null;
+        logger.info(this.getName() + " terminated");
+    }
 
-		while (!Thread.currentThread().isInterrupted()) {
-			try {
-				Optional<Path> lastModifiedFile = Files.list(journalDir) //
-						.filter(f -> f.getFileName().toString().startsWith("Journal.")) //
-						.sorted((f1, f2) -> {
-							try {
-								return -1 * Files.getLastModifiedTime(f1).compareTo(Files.getLastModifiedTime(f2));
-							} catch (Exception e) {
-								return 0;
-							}
-						}).findFirst();
+    void watchUsingThreadSleep() {
+        byte[] lastMd5 = null;
 
-				if (lastModifiedFile.isPresent()) {
-					byte[] currentMd5 = PasswordUtil.md5(Files.readAllBytes(lastModifiedFile.get()));
+        while (!Thread.currentThread().isInterrupted() && !this.shutdown) {
+            try {
+                Optional<Path> lastModifiedFile = Files.list(journalDir) //
+                        .filter(f -> f.getFileName().toString().startsWith("Journal.")) //
+                        .sorted((f1, f2) -> {
+                            try {
+                                return -1 * Files.getLastModifiedTime(f1).compareTo(Files.getLastModifiedTime(f2));
+                            } catch (Exception e) {
+                                return 0;
+                            }
+                        }).findFirst();
 
-					if (lastMd5 == null || !Arrays.equals(lastMd5, currentMd5)) {
-						try {
-							this.updateJournal(lastModifiedFile.get().getFileName().toString());
-						} finally {
-							lastMd5 = currentMd5;
-						}
-					}
-				}
+                if (lastModifiedFile.isPresent()) {
+                    byte[] currentMd5 = PasswordUtil.md5(Files.readAllBytes(lastModifiedFile.get()));
 
-				Thread.sleep(250);
-			} catch (InterruptedException | ClosedByInterruptException e) {
-				Thread.currentThread().interrupt();
-			} catch (IOException e) {
-				logger.error("IOException in " + this.getName(), e);
-			}
-		}
-	}
+                    if (lastMd5 == null || !Arrays.equals(lastMd5, currentMd5)) {
+                        try {
+                            this.updateJournal(lastModifiedFile.get().getFileName().toString());
+                        } finally {
+                            lastMd5 = currentMd5;
+                        }
+                    }
+                }
 
-	void watchUsingWatcherService() {
-		try (WatchService watcher = journalDir.getFileSystem().newWatchService()) {
-			journalDir.register(watcher, StandardWatchEventKinds.ENTRY_MODIFY);
+                Thread.sleep(250);
+            } catch (InterruptedException | ClosedByInterruptException e) {
+                Thread.currentThread().interrupt();
+            } catch (IOException e) {
+                logger.error("IOException in " + this.getName(), e);
+            }
+        }
+    }
 
-			while (!Thread.currentThread().isInterrupted()) {
-				try {
-					final WatchKey key = watcher.take(); // Wait for the next event
+    void watchUsingWatcherService() {
+        try (WatchService watcher = journalDir.getFileSystem().newWatchService()) {
+            journalDir.register(watcher, StandardWatchEventKinds.ENTRY_MODIFY);
 
-					for (WatchEvent<?> event : key.pollEvents()) {
-						final Kind<?> kind = event.kind();
+            while (!Thread.currentThread().isInterrupted() && !this.shutdown) {
+                try {
+                    final WatchKey key = watcher.take(); // Wait for the next event
 
-						if (kind == StandardWatchEventKinds.OVERFLOW) {
-							logger.warn("WatchService overflow for " + journalDir); // Print warning and continue
-						} else if (kind == StandardWatchEventKinds.ENTRY_MODIFY) {
-							this.updateJournal(event.context().toString());
-						}
-					}
+                    for (WatchEvent<?> event : key.pollEvents()) {
+                        final Kind<?> kind = event.kind();
 
-					if (!key.reset()) {
-						break; // Quit
-					}
-				} catch (InterruptedException e) {
-					Thread.currentThread().interrupt();
-				}
-			}
-		} catch (IOException e) {
-			throw new RuntimeException(this.getName() + " crashed", e);
-		}
-	}
+                        if (kind == StandardWatchEventKinds.OVERFLOW) {
+                            logger.warn("WatchService overflow for " + journalDir); // Print warning and continue
+                        } else if (kind == StandardWatchEventKinds.ENTRY_MODIFY) {
+                            this.updateJournal(event.context().toString());
+                        }
+                    }
 
-	private void updateJournal(String filename) {
-		if (StringUtils.isNotEmpty(filename) && filename.startsWith("Journal.") && filename.endsWith(".log")) {
-			try {
-				int lineNumberBackup = this.lastProcessedLineNumber;
-				String filenameBackup = this.currentFilename;
+                    if (!key.reset()) {
+                        break; // Quit
+                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(this.getName() + " crashed", e);
+        }
+    }
 
-				if (!filename.equals(this.currentFilename)) {
-					this.lastProcessedLineNumber = 0; // New file
-				}
-				this.currentFilename = filename;
+    private void updateJournal(String filename) {
+        if (StringUtils.isNotEmpty(filename) && filename.startsWith("Journal.") && filename.endsWith(".log")) {
+            try {
+                int lineNumberBackup = this.lastProcessedLineNumber;
+                String filenameBackup = this.currentFilename;
 
-				boolean eventAdded = false;
-				List<String> lines = Files.readAllLines(this.journalDir.resolve(filename), StandardCharsets.UTF_8);
-				for (int lineNumber = 1; lineNumber <= lines.size(); lineNumber++) {
-					if (lineNumber > this.lastProcessedLineNumber) {
-						this.lastProcessedLineNumber = lineNumber;
+                if (!filename.equals(this.currentFilename)) {
+                    this.lastProcessedLineNumber = 0; // New file
+                }
+                this.currentFilename = filename;
 
-						String line = lines.get(lineNumber - 1);
-						AbstractJournalEvent event = null;
-						try {
-							event = this.journalEventReader.readLine(line);
-						} catch (Exception e) {
-							logger.error("Failed to read line " + lineNumber + " of " + filename + "\n\t" + line, e);
-						}
+                boolean eventAdded = false;
+                List<String> lines = Files.readAllLines(this.journalDir.resolve(filename), StandardCharsets.UTF_8);
+                for (int lineNumber = 1; lineNumber <= lines.size(); lineNumber++) {
+                    if (lineNumber > this.lastProcessedLineNumber) {
+                        this.lastProcessedLineNumber = lineNumber;
 
-						if (event != null && event.getTimestamp().compareTo(this.lastProcessedTimestamp) >= 0) {
-							if (event instanceof FSDJumpEvent) {
-								logger.info(event.getTimestamp().format(DateTimeFormatter.ISO_INSTANT) + ": JUMP TO " + ((FSDJumpEvent) event).getStarSystem());
-							}
+                        String line = lines.get(lineNumber - 1);
+                        AbstractJournalEvent event = null;
+                        try {
+                            event = this.journalEventReader.readLine(line);
+                        } catch (Exception e) {
+                            logger.error("Failed to read line " + lineNumber + " of " + filename + "\n\t" + line, e);
+                        }
 
-							this.lastProcessedTimestamp = event.getTimestamp();
+                        if (event != null && event.getTimestamp().compareTo(this.lastProcessedTimestamp) >= 0) {
+                            if (event instanceof FSDJumpEvent) {
+                                logger.info(event.getTimestamp().format(DateTimeFormatter.ISO_INSTANT) + ": JUMP TO " + ((FSDJumpEvent) event).getStarSystem());
+                            }
 
-							eventAdded = true;
+                            this.lastProcessedTimestamp = event.getTimestamp();
 
-							for (JournalUpdateListener listener : this.listeners) {
-								try {
-									listener.onNewJournalEntry(event);
-								} catch (Exception e) {
-									logger.warn(listener + " failed", e);
-								}
-							}
-						}
-					}
-				}
+                            eventAdded = true;
 
-				if (!eventAdded) {
-					this.currentFilename = filenameBackup;
-					this.lastProcessedLineNumber = lineNumberBackup;
-				}
-			} catch (IOException | RuntimeException e) {
-				logger.error("Failed to read journal file " + this.currentFilename, e);
-			}
-		}
-	}
+                            for (JournalUpdateListener listener : this.listeners) {
+                                try {
+                                    listener.onNewJournalEntry(event);
+                                } catch (Exception e) {
+                                    logger.warn(listener + " failed", e);
+                                }
+                            }
+                        }
+                    }
+                }
 
-	public boolean addListener(JournalUpdateListener listener) {
-		if (listener == null || this.listeners.contains(listener)) {
-			return false;
-		} else {
-			return this.listeners.add(listener);
-		}
-	}
+                if (!eventAdded) {
+                    this.currentFilename = filenameBackup;
+                    this.lastProcessedLineNumber = lineNumberBackup;
+                }
+            } catch (IOException | RuntimeException e) {
+                logger.error("Failed to read journal file " + this.currentFilename, e);
+            }
+        }
+    }
 
-	public boolean removeListener(JournalUpdateListener listener) {
-		if (listener == null) {
-			return false;
-		} else {
-			return this.listeners.remove(listener);
-		}
-	}
+    public boolean addListener(JournalUpdateListener listener) {
+        if (listener == null || this.listeners.contains(listener)) {
+            return false;
+        } else {
+            return this.listeners.add(listener);
+        }
+    }
+
+    public boolean removeListener(JournalUpdateListener listener) {
+        if (listener == null) {
+            return false;
+        } else {
+            return this.listeners.remove(listener);
+        }
+    }
 
 }
