@@ -9,7 +9,20 @@ import org.apache.commons.lang.StringUtils;
  */
 public enum State {
 
-	NONE, BOOM, BUST, CIVIL_UNREST, CIVIL_WAR, ELECTION, EXPANSION, FAMINE, INVESTMENT, LOCKDOWN, OUTBREAK, RETREAT, WAR;
+	NONE,
+	BOOM,
+	BUST,
+	CIVIL_LIBERTY,
+	CIVIL_UNREST,
+	CIVIL_WAR,
+	ELECTION,
+	EXPANSION,
+	FAMINE,
+	INVESTMENT,
+	LOCKDOWN,
+	OUTBREAK,
+	RETREAT,
+	WAR;
 
 	public static State fromJournalValue(String value) {
 		if (StringUtils.isEmpty(value)) {
@@ -22,6 +35,9 @@ public enum State {
 				return State.BOOM;
 			case "Bust":
 				return State.BUST;
+			case "CivilLiberty":
+			case "Civil Liberty":
+				return State.CIVIL_LIBERTY;
 			case "CivilUnrest":
 			case "Civil Unrest":
 				return State.CIVIL_UNREST;
