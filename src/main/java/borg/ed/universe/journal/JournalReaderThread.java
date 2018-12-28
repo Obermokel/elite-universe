@@ -111,7 +111,7 @@ public class JournalReaderThread extends Thread {
                     }
                 }
 
-                Thread.sleep(250);
+                Thread.sleep(100);
             } catch (InterruptedException | ClosedByInterruptException e) {
                 Thread.currentThread().interrupt();
             } catch (IOException e) {
