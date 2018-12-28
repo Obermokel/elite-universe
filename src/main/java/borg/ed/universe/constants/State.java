@@ -21,6 +21,7 @@ public enum State {
 	INVESTMENT,
 	LOCKDOWN,
 	OUTBREAK,
+	PIRATE_ATTACK,
 	RETREAT,
 	WAR;
 
@@ -56,6 +57,8 @@ public enum State {
 				return State.LOCKDOWN;
 			case "Outbreak":
 				return State.OUTBREAK;
+			case "PirateAttack":
+				return State.PIRATE_ATTACK;
 			case "Retreat":
 				return State.RETREAT;
 			case "War":
