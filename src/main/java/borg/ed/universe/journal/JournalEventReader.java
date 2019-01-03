@@ -39,6 +39,7 @@ import borg.ed.universe.journal.events.ShipTargetedEvent;
 import borg.ed.universe.journal.events.StartJumpEvent;
 import borg.ed.universe.journal.events.SupercruiseEntryEvent;
 import borg.ed.universe.journal.events.SupercruiseExitEvent;
+import borg.ed.universe.journal.events.UnderAttackEvent;
 import borg.ed.universe.journal.events.UndockedEvent;
 import borg.ed.universe.util.GsonCoord;
 import borg.ed.universe.util.GsonZonedDateTime;
@@ -120,6 +121,8 @@ public class JournalEventReader {
                         return this.gson.fromJson(line, ShieldStateEvent.class);
                     case "ShipTargeted":
                         return this.gson.fromJson(line, ShipTargetedEvent.class);
+                    case "UnderAttack":
+                        return this.gson.fromJson(line, UnderAttackEvent.class);
                     case "Scanned":
                     case "Bounty":
                     case "RedeemVoucher":
