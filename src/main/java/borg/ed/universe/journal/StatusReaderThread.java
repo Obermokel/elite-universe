@@ -45,7 +45,7 @@ public class StatusReaderThread extends Thread {
         if (Files.exists(journalDir)) {
             return journalDir;
         } else {
-            journalDir = homeDir.resolve("Google Drive\\Elite Dangerous\\Journal\\\\Status.json");
+            journalDir = homeDir.resolve("Google Drive\\Elite Dangerous\\Journal\\Status.json");
 
             if (Files.exists(journalDir)) {
                 return journalDir;
