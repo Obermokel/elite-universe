@@ -27,9 +27,9 @@ public class Status implements Serializable {
 
 	private int GuiFocus = 0;
 
-    private BigDecimal Fuel = null; // t
+	private FuelStatus Fuel = null;
 
-    private BigDecimal Cargo = null; // t
+	private BigDecimal Cargo = null; // t
 
 	private BigDecimal Latitude = null;
 
@@ -202,64 +202,76 @@ public class Status implements Serializable {
 		return testBit(this.Flags, 26);
 	}
 
-    public boolean isInAnalysisMode() {
-        return testBit(this.Flags, 27);
-    }
+	public boolean isInAnalysisMode() {
+		return testBit(this.Flags, 27);
+	}
 
-    public boolean isNightVisionOn() {
-        return testBit(this.Flags, 28);
-    }
+	public boolean isNightVisionOn() {
+		return testBit(this.Flags, 28);
+	}
 
-//    public boolean guiFocusNone() {
-//        return testBit(this.GuiFocus, 0);
-//    }
+	//    public boolean guiFocusNone() {
+	//        return testBit(this.GuiFocus, 0);
+	//    }
 
-    public boolean guiFocusRightPanel() {
-        return testBit(this.GuiFocus, 1);
-    }
+	public boolean guiFocusRightPanel() {
+		return testBit(this.GuiFocus, 1);
+	}
 
-    public boolean guiFocusLeftPanel() {
-        return testBit(this.GuiFocus, 2);
-    }
+	public boolean guiFocusLeftPanel() {
+		return testBit(this.GuiFocus, 2);
+	}
 
-    public boolean guiFocusCommsPanel() {
-        return testBit(this.GuiFocus, 3);
-    }
+	public boolean guiFocusCommsPanel() {
+		return testBit(this.GuiFocus, 3);
+	}
 
-    public boolean guiFocusBottomPanel() {
-        return testBit(this.GuiFocus, 4);
-    }
+	public boolean guiFocusBottomPanel() {
+		return testBit(this.GuiFocus, 4);
+	}
 
-    public boolean guiFocusStationServices() {
-        return testBit(this.GuiFocus, 5);
-    }
+	public boolean guiFocusStationServices() {
+		return testBit(this.GuiFocus, 5);
+	}
 
-    public boolean guiFocusGalaxyMap() {
-        return testBit(this.GuiFocus, 6);
-    }
+	public boolean guiFocusGalaxyMap() {
+		return testBit(this.GuiFocus, 6);
+	}
 
-    public boolean guiFocusSystemMap() {
-        return testBit(this.GuiFocus, 7);
-    }
+	public boolean guiFocusSystemMap() {
+		return testBit(this.GuiFocus, 7);
+	}
 
-    public boolean guiFocusOrrery() {
-        return testBit(this.GuiFocus, 8);
-    }
+	public boolean guiFocusOrrery() {
+		return testBit(this.GuiFocus, 8);
+	}
 
-    public boolean guiFocusFss() {
-        return testBit(this.GuiFocus, 9);
-    }
+	public boolean guiFocusFss() {
+		return testBit(this.GuiFocus, 9);
+	}
 
-    public boolean guiFocusDss() {
-        return testBit(this.GuiFocus, 10);
-    }
+	public boolean guiFocusDss() {
+		return testBit(this.GuiFocus, 10);
+	}
 
-    public boolean guiFocusCodex() {
-        return testBit(this.GuiFocus, 11);
-    }
+	public boolean guiFocusCodex() {
+		return testBit(this.GuiFocus, 11);
+	}
 
 	private static boolean testBit(int n, int pos) {
 		return (n & 1 << pos) != 0;
+	}
+
+	@Getter
+	@Setter
+	public static class FuelStatus implements Serializable {
+
+		private static final long serialVersionUID = 4922079506944916946L;
+
+		private BigDecimal FuelMain = null; // t
+
+		private BigDecimal FuelReservoir = null; // t
+
 	}
 
 }
