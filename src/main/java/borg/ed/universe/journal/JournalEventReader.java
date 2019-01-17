@@ -30,6 +30,7 @@ import borg.ed.universe.journal.events.LoadGameEvent;
 import borg.ed.universe.journal.events.LoadoutEvent;
 import borg.ed.universe.journal.events.LocationEvent;
 import borg.ed.universe.journal.events.MaterialsEvent;
+import borg.ed.universe.journal.events.MultiSellExplorationDataEvent;
 import borg.ed.universe.journal.events.MusicEvent;
 import borg.ed.universe.journal.events.ReceiveTextEvent;
 import borg.ed.universe.journal.events.ScanEvent;
@@ -103,6 +104,8 @@ public class JournalEventReader {
 					return this.gson.fromJson(line, MaterialsEvent.class);
 				case "SellExplorationData":
 					return this.gson.fromJson(line, SellExplorationDataEvent.class);
+				case "MultiSellExplorationData":
+					return this.gson.fromJson(line, MultiSellExplorationDataEvent.class);
 				case "Died":
 					return this.gson.fromJson(line, DiedEvent.class);
 				case "ReceiveText":
