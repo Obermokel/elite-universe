@@ -9,14 +9,10 @@ import java.util.Date;
  */
 public interface UniverseEntity {
 
-    String getId();
+	String getId();
 
-    Long getEddbId();
+	Date getCreatedAt();
 
-    Long getEdsmId();
-
-    Date getCreatedAt();
-
-    Date getUpdatedAt();
+	Date getUpdatedAt();
 
 }

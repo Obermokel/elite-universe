@@ -35,10 +35,6 @@ public class Station implements Serializable, UniverseEntity {
 	@Id
 	private String id = null;
 
-	private Long eddbId = null;
-
-	private Long edsmId = null;
-
 	@Field(type = FieldType.Date, format = DateFormat.date_time_no_millis)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZZ")
 	private Date createdAt = null;

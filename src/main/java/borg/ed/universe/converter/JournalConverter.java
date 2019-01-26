@@ -57,8 +57,6 @@ public class JournalConverter {
 		StarSystem result = new StarSystem();
 
 		result.setId(null);
-		result.setEddbId(null);
-		result.setEdsmId(null);
 		result.setCreatedAt(null);
 		result.setUpdatedAt(null);
 		result.setCoord(event.getStarPos());
@@ -135,8 +133,6 @@ public class JournalConverter {
 				MinorFaction minorFaction = new MinorFaction();
 
 				minorFaction.setId(null);
-				minorFaction.setEddbId(null);
-				minorFaction.setEdsmId(null);
 				minorFaction.setCreatedAt(null);
 				minorFaction.setUpdatedAt(null);
 				minorFaction.setHomeSystemId(null); // Manually edited
@@ -170,8 +166,6 @@ public class JournalConverter {
 		}
 
 		result.setId(null);
-		result.setEddbId(null);
-		result.setEdsmId(null);
 		result.setCreatedAt(null);
 		result.setUpdatedAt(null);
 		result.setCoord(event.getStarPos());
