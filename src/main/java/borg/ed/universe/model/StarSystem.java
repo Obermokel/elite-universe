@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ import borg.ed.universe.constants.ReserveLevel;
 import borg.ed.universe.constants.State;
 import borg.ed.universe.constants.SystemSecurity;
 import borg.ed.universe.data.Coord;
+import borg.ed.universe.util.PasswordUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -148,6 +150,14 @@ public class StarSystem implements Serializable, UniverseEntity {
 	@Override
 	public String toString() {
 		return "[" + id + "] " + name + " (" + coord + ")";
+	}
+
+	public String generateId() {
+		return generateId(this.getCoord());
+	}
+
+	public static String generateId(Coord coord) {
+		return PasswordUtil.md5(String.format(Locale.US, "%.4f:%.4f:%.4f", coord.getX(), coord.getY(), coord.getZ()));
 	}
 
 	public float distanceTo(StarSystem other) {

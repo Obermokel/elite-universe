@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ import borg.ed.universe.constants.StarClass;
 import borg.ed.universe.constants.TerraformingState;
 import borg.ed.universe.constants.VolcanismType;
 import borg.ed.universe.data.Coord;
+import borg.ed.universe.util.PasswordUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -227,6 +229,11 @@ public class Body implements Serializable, UniverseEntity {
 	@Override
 	public String toString() {
 		return "[" + id + "] " + name + " (" + coord + ")";
+	}
+
+	public String generateId() {
+		return PasswordUtil.md5(
+				String.format(Locale.US, "%.4f:%.4f:%.4f|%s", this.getCoord().getX(), this.getCoord().getY(), this.getCoord().getZ(), this.getName().replace(this.getStarSystemName(), "")));
 	}
 
 }

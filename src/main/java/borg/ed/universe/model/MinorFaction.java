@@ -2,6 +2,7 @@ package borg.ed.universe.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import borg.ed.universe.constants.Allegiance;
 import borg.ed.universe.constants.Government;
 import borg.ed.universe.constants.State;
 import borg.ed.universe.data.Coord;
+import borg.ed.universe.util.PasswordUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -96,6 +98,10 @@ public class MinorFaction implements Serializable, UniverseEntity {
 	@Override
 	public String toString() {
 		return "[" + id + "] " + name + " (" + coord + ")";
+	}
+
+	public String generateId() {
+		return PasswordUtil.md5(String.format(Locale.US, "%s", this.getName()));
 	}
 
 }

@@ -2,12 +2,11 @@ package borg.ed.universe.converter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import borg.ed.universe.constants.Allegiance;
@@ -26,7 +25,6 @@ import borg.ed.universe.constants.State;
 import borg.ed.universe.constants.SystemSecurity;
 import borg.ed.universe.constants.TerraformingState;
 import borg.ed.universe.constants.VolcanismType;
-import borg.ed.universe.exceptions.NonUniqueResultException;
 import borg.ed.universe.journal.events.AbstractSystemJournalEvent;
 import borg.ed.universe.journal.events.AbstractSystemJournalEvent.Faction;
 import borg.ed.universe.journal.events.ScanEvent;
@@ -38,7 +36,6 @@ import borg.ed.universe.model.Body.Ring;
 import borg.ed.universe.model.MinorFaction;
 import borg.ed.universe.model.StarSystem;
 import borg.ed.universe.model.StarSystem.FactionPresence;
-import borg.ed.universe.service.UniverseService;
 
 /**
  * JournalConverter
@@ -50,15 +47,10 @@ public class JournalConverter {
 
 	static final Logger logger = LoggerFactory.getLogger(JournalConverter.class);
 
-	@Autowired
-	private UniverseService universeService = null;
-
 	public StarSystem abstractSystemJournalEventToStarSystem(AbstractSystemJournalEvent event) {
 		StarSystem result = new StarSystem();
 
-		result.setId(null);
-		result.setCreatedAt(null);
-		result.setUpdatedAt(null);
+		result.setUpdatedAt(new Date());
 		result.setCoord(event.getStarPos());
 		result.setName(event.getStarSystem());
 		result.setPopulation(event.getPopulation());
@@ -73,10 +65,11 @@ public class JournalConverter {
 		result.setMinorFactionPresences(this.factionsToFactionPresences(event.getFactions()));
 		result.setState(this.lookupState(result.getMinorFactionPresences(), result.getControllingMinorFactionName()));
 
+		result.setId(result.generateId());
+
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
 	private List<FactionPresence> factionsToFactionPresences(List<Faction> list) {
 		if (list == null || list.isEmpty()) {
 			return null;
@@ -123,7 +116,6 @@ public class JournalConverter {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<MinorFaction> abstractSystemJournalEventToMinorFactions(AbstractSystemJournalEvent event) {
 		if (event.getFactions() == null || event.getFactions().isEmpty()) {
 			return null;
@@ -132,9 +124,7 @@ public class JournalConverter {
 			for (Faction factionData : event.getFactions()) {
 				MinorFaction minorFaction = new MinorFaction();
 
-				minorFaction.setId(null);
-				minorFaction.setCreatedAt(null);
-				minorFaction.setUpdatedAt(null);
+				minorFaction.setUpdatedAt(new Date());
 				minorFaction.setHomeSystemId(null); // Manually edited
 				minorFaction.setCoord(null); // Manually edited
 				minorFaction.setName(factionData.getName());
@@ -143,32 +133,21 @@ public class JournalConverter {
 				minorFaction.setState(State.fromJournalValue(factionData.getFactionState()));
 				minorFaction.setIsPlayerFaction(null); // Manually edited
 
+				minorFaction.setId(minorFaction.generateId());
+
 				result.add(minorFaction);
 			}
 			return result;
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public Body scanToBody(ScanEvent event) {
 		Body result = new Body();
 
-		if (StringUtils.isNotEmpty(event.getStarSystem())) {
-			try {
-				StarSystem starSystem = this.universeService.findStarSystemByName(event.getStarSystem());
-				if (starSystem != null) {
-					result.setStarSystemId(starSystem.getId());
-					result.setStarSystemName(starSystem.getName());
-				}
-			} catch (NonUniqueResultException e) {
-				logger.warn("NonUniqueResultException: " + e.getMessage() + "\n\t" + e.getOthers());
-			}
-		}
-
-		result.setId(null);
-		result.setCreatedAt(null);
-		result.setUpdatedAt(null);
+		result.setUpdatedAt(new Date());
 		result.setCoord(event.getStarPos());
+		result.setStarSystemId(StarSystem.generateId(event.getStarPos()));
+		result.setStarSystemName(event.getStarSystem());
 		result.setName(event.getBodyName());
 		result.setDistanceToArrival(event.getDistanceFromArrivalLS());
 		result.setStarClass(StarClass.fromJournalValue(event.getStarType()));
@@ -196,6 +175,8 @@ public class JournalConverter {
 		result.setRings(this.ringsToRings(event.getRings()));
 		result.setAtmosphereShares(this.sharesToAtmosphereShares(event.getAtmosphereComposition()));
 		result.setMaterialShares(this.sharesToMaterialShares(event.getMaterials()));
+
+		result.setId(result.generateId());
 
 		return result;
 	}
