@@ -28,8 +28,6 @@ public interface UniverseService {
 
 	Map<String, StarSystem> findStarSystemsByName(Collection<String> names, boolean deleteDuplicates);
 
-	StarSystem findStarSystemByEddbId(Long eddbId) throws NonUniqueResultException;
-
 	StarSystem findNearestSystem(Coord coord);
 
 	Page<StarSystem> findSystemsNear(Coord coord, float maxDistance, Pageable pageable);
@@ -48,8 +46,7 @@ public interface UniverseService {
 
 	CloseableIterator<Body> streamStarsNear(Coord coord, float range, Boolean isMainStar, Collection<StarClass> starClasses);
 
-	CloseableIterator<Body> streamStarsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Boolean isMainStar,
-			Collection<StarClass> starClasses);
+	CloseableIterator<Body> streamStarsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Boolean isMainStar, Collection<StarClass> starClasses);
 
 	/**
 	 * @param coord
@@ -64,12 +61,12 @@ public interface UniverseService {
 	 */
 	Page<Body> findPlanetsNear(Coord coord, float range, Boolean isTerraformingCandidate, Collection<PlanetClass> planetClasses, Pageable pageable);
 
-	Page<Body> findPlanetsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Boolean isTerraformingCandidate,
-			Collection<PlanetClass> planetClasses, Pageable pageable);
+	Page<Body> findPlanetsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Boolean isTerraformingCandidate, Collection<PlanetClass> planetClasses,
+			Pageable pageable);
 
-    CloseableIterator<Body> streamPlanetsNear(Coord coord, float range, Boolean isTerraformingCandidate, Collection<PlanetClass> planetClasses);
+	CloseableIterator<Body> streamPlanetsNear(Coord coord, float range, Boolean isTerraformingCandidate, Collection<PlanetClass> planetClasses);
 
-    CloseableIterator<Body> streamPlanetsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Boolean isTerraformingCandidate, Collection<PlanetClass> planetClasses);
+	CloseableIterator<Body> streamPlanetsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Boolean isTerraformingCandidate, Collection<PlanetClass> planetClasses);
 
 	/**
 	 * @param coord
@@ -83,7 +80,6 @@ public interface UniverseService {
 	 */
 	Page<Body> findPlanetsHavingElementsNear(Coord coord, float range, Collection<MaterialShare> elements, Pageable pageable);
 
-	Page<Body> findPlanetsHavingElementsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Collection<MaterialShare> elements,
-			Pageable pageable);
+	Page<Body> findPlanetsHavingElementsWithin(float xfrom, float xto, float yfrom, float yto, float zfrom, float zto, Collection<MaterialShare> elements, Pageable pageable);
 
 }
