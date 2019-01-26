@@ -16,7 +16,7 @@ import borg.ed.universe.converter.JournalConverter;
 import borg.ed.universe.data.Coord;
 import borg.ed.universe.exceptions.NonUniqueResultException;
 import borg.ed.universe.journal.events.AbstractJournalEvent;
-import borg.ed.universe.journal.events.AbstractSystemJournalEvent;
+import borg.ed.universe.journal.events.AbstractSystemJournalEvent_v3_2;
 import borg.ed.universe.journal.events.FSDJumpEvent;
 import borg.ed.universe.journal.events.LocationEvent;
 import borg.ed.universe.journal.events.ScanEvent;
@@ -71,8 +71,8 @@ public class EddnElasticUpdater implements EddnUpdateListener {
                 // NOOP
             } else if (event.getTimestamp().isAfter(nowPlusTenMinutes)) {
                 logger.warn("Received data from the future: " + event.getTimestamp() + " > " + nowPlusTenMinutes + ", uploaderID=" + uploaderID);
-            } else if (event instanceof AbstractSystemJournalEvent) {
-                this.handleAbstractSystemJournalEvent(gatewayTimestamp, uploaderID, (AbstractSystemJournalEvent) event);
+            } else if (event instanceof AbstractSystemJournalEvent_v3_2) {
+                this.handleAbstractSystemJournalEvent(gatewayTimestamp, uploaderID, (AbstractSystemJournalEvent_v3_2) event);
             } else if (event instanceof ScanEvent) {
                 this.handleScan(gatewayTimestamp, uploaderID, (ScanEvent) event);
             } else {
@@ -83,7 +83,7 @@ public class EddnElasticUpdater implements EddnUpdateListener {
         }
     }
 
-    void handleAbstractSystemJournalEvent(ZonedDateTime gatewayTimestamp, String uploaderID, AbstractSystemJournalEvent event) throws NonUniqueResultException {
+    void handleAbstractSystemJournalEvent(ZonedDateTime gatewayTimestamp, String uploaderID, AbstractSystemJournalEvent_v3_2 event) throws NonUniqueResultException {
         try {
             if (event instanceof FSDJumpEvent) {
                 this.handleFsdJumpEvent(uploaderID, (FSDJumpEvent) event);
@@ -130,7 +130,7 @@ public class EddnElasticUpdater implements EddnUpdateListener {
         }
     }
 
-    private void readStarSystem(String uploaderID, AbstractSystemJournalEvent event) throws NonUniqueResultException {
+    private void readStarSystem(String uploaderID, AbstractSystemJournalEvent_v3_2 event) throws NonUniqueResultException {
         StarSystem currentStarSystem = this.journalConverter.abstractSystemJournalEventToStarSystem(event);
         StarSystem existingStarSystem = this.universeService.findStarSystemByName(currentStarSystem.getName());
 
@@ -159,7 +159,7 @@ public class EddnElasticUpdater implements EddnUpdateListener {
         }
     }
 
-    private void readMinorFactions(String uploaderID, AbstractSystemJournalEvent event) throws NonUniqueResultException {
+    private void readMinorFactions(String uploaderID, AbstractSystemJournalEvent_v3_2 event) throws NonUniqueResultException {
         List<MinorFaction> currentMinorFactions = this.journalConverter.abstractSystemJournalEventToMinorFactions(event);
 
         if (currentMinorFactions != null) {

@@ -28,8 +28,8 @@ import borg.ed.universe.constants.SystemSecurity;
 import borg.ed.universe.constants.TerraformingState;
 import borg.ed.universe.constants.VolcanismType;
 import borg.ed.universe.exceptions.NonUniqueResultException;
-import borg.ed.universe.journal.events.AbstractSystemJournalEvent;
-import borg.ed.universe.journal.events.AbstractSystemJournalEvent.Faction;
+import borg.ed.universe.journal.events.AbstractSystemJournalEvent_v3_2;
+import borg.ed.universe.journal.events.AbstractSystemJournalEvent_v3_2.Faction;
 import borg.ed.universe.journal.events.FSDJumpEvent;
 import borg.ed.universe.journal.events.LocationEvent;
 import borg.ed.universe.journal.events.ScanEvent;
@@ -58,7 +58,7 @@ public class JournalConverter {
 	@Autowired
 	private UniverseService universeService = null;
 
-	public StarSystem abstractSystemJournalEventToStarSystem(AbstractSystemJournalEvent event) {
+	public StarSystem abstractSystemJournalEventToStarSystem(AbstractSystemJournalEvent_v3_2 event) {
 		StarSystem result = new StarSystem();
 
 		result.setId(null);
@@ -131,7 +131,7 @@ public class JournalConverter {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<MinorFaction> abstractSystemJournalEventToMinorFactions(AbstractSystemJournalEvent event) {
+	public List<MinorFaction> abstractSystemJournalEventToMinorFactions(AbstractSystemJournalEvent_v3_2 event) {
 		if (event.getFactions() == null || event.getFactions().isEmpty()) {
 			return null;
 		} else {

@@ -63,9 +63,10 @@ public class JournalEventReader {
 		if (StringUtils.isBlank(line)) {
 			return null;
 		} else {
+			String event = null;
 			try {
 				LinkedHashMap<String, Object> data = this.gson.fromJson(line, LinkedHashMap.class);
-				String event = (String) data.get("event");
+				event = (String) data.get("event");
 
 				switch (event) {
 				case "Location":
@@ -154,7 +155,7 @@ public class JournalEventReader {
 					return null;
 				}
 			} catch (JsonSyntaxException e) {
-				logger.error("Failed to read journal event\n\t" + line + "\n\t" + e);
+				logger.error("Failed to read journal event '" + event + "'\n\t" + line + "\n\t" + e);
 				return null;
 			}
 		}

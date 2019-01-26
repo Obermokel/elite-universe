@@ -15,7 +15,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class FSDJumpEvent extends AbstractSystemJournalEvent {
+public class FSDJumpEvent extends AbstractSystemJournalEvent_v3_2 {
 
     private static final long serialVersionUID = -5264764860239254112L;
 
