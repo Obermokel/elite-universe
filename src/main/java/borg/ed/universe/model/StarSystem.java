@@ -34,7 +34,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Document(indexName = "universe", type = "starsystem", replicas = 0)
+@Document(indexName = "starsystem", type = "starsystem", shards = 5, replicas = 0)
 public class StarSystem implements Serializable, UniverseEntity {
 
 	private static final long serialVersionUID = 4133521407269215822L;

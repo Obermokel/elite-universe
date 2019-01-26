@@ -21,83 +21,83 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Document(indexName = "travel", type = "location", replicas = 0)
+@Document(indexName = "location", type = "location", shards = 5, replicas = 0)
 public class Location implements Serializable {
 
-    private static final long serialVersionUID = 6001141103475118725L;
+	private static final long serialVersionUID = 6001141103475118725L;
 
-    @Id
-    private String id = null;
+	@Id
+	private String id = null;
 
-    @Field(type = FieldType.Date, format = DateFormat.date_time_no_millis)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZZ")
-    private Date timestamp = null;
+	@Field(type = FieldType.Date, format = DateFormat.date_time_no_millis)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZZ")
+	private Date timestamp = null;
 
-    @Field(type = FieldType.keyword)
-    private String uploaderId = null;
+	@Field(type = FieldType.keyword)
+	private String uploaderId = null;
 
-    private Boolean docked = null;
+	private Boolean docked = null;
 
-    private Coord coord = null;
+	private Coord coord = null;
 
-    @Field(type = FieldType.keyword)
-    private String starSystem = null;
+	@Field(type = FieldType.keyword)
+	private String starSystem = null;
 
-    @Field(type = FieldType.keyword)
-    private String body = null;
+	@Field(type = FieldType.keyword)
+	private String body = null;
 
-    @Field(type = FieldType.keyword)
-    private String station = null;
+	@Field(type = FieldType.keyword)
+	private String station = null;
 
-    @Field(type = FieldType.keyword)
-    private String faction = null;
-    
-    private Allegiance allegiance = null;
-    
-    private State state = null;
+	@Field(type = FieldType.keyword)
+	private String faction = null;
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        Location other = (Location) obj;
-        if (id == null) {
-            if (other.id != null) {
-                return false;
-            }
-        } else if (!id.equals(other.id)) {
-            return false;
-        }
-        return true;
-    }
+	private Allegiance allegiance = null;
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        return result;
-    }
+	private State state = null;
 
-    @Override
-    public String toString() {
-        return "[" + id + "] " + starSystem + " (" + coord + ")";
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Location other = (Location) obj;
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		return true;
+	}
 
-    public static String generateId(Location location) {
-        String key = new SimpleDateFormat("yyyyMMddHHmmss").format(location.getTimestamp());
-        key += "|";
-        key += location.getStarSystem();
-        key += "|";
-        key += location.getUploaderId();
-        return PasswordUtil.md5(key);
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public String toString() {
+		return "[" + id + "] " + starSystem + " (" + coord + ")";
+	}
+
+	public static String generateId(Location location) {
+		String key = new SimpleDateFormat("yyyyMMddHHmmss").format(location.getTimestamp());
+		key += "|";
+		key += location.getStarSystem();
+		key += "|";
+		key += location.getUploaderId();
+		return PasswordUtil.md5(key);
+	}
 
 }
