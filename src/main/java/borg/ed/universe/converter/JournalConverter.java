@@ -2,7 +2,6 @@ package borg.ed.universe.converter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -30,16 +29,12 @@ import borg.ed.universe.constants.VolcanismType;
 import borg.ed.universe.exceptions.NonUniqueResultException;
 import borg.ed.universe.journal.events.AbstractSystemJournalEvent_v3_2;
 import borg.ed.universe.journal.events.AbstractSystemJournalEvent_v3_2.Faction;
-import borg.ed.universe.journal.events.FSDJumpEvent;
-import borg.ed.universe.journal.events.LocationEvent;
 import borg.ed.universe.journal.events.ScanEvent;
 import borg.ed.universe.journal.events.ScanEvent.Share;
 import borg.ed.universe.model.Body;
 import borg.ed.universe.model.Body.AtmosphereShare;
 import borg.ed.universe.model.Body.MaterialShare;
 import borg.ed.universe.model.Body.Ring;
-import borg.ed.universe.model.FsdJump;
-import borg.ed.universe.model.Location;
 import borg.ed.universe.model.MinorFaction;
 import borg.ed.universe.model.StarSystem;
 import borg.ed.universe.model.StarSystem.FactionPresence;
@@ -257,35 +252,6 @@ public class JournalConverter {
 			}
 			return result;
 		}
-	}
-
-	public FsdJump fsdJump(FSDJumpEvent event) {
-		FsdJump result = new FsdJump();
-
-		result.setTimestamp(Date.from(event.getTimestamp().toInstant()));
-		result.setCoord(event.getStarPos());
-		result.setStarSystem(event.getStarSystem());
-		result.setFaction(event.getSystemFaction());
-		result.setAllegiance(Allegiance.fromJournalValue(event.getSystemAllegiance()));
-		result.setState(State.fromJournalValue(event.getFactionState()));
-
-		return result;
-	}
-
-	public Location location(LocationEvent event) {
-		Location result = new Location();
-
-		result.setTimestamp(Date.from(event.getTimestamp().toInstant()));
-		result.setDocked(event.getDocked());
-		result.setCoord(event.getStarPos());
-		result.setStarSystem(event.getStarSystem());
-		result.setBody(event.getBody());
-		result.setStation(event.getStationName());
-		result.setFaction(event.getSystemFaction());
-		result.setAllegiance(Allegiance.fromJournalValue(event.getSystemAllegiance()));
-		result.setState(State.fromJournalValue(event.getFactionState()));
-
-		return result;
 	}
 
 }
