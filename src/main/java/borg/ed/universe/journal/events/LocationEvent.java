@@ -13,7 +13,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class LocationEvent extends AbstractSystemJournalEvent_v3_2 { 
+public class LocationEvent extends AbstractSystemJournalEvent { 
 
     private static final long serialVersionUID = -3598986285224569310L;
 

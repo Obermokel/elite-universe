@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class AbstractSystemJournalEvent_v3_2 extends AbstractJournalEvent {
+public abstract class AbstractSystemJournalEvent extends AbstractJournalEvent {
 
     private static final long serialVersionUID = 8734273170824509602L;
 
@@ -32,7 +32,7 @@ public abstract class AbstractSystemJournalEvent_v3_2 extends AbstractJournalEve
 
     private String PowerplayState = null;
 
-    private List<AbstractSystemJournalEvent_v3_2.Faction> Factions = null;
+    private List<AbstractSystemJournalEvent.Faction> Factions = null;
 
     private String SystemFaction = null;
 
@@ -54,9 +54,9 @@ public abstract class AbstractSystemJournalEvent_v3_2 extends AbstractJournalEve
 
         private BigDecimal Influence = null;
 
-        private List<AbstractSystemJournalEvent_v3_2.Faction.State> RecoveringStates = null;
+        private List<AbstractSystemJournalEvent.Faction.State> RecoveringStates = null;
 
-        private List<AbstractSystemJournalEvent_v3_2.Faction.State> PendingStates = null;
+        private List<AbstractSystemJournalEvent.Faction.State> PendingStates = null;
 
         @Getter
         @Setter
