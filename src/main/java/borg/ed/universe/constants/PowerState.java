@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public enum PowerState {
 
-	CONTESTED, CONTROLLED, EXPLOITED, HOME_SYSTEM, IN_PREPARE_RADIUS, PREPARED;
+	CONTESTED, CONTROLLED, EXPLOITED, HOME_SYSTEM, IN_PREPARE_RADIUS, PREPARED, TURMOIL;
 
 	public static PowerState fromJournalValue(String value) {
 		if (StringUtils.isEmpty(value)) {
@@ -28,6 +28,8 @@ public enum PowerState {
 				return PowerState.IN_PREPARE_RADIUS;
 			case "Prepared":
 				return PowerState.PREPARED;
+			case "Turmoil":
+				return PowerState.TURMOIL;
 			default:
 				throw new IllegalArgumentException("Unknown value '" + value + "' for PowerState");
 			}
