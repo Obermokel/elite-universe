@@ -50,6 +50,8 @@ public class EddnElasticUpdater implements EddnUpdateListener {
 	@Autowired
 	private MinorFactionRepository minorFactionRepository = null;
 
+	private boolean updateMinorFactions = true;
+
 	@Override
 	public void onNewJournalMessage(ZonedDateTime gatewayTimestamp, String uploaderID, AbstractJournalEvent event) {
 		try {
@@ -84,7 +86,9 @@ public class EddnElasticUpdater implements EddnUpdateListener {
 				this.readStarSystem(uploaderID, event);
 			}
 
-			this.readMinorFactions(uploaderID, event);
+			if (this.isUpdateMinorFactions()) {
+				this.readMinorFactions(uploaderID, event);
+			}
 		} catch (IllegalArgumentException e) {
 			logger.error(e.getMessage());
 		}
@@ -260,6 +264,14 @@ public class EddnElasticUpdater implements EddnUpdateListener {
 		oldData.setRings(newData.getRings());
 		oldData.setAtmosphereShares(newData.getAtmosphereShares());
 		oldData.setMaterialShares(newData.getMaterialShares());
+	}
+
+	public boolean isUpdateMinorFactions() {
+		return updateMinorFactions;
+	}
+
+	public void setUpdateMinorFactions(boolean updateMinorFactions) {
+		this.updateMinorFactions = updateMinorFactions;
 	}
 
 }
