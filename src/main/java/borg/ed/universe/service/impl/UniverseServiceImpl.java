@@ -88,7 +88,7 @@ public class UniverseServiceImpl implements UniverseService {
 				}
 			}
 			qbRoot.must(qbNames);
-			SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qbRoot).withIndices("universe").withTypes("starsystem").withPageable(PageRequest.of(0, max)).build();
+			SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qbRoot).withIndices("starsystem").withTypes("starsystem").withPageable(PageRequest.of(0, max)).build();
 			AggregatedPage<StarSystem> page = this.elasticsearchTemplate.queryForPage(searchQuery, StarSystem.class);
 
 			if (page.getTotalElements() > max) {
@@ -159,7 +159,7 @@ public class UniverseServiceImpl implements UniverseService {
 		qb.must(QueryBuilders.rangeQuery("coord.y").gte(yfrom).lte(yto));
 		qb.must(QueryBuilders.rangeQuery("coord.z").gte(zfrom).lte(zto));
 		logger.trace("findSystemsWithin.qb={}", qb);
-		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("starsystem").withPageable(pageable).build();
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("starsystem").withTypes("starsystem").withPageable(pageable).build();
 		return this.elasticsearchTemplate.queryForPage(searchQuery, StarSystem.class);
 	}
 
@@ -208,7 +208,7 @@ public class UniverseServiceImpl implements UniverseService {
 				}
 			}
 			qbRoot.must(qbNames);
-			SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qbRoot).withIndices("universe").withTypes("body").withPageable(PageRequest.of(0, max)).build();
+			SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qbRoot).withIndices("body").withTypes("body").withPageable(PageRequest.of(0, max)).build();
 			AggregatedPage<Body> page = this.elasticsearchTemplate.queryForPage(searchQuery, Body.class);
 
 			if (page.getTotalElements() > max) {
@@ -251,7 +251,7 @@ public class UniverseServiceImpl implements UniverseService {
 		qb.must(QueryBuilders.rangeQuery("coord.y").gte(yfrom).lte(yto));
 		qb.must(QueryBuilders.rangeQuery("coord.z").gte(zfrom).lte(zto));
 		logger.trace("streamAllSystemsWithin.qb={}", qb);
-		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("starsystem").withPageable(PageRequest.of(0, 10000)).build();
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("starsystem").withTypes("starsystem").withPageable(PageRequest.of(0, 10000)).build();
 		return this.elasticsearchTemplate.stream(searchQuery, StarSystem.class);
 	}
 
@@ -282,7 +282,7 @@ public class UniverseServiceImpl implements UniverseService {
 			qb.must(starClassIn);
 		}
 		logger.trace("streamStarsWithin.qb={}", qb);
-		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("body").withPageable(PageRequest.of(0, 10000)).build();
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("body").withTypes("body").withPageable(PageRequest.of(0, 10000)).build();
 		return this.elasticsearchTemplate.stream(searchQuery, Body.class);
 	}
 
@@ -314,7 +314,7 @@ public class UniverseServiceImpl implements UniverseService {
 			qb.must(starClassIn);
 		}
 		logger.trace("findPlanetsWithin.qb={}", qb);
-		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("body").withPageable(pageable).build();
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("body").withTypes("body").withPageable(pageable).build();
 		return this.elasticsearchTemplate.queryForPage(searchQuery, Body.class);
 	}
 
@@ -346,7 +346,7 @@ public class UniverseServiceImpl implements UniverseService {
 			qb.must(starClassIn);
 		}
 		logger.trace("streamPlanetsWithin.qb={}", qb);
-		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("body").withPageable(PageRequest.of(0, 10000)).build();
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("body").withTypes("body").withPageable(PageRequest.of(0, 10000)).build();
 		return this.elasticsearchTemplate.stream(searchQuery, Body.class);
 	}
 
@@ -373,7 +373,7 @@ public class UniverseServiceImpl implements UniverseService {
 			qb.must(nestedQuery);
 		}
 		logger.trace("findPlanetsHavingElementsWithin.qb={}", qb);
-		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("universe").withTypes("body").withPageable(pageable).build();
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb).withIndices("body").withTypes("body").withPageable(pageable).build();
 		return this.elasticsearchTemplate.queryForPage(searchQuery, Body.class);
 	}
 
