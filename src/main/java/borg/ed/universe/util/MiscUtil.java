@@ -122,6 +122,26 @@ public abstract class MiscUtil {
 		return Boolean.TRUE.equals(defaultValue);
 	}
 
+	public static Boolean getAsBooleanObject(Object o) {
+		return MiscUtil.getAsBooleanObject(o, null);
+	}
+
+	public static Boolean getAsBooleanObject(Object o, Boolean defaultValue) {
+		if (o != null) {
+			if (o instanceof Boolean) {
+				return (Boolean) o;
+			} else {
+				final String s = o.toString().toLowerCase();
+
+				if (s.length() > 0) {
+					return "true".equals(s) || "yes".equals(s) || "y".equals(s) || "on".equals(s) || "1".equals(s);
+				}
+			}
+		}
+
+		return defaultValue;
+	}
+
 	public static Number getAsNumber(Object o) {
 		return MiscUtil.getAsNumber(o, null);
 	}
