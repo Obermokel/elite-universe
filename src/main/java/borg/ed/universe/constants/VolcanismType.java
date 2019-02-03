@@ -1,6 +1,8 @@
 package borg.ed.universe.constants;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * VolcanismType
@@ -9,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public enum VolcanismType {
 
+	AMMONIA_MAGMA,
 	CARBON_DIOXIDE_GEYSERS,
 	ROCKY_MAGMA,
 	MAJOR_METALLIC_MAGMA,
@@ -30,80 +33,80 @@ public enum VolcanismType {
 	WATER_GEYSERS,
 	WATER_MAGMA;
 
+	static final Logger logger = LoggerFactory.getLogger(VolcanismType.class);
+
 	public static VolcanismType fromJournalValue(String value) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		} else {
-			switch (value) {
-			case "No volcanism":
-			case "Iron magma": // TODO From EDDB
-			case "Silicate magma": // TODO From EDDB
-			case "Nitrogen magma": // TODO From EDDB
-			case "Methane magma": // TODO From EDDB
-			case "Ammonia magma": // TODO From EDDB
+			switch (value.toLowerCase()) {
+			case "no volcanism":
 				return null;
+			case "ammonia magma":
+				return VolcanismType.AMMONIA_MAGMA;
 			case "carbon dioxide geysers volcanism":
-			case "Carbon dioxide geysers":
+			case "carbon dioxide geysers":
 				return VolcanismType.CARBON_DIOXIDE_GEYSERS;
 			case "rocky magma volcanism":
-			case "Rocky Magma":
+			case "rocky magma":
 				return VolcanismType.ROCKY_MAGMA;
 			case "major metallic magma volcanism":
-			case "Major Metallic Magma":
+			case "major metallic magma":
 				return VolcanismType.MAJOR_METALLIC_MAGMA;
 			case "major rocky magma volcanism":
-			case "Major Rocky Magma":
+			case "major rocky magma":
 				return VolcanismType.MAJOR_ROCKY_MAGMA;
 			case "major silicate vapour geysers volcanism":
-			case "Major Silicate Vapour Geysers":
+			case "major silicate vapour geysers":
 				return VolcanismType.MAJOR_SILICATE_VAPOUR_GEYSERS;
 			case "major water geysers volcanism":
-			case "Major Water Geysers":
+			case "major water geysers":
 				return VolcanismType.MAJOR_WATER_GEYSERS;
 			case "major water magma volcanism":
-			case "Major Water Magma":
+			case "major water magma":
 				return VolcanismType.MAJOR_WATER_MAGMA;
 			case "metallic magma volcanism":
-			case "Metallic Magma":
+			case "metallic magma":
 				return VolcanismType.METALLIC_MAGMA;
 			case "minor ammonia magma volcanism":
-			case "Minor Ammonia Magma":
+			case "minor ammonia magma":
 				return VolcanismType.MINOR_AMMONIA_MAGMA;
 			case "minor carbon dioxide geysers volcanism":
-			case "Minor Carbon Dioxide Geysers":
+			case "minor carbon dioxide geysers":
 				return VolcanismType.MINOR_CARBON_DIOXIDE_GEYSERS;
 			case "minor metallic magma volcanism":
-			case "Minor Metallic Magma":
+			case "minor metallic magma":
 				return VolcanismType.MINOR_METALLIC_MAGMA;
 			case "minor methane magma volcanism":
-			case "Minor Methane Magma":
+			case "minor methane magma":
 				return VolcanismType.MINOR_METHANE_MAGMA;
 			case "minor nitrogen magma volcanism":
-			case "Minor Nitrogen Magma":
+			case "minor nitrogen magma":
 				return VolcanismType.MINOR_NITROGEN_MAGMA;
 			case "minor rocky magma volcanism":
-			case "Minor Rocky Magma":
+			case "minor rocky magma":
 				return VolcanismType.MINOR_ROCKY_MAGMA;
 			case "minor silicate vapour geysers volcanism":
-			case "Minor Silicate Vapour Geysers":
+			case "minor silicate vapour geysers":
 				return VolcanismType.MINOR_SILICATE_VAPOUR_GEYSERS;
 			case "minor water geysers volcanism":
-			case "Minor Water Geysers":
+			case "minor water geysers":
 				return VolcanismType.MINOR_WATER_GEYSERS;
 			case "minor water magma volcanism":
-			case "Minor Water Magma":
+			case "minor water magma":
 				return VolcanismType.MINOR_WATER_MAGMA;
 			case "silicate vapour geysers volcanism":
-			case "Silicate vapour geysers":
+			case "silicate vapour geysers":
 				return VolcanismType.SILICATE_VAPOUR_GEYSERS;
 			case "water geysers volcanism":
-			case "Water geysers":
+			case "water geysers":
 				return VolcanismType.WATER_GEYSERS;
 			case "water magma volcanism":
-			case "Water magma":
+			case "water magma":
 				return VolcanismType.WATER_MAGMA;
 			default:
-				throw new IllegalArgumentException("Unknown value '" + value + "' for VolcanismType");
+				logger.warn("Unknown value '" + value + "' for VolcanismType");
+				return null;
 			}
 		}
 	}
