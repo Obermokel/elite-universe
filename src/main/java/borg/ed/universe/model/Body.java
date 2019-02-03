@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import borg.ed.universe.constants.AtmosphereType;
 import borg.ed.universe.constants.BodyAtmosphere;
+import borg.ed.universe.constants.BodyComposition;
 import borg.ed.universe.constants.Element;
 import borg.ed.universe.constants.PlanetClass;
 import borg.ed.universe.constants.ReserveLevel;
@@ -79,13 +80,29 @@ public class Body implements Serializable, UniverseEntity {
 	private PlanetClass planetClass = null;
 
 	@Field(type = FieldType.Double)
-	private BigDecimal surfaceTemperature = null;
+	private BigDecimal surfaceTemperature = null; // K
 
 	@Field(type = FieldType.Double)
-	private BigDecimal age = null;
+	private BigDecimal age = null; // MY
 
 	@Field(type = FieldType.Double)
 	private BigDecimal solarMasses = null;
+
+	@Field(type = FieldType.Double)
+	private BigDecimal solarRadius = null;
+
+	private Boolean isMainStar = null;
+
+	private Boolean isScoopable = null;
+
+	@Field(type = FieldType.keyword)
+	private String spectralClass = null;
+
+	@Field(type = FieldType.keyword)
+	private String luminosity = null;
+
+	@Field(type = FieldType.Double)
+	private BigDecimal absoluteMagnitude = null;
 
 	//@Field(type = FieldType.String)
 	private VolcanismType volcanismType = null;
@@ -106,30 +123,30 @@ public class Body implements Serializable, UniverseEntity {
 	private BigDecimal gravity = null; // G
 
 	@Field(type = FieldType.Double)
-	private BigDecimal surfacePressure = null;
+	private BigDecimal surfacePressure = null; // Atmospheres
 
 	@Field(type = FieldType.Double)
-	private BigDecimal orbitalPeriod = null;
+	private BigDecimal orbitalPeriod = null; // d
 
 	@Field(type = FieldType.Double)
-	private BigDecimal semiMajorAxis = null;
+	private BigDecimal semiMajorAxis = null; // AU
 
 	@Field(type = FieldType.Double)
 	private BigDecimal orbitalEccentricity = null;
 
 	@Field(type = FieldType.Double)
-	private BigDecimal orbitalInclination = null;
+	private BigDecimal orbitalInclination = null; // °
 
 	@Field(type = FieldType.Double)
-	private BigDecimal argOfPeriapsis = null;
+	private BigDecimal argOfPeriapsis = null; // °
 
 	@Field(type = FieldType.Double)
-	private BigDecimal rotationalPeriod = null;
+	private BigDecimal rotationalPeriod = null; // d
 
 	private Boolean tidallyLocked = null;
 
 	@Field(type = FieldType.Double)
-	private BigDecimal axisTilt = null;
+	private BigDecimal axisTilt = null; // °
 
 	private Boolean isLandable = null;
 
@@ -141,6 +158,9 @@ public class Body implements Serializable, UniverseEntity {
 
 	@Field(type = FieldType.Nested)
 	private List<AtmosphereShare> atmosphereShares = null;
+
+	@Field(type = FieldType.Nested)
+	private List<BodyShare> bodyShares = null;
 
 	@Field(type = FieldType.Nested)
 	private List<MaterialShare> materialShares = null;
@@ -176,6 +196,20 @@ public class Body implements Serializable, UniverseEntity {
 
 		//@Field(type = FieldType.String)
 		private BodyAtmosphere name = null;
+
+		@Field(type = FieldType.Double)
+		private BigDecimal percent = null;
+
+	}
+
+	@Getter
+	@Setter
+	public static class BodyShare implements Serializable {
+
+		private static final long serialVersionUID = 407510254791512400L;
+
+		//@Field(type = FieldType.String)
+		private BodyComposition name = null;
 
 		@Field(type = FieldType.Double)
 		private BigDecimal percent = null;
@@ -232,8 +266,11 @@ public class Body implements Serializable, UniverseEntity {
 	}
 
 	public String generateId() {
-		return PasswordUtil.md5(
-				String.format(Locale.US, "%.4f:%.4f:%.4f|%s", this.getCoord().getX(), this.getCoord().getY(), this.getCoord().getZ(), this.getName().replace(this.getStarSystemName(), "")));
+		return generateId(this.getCoord(), this.getName(), this.getStarSystemName());
+	}
+
+	public static String generateId(Coord coord, String bodyName, String systemName) {
+		return PasswordUtil.md5(String.format(Locale.US, "%.4f:%.4f:%.4f|%s", coord.getX(), coord.getY(), coord.getZ(), bodyName.replace(systemName, "").trim()));
 	}
 
 }
