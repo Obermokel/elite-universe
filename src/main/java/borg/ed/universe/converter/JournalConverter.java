@@ -27,6 +27,8 @@ import borg.ed.universe.constants.TerraformingState;
 import borg.ed.universe.constants.VolcanismType;
 import borg.ed.universe.journal.events.AbstractSystemJournalEvent;
 import borg.ed.universe.journal.events.AbstractSystemJournalEvent.Faction;
+import borg.ed.universe.journal.events.FSDJumpEvent;
+import borg.ed.universe.journal.events.LocationEvent;
 import borg.ed.universe.journal.events.ScanEvent;
 import borg.ed.universe.journal.events.ScanEvent.Share;
 import borg.ed.universe.model.Body;
@@ -63,7 +65,11 @@ public class JournalConverter {
 		result.setPowers(Power.fromJournalValue(event.getPowers()));
 		result.setPowerState(PowerState.fromJournalValue(event.getPowerplayState()));
 		result.setNeedsPermit(null); // Manually edited
-		result.setControllingMinorFactionName(event.getSystemFaction());
+		if (event instanceof FSDJumpEvent) {
+			result.setControllingMinorFactionName(((FSDJumpEvent) event).getSystemFaction());
+		} else if (event instanceof LocationEvent) {
+			result.setControllingMinorFactionName(((LocationEvent) event).getSystemFaction());
+		}
 		result.setMinorFactionPresences(this.factionsToFactionPresences(event.getFactions()));
 		result.setState(this.lookupState(result.getMinorFactionPresences(), result.getControllingMinorFactionName()));
 

@@ -17,14 +17,16 @@ import lombok.Setter;
 @Setter
 public class FSDJumpEvent extends AbstractSystemJournalEvent {
 
-    private static final long serialVersionUID = -5264764860239254112L;
+	private static final long serialVersionUID = -5264764860239254112L;
 
-    static final Logger logger = LoggerFactory.getLogger(FSDJumpEvent.class);
+	static final Logger logger = LoggerFactory.getLogger(FSDJumpEvent.class);
 
-    private BigDecimal JumpDist = null;
+	private BigDecimal JumpDist = null;
 
-    private BigDecimal FuelUsed = null;
+	private BigDecimal FuelUsed = null;
 
-    private BigDecimal FuelLevel = null;
+	private BigDecimal FuelLevel = null;
+
+	private String SystemFaction = null;
 
 }
