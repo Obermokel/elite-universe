@@ -157,7 +157,7 @@ public class StarSystem implements Serializable, UniverseEntity {
 	}
 
 	public static String generateId(Coord coord) {
-		return PasswordUtil.md5(String.format(Locale.US, "%.4f:%.4f:%.4f", coord.getX(), coord.getY(), coord.getZ()));
+		return PasswordUtil.md5(String.format(Locale.US, "%.2f:%.2f:%.2f", coord.getX(), coord.getY(), coord.getZ()));
 	}
 
 	public float distanceTo(StarSystem other) {

@@ -270,7 +270,7 @@ public class Body implements Serializable, UniverseEntity {
 	}
 
 	public static String generateId(Coord coord, String bodyName, String systemName) {
-		return PasswordUtil.md5(String.format(Locale.US, "%.4f:%.4f:%.4f|%s", coord.getX(), coord.getY(), coord.getZ(), bodyName.replace(systemName, "").trim()));
+		return PasswordUtil.md5(String.format(Locale.US, "%.2f:%.2f:%.2f|%s", coord.getX(), coord.getY(), coord.getZ(), bodyName.replace(systemName, "").trim()));
 	}
 
 }
