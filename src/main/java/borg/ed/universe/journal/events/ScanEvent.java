@@ -1,16 +1,16 @@
 package borg.ed.universe.journal.events;
 
-import borg.ed.universe.data.Coord;
-import lombok.Getter;
-import lombok.Setter;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.List;
+import borg.ed.universe.data.Coord;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * ScanEvent
@@ -21,107 +21,115 @@ import java.util.List;
 @Setter
 public class ScanEvent extends AbstractJournalEvent {
 
-    private static final long serialVersionUID = -7473062323064854951L;
+	private static final long serialVersionUID = -7473062323064854951L;
 
-    static final Logger logger = LoggerFactory.getLogger(ScanEvent.class);
+	static final Logger logger = LoggerFactory.getLogger(ScanEvent.class);
 
-    private String StarSystem = null;
+	public static final String SCAN_TYPE_BASIC = "Basic";
+	public static final String SCAN_TYPE_DETAILED = "Detailed";
+	public static final String SCAN_TYPE_NAV_BEACON = "NavBeacon";
+	public static final String SCAN_TYPE_NAV_BEACON_DETAIL = "NavBeaconDetail";
+	public static final String SCAN_TYPE_AUTO_SCAN = "AutoScan";
 
-    private Coord StarPos = null;
+	private String ScanType = null;
 
-    private String BodyName = null;
+	private String StarSystem = null;
 
-    private BigDecimal DistanceFromArrivalLS = null;
+	private Coord StarPos = null;
 
-    private String StarType = null;
+	private String BodyName = null;
 
-    private String PlanetClass = null;
+	private BigDecimal DistanceFromArrivalLS = null;
 
-    private BigDecimal SurfaceTemperature = null;
+	private String StarType = null;
 
-    private BigDecimal Age_MY = null;
+	private String PlanetClass = null;
 
-    private BigDecimal StellarMass = null;
+	private BigDecimal SurfaceTemperature = null;
 
-    private String Volcanism = null;
+	private BigDecimal Age_MY = null;
 
-    private String Atmosphere = null;
+	private BigDecimal StellarMass = null;
 
-    private String TerraformState = null;
+	private String Volcanism = null;
 
-    private BigDecimal MassEM = null;
+	private String Atmosphere = null;
 
-    private BigDecimal Radius = null;
+	private String TerraformState = null;
 
-    private BigDecimal SurfaceGravity = null;
+	private BigDecimal MassEM = null;
 
-    private BigDecimal SurfacePressure = null;
+	private BigDecimal Radius = null;
 
-    private BigDecimal OrbitalPeriod = null;
+	private BigDecimal SurfaceGravity = null;
 
-    private BigDecimal SemiMajorAxis = null;
+	private BigDecimal SurfacePressure = null;
 
-    private BigDecimal Eccentricity = null;
+	private BigDecimal OrbitalPeriod = null;
 
-    private BigDecimal OrbitalInclination = null;
+	private BigDecimal SemiMajorAxis = null;
 
-    private BigDecimal Periapsis = null;
+	private BigDecimal Eccentricity = null;
 
-    private BigDecimal RotationPeriod = null;
+	private BigDecimal OrbitalInclination = null;
 
-    private Boolean TidalLock = null;
+	private BigDecimal Periapsis = null;
 
-    private BigDecimal AxialTilt = null;
+	private BigDecimal RotationPeriod = null;
 
-    private Boolean Landable = null;
+	private Boolean TidalLock = null;
 
-    private String ReserveLevel = null;
+	private BigDecimal AxialTilt = null;
 
-    private List<ScanEvent.Ring> Rings = null;
+	private Boolean Landable = null;
 
-    private List<ScanEvent.Share> AtmosphereComposition = null;
+	private String ReserveLevel = null;
 
-    private List<ScanEvent.Share> Materials = null;
+	private List<ScanEvent.Ring> Rings = null;
 
-    @Getter
-    @Setter
-    public static class Ring implements Serializable {
+	private List<ScanEvent.Share> AtmosphereComposition = null;
 
-        private static final long serialVersionUID = 6416215918361818244L;
+	private List<ScanEvent.Share> Materials = null;
 
-        private String Name = null;
+	@Getter
+	@Setter
+	public static class Ring implements Serializable {
 
-        private String RingClass = null;
+		private static final long serialVersionUID = 6416215918361818244L;
 
-        private BigDecimal MassMT = null;
+		private String Name = null;
 
-        private BigDecimal InnerRad = null;
+		private String RingClass = null;
 
-        private BigDecimal OuterRad = null;
+		private BigDecimal MassMT = null;
 
-    }
+		private BigDecimal InnerRad = null;
 
-    @Getter
-    @Setter
-    public static class Share implements Serializable {
+		private BigDecimal OuterRad = null;
 
-        private static final long serialVersionUID = -6615336876011953688L;
+	}
 
-        private String Name = null;
+	@Getter
+	@Setter
+	public static class Share implements Serializable {
 
-        private BigDecimal Percent = null;
+		private static final long serialVersionUID = -6615336876011953688L;
 
-    }
+		private String Name = null;
 
-    @Override
-    public String toString() {
-        if(StringUtils.isNotEmpty(this.StarType)) {
-            return super.toString() + " (Body: "+this.BodyName+" | "+this.StarType+")";
-        } else if(StringUtils.isNotEmpty(this.PlanetClass)) {
-            return super.toString() + " (Body: "+this.BodyName+" | "+this.PlanetClass+")";
-        } else {
-            return super.toString() + " (Body: "+this.BodyName+")";
-        }
-    }
+		private BigDecimal Percent = null;
+
+	}
+
+	@Override
+	public String toString() {
+		if (StringUtils.isNotEmpty(this.StarType)) {
+			return super.toString() + " (Body: " + this.BodyName + " | " + this.StarType + ")";
+		} else if (StringUtils.isNotEmpty(this.PlanetClass)) {
+			return super.toString() + " (Body: " + this.BodyName + " | " + this.PlanetClass + ")";
+		} else {
+			return super.toString() + " (Body: " + this.BodyName + ")";
+		}
+	}
 
 }
