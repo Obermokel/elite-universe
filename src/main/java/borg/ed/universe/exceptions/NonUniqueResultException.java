@@ -9,18 +9,24 @@ import java.util.List;
  */
 public class NonUniqueResultException extends Exception {
 
-    private static final long serialVersionUID = -8673589451769027124L;
+	private static final long serialVersionUID = -8673589451769027124L;
 
-    private final List<String> others;
+	private final List<String> otherIds;
+	private final List<String> others;
 
-    public NonUniqueResultException(String message, List<String> others) {
-        super(message);
+	public NonUniqueResultException(String message, List<String> otherIds, List<String> others) {
+		super(message);
 
-        this.others = others;
-    }
+		this.otherIds = otherIds;
+		this.others = others;
+	}
 
-    public List<String> getOthers() {
-        return this.others;
-    }
+	public List<String> getOtherIds() {
+		return otherIds;
+	}
+
+	public List<String> getOthers() {
+		return this.others;
+	}
 
 }

@@ -64,7 +64,7 @@ public class UniverseServiceImpl implements UniverseService {
 			return null;
 		} else if (page.getTotalElements() > 1) {
 			throw new NonUniqueResultException("Found " + page.getTotalElements() + " systems for '" + name + "'",
-					page.getContent().stream().map(StarSystem::toString).collect(Collectors.toList()));
+					page.getContent().stream().map(StarSystem::getId).collect(Collectors.toList()), page.getContent().stream().map(StarSystem::toString).collect(Collectors.toList()));
 		} else {
 			return page.getContent().get(0);
 		}
@@ -171,7 +171,7 @@ public class UniverseServiceImpl implements UniverseService {
 			return null;
 		} else if (page.getTotalElements() > 1) {
 			throw new NonUniqueResultException("Found " + page.getTotalElements() + " minor factions for '" + name + "'",
-					page.getContent().stream().map(MinorFaction::toString).collect(Collectors.toList()));
+					page.getContent().stream().map(MinorFaction::getId).collect(Collectors.toList()), page.getContent().stream().map(MinorFaction::toString).collect(Collectors.toList()));
 		} else {
 			return page.getContent().get(0);
 		}
@@ -184,7 +184,8 @@ public class UniverseServiceImpl implements UniverseService {
 		if (page.getTotalElements() < 1) {
 			return null;
 		} else if (page.getTotalElements() > 1) {
-			throw new NonUniqueResultException("Found " + page.getTotalElements() + " bodies for '" + name + "'", page.getContent().stream().map(Body::toString).collect(Collectors.toList()));
+			throw new NonUniqueResultException("Found " + page.getTotalElements() + " bodies for '" + name + "'", page.getContent().stream().map(Body::getId).collect(Collectors.toList()),
+					page.getContent().stream().map(Body::toString).collect(Collectors.toList()));
 		} else {
 			return page.getContent().get(0);
 		}
