@@ -55,50 +55,49 @@ public class EddnElasticUpdater implements EddnUpdateListener {
 		} else if (event.getTimestamp().isAfter(nowPlusTenMinutes)) {
 			logger.warn("Received data from the future: " + event.getTimestamp() + " > " + nowPlusTenMinutes + ", uploaderID=" + uploaderID);
 		} else if (event instanceof AbstractSystemJournalEvent) {
-			this.handleAbstractSystemJournalEvent(gatewayTimestamp, uploaderID, (AbstractSystemJournalEvent) event);
+			this.handleAbstractSystemJournalEvent((AbstractSystemJournalEvent) event);
 		} else if (event instanceof ScanEvent) {
-			this.handleScan(gatewayTimestamp, uploaderID, (ScanEvent) event);
+			this.handleScan((ScanEvent) event);
 		} else {
 			//logger.warn("Unknown journal event: " + event);
 		}
 	}
 
-	void handleAbstractSystemJournalEvent(ZonedDateTime gatewayTimestamp, String uploaderID, AbstractSystemJournalEvent event) {
+	void handleAbstractSystemJournalEvent(AbstractSystemJournalEvent event) {
 		try {
-			this.readStarSystem(uploaderID, event);
-
-			if (this.isUpdateMinorFactions()) {
-				this.readMinorFactions(uploaderID, event);
-			}
+			this.updateStarSystem(event);
+			this.updateMinorFactions(event);
 		} catch (IllegalArgumentException e) {
 			logger.error(e.getMessage());
 		}
 	}
 
-	private void readStarSystem(String uploaderID, AbstractSystemJournalEvent event) {
+	private void updateStarSystem(AbstractSystemJournalEvent event) {
 		StarSystem currentStarSystem = this.journalConverter.abstractSystemJournalEventToStarSystem(event);
 		this.starSystemRepository.index(currentStarSystem);
 	}
 
-	private void readMinorFactions(String uploaderID, AbstractSystemJournalEvent event) {
-		List<MinorFaction> currentMinorFactions = this.journalConverter.abstractSystemJournalEventToMinorFactions(event);
+	private void updateMinorFactions(AbstractSystemJournalEvent event) {
+		if (this.isUpdateMinorFactions()) {
+			List<MinorFaction> currentMinorFactions = this.journalConverter.abstractSystemJournalEventToMinorFactions(event);
 
-		if (currentMinorFactions != null) {
-			for (MinorFaction currentMinorFaction : currentMinorFactions) {
-				this.minorFactionRepository.index(currentMinorFaction);
+			if (currentMinorFactions != null) {
+				for (MinorFaction currentMinorFaction : currentMinorFactions) {
+					this.minorFactionRepository.index(currentMinorFaction);
+				}
 			}
 		}
 	}
 
-	void handleScan(ZonedDateTime gatewayTimestamp, String uploaderID, ScanEvent event) {
+	void handleScan(ScanEvent event) {
 		try {
-			this.readBody(uploaderID, event);
+			this.updateBody(event);
 		} catch (IllegalArgumentException e) {
 			logger.error(e.getMessage());
 		}
 	}
 
-	private void readBody(String uploaderID, ScanEvent event) {
+	private void updateBody(ScanEvent event) {
 		// Only update with detailed scan events
 		if (event.isDetailedScan()) {
 			Body currentBody = this.journalConverter.scanEventToBody(event);
