@@ -34,11 +34,18 @@ public abstract class AbstractSystemJournalEvent extends AbstractJournalEvent {
 
 	private List<AbstractSystemJournalEvent.Faction> Factions = null;
 
-	private String FactionState = null;
-
 	@Getter
 	@Setter
 	public static class Faction implements Serializable {
+
+		public Faction() {
+			// Default constructor
+		}
+
+		public Faction(String name, String factionState) {
+			this.setName(name);
+			this.setFactionState(factionState);
+		}
 
 		private static final long serialVersionUID = 9069177073281049819L;
 

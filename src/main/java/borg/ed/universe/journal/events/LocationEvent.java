@@ -29,6 +29,6 @@ public class LocationEvent extends AbstractSystemJournalEvent {
 
 	private String BodyType = null;
 
-	private String SystemFaction = null;
+	private Faction SystemFaction = null;
 
 }

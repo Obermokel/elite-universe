@@ -65,10 +65,10 @@ public class JournalConverter {
 		result.setPowers(Power.fromJournalValue(event.getPowers()));
 		result.setPowerState(PowerState.fromJournalValue(event.getPowerplayState()));
 		result.setNeedsPermit(null); // Manually edited
-		if (event instanceof FSDJumpEvent) {
-			result.setControllingMinorFactionName(((FSDJumpEvent) event).getSystemFaction());
-		} else if (event instanceof LocationEvent) {
-			result.setControllingMinorFactionName(((LocationEvent) event).getSystemFaction());
+		if (event instanceof FSDJumpEvent && ((FSDJumpEvent) event).getSystemFaction() != null) {
+			result.setControllingMinorFactionName(((FSDJumpEvent) event).getSystemFaction().getName());
+		} else if (event instanceof LocationEvent && ((LocationEvent) event).getSystemFaction() != null) {
+			result.setControllingMinorFactionName(((LocationEvent) event).getSystemFaction().getName());
 		}
 		result.setMinorFactionPresences(this.factionsToFactionPresences(event.getFactions()));
 		result.setState(this.lookupState(result.getMinorFactionPresences(), result.getControllingMinorFactionName()));

@@ -1,17 +1,18 @@
 package borg.ed.universe.journal.events;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import borg.ed.universe.data.Coord;
 import borg.ed.universe.journal.events.ScanEvent.Share;
 import borg.ed.universe.util.MiscUtil;
 import lombok.Getter;
 import lombok.Setter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * ScanEventOld
@@ -25,115 +26,117 @@ import java.util.Map;
 @Deprecated
 public class ScanEvent_v1 extends AbstractJournalEvent {
 
-    private static final long serialVersionUID = 6435327132176032477L;
+	private static final long serialVersionUID = 6435327132176032477L;
 
-    static final Logger logger = LoggerFactory.getLogger(ScanEvent_v1.class);
+	static final Logger logger = LoggerFactory.getLogger(ScanEvent_v1.class);
 
-    private String StarSystem = null;
+	private String StarSystem = null;
 
-    private Coord StarPos = null;
+	private Coord StarPos = null;
 
-    private String BodyName = null;
+	private String BodyName = null;
 
-    private BigDecimal DistanceFromArrivalLS = null;
+	private BigDecimal DistanceFromArrivalLS = null;
 
-    private String StarType = null;
+	private String StarType = null;
 
-    private String PlanetClass = null;
+	private String PlanetClass = null;
 
-    private BigDecimal SurfaceTemperature = null;
+	private BigDecimal SurfaceTemperature = null;
 
-    private BigDecimal Age_MY = null;
+	private BigDecimal Age_MY = null;
 
-    private BigDecimal StellarMass = null;
+	private BigDecimal StellarMass = null;
 
-    private String Volcanism = null;
+	private String Volcanism = null;
 
-    private String Atmosphere = null;
+	private String Atmosphere = null;
 
-    private String TerraformState = null;
+	private String TerraformState = null;
 
-    private BigDecimal MassEM = null;
+	private BigDecimal MassEM = null;
 
-    private BigDecimal Radius = null;
+	private BigDecimal Radius = null;
 
-    private BigDecimal SurfaceGravity = null;
+	private BigDecimal SurfaceGravity = null;
 
-    private BigDecimal SurfacePressure = null;
+	private BigDecimal SurfacePressure = null;
 
-    private BigDecimal OrbitalPeriod = null;
+	private BigDecimal OrbitalPeriod = null;
 
-    private BigDecimal SemiMajorAxis = null;
+	private BigDecimal SemiMajorAxis = null;
 
-    private BigDecimal Eccentricity = null;
+	private BigDecimal Eccentricity = null;
 
-    private BigDecimal OrbitalInclination = null;
+	private BigDecimal OrbitalInclination = null;
 
-    private BigDecimal Periapsis = null;
+	private BigDecimal Periapsis = null;
 
-    private BigDecimal RotationPeriod = null;
+	private BigDecimal RotationPeriod = null;
 
-    private Boolean TidalLock = null;
+	private Boolean TidalLock = null;
 
-    private BigDecimal AxialTilt = null;
+	private BigDecimal AxialTilt = null;
 
-    private Boolean Landable = null;
+	private Boolean Landable = null;
 
-    private String ReserveLevel = null;
+	private String ReserveLevel = null;
 
-    private List<ScanEvent.Ring> Rings = null;
+	private List<ScanEvent.Ring> Rings = null;
 
-    private List<ScanEvent.Share> AtmosphereComposition = null;
+	private List<ScanEvent.Share> AtmosphereComposition = null;
 
-    private Map<String, Number> Materials = null;
+	private Map<String, Number> Materials = null;
 
-    public ScanEvent toNewScanEvent() {
-        ScanEvent result = new ScanEvent();
-        result.setStarSystem(this.getStarSystem());
-        result.setStarPos(this.getStarPos());
-        result.setBodyName(this.getBodyName());
-        result.setDistanceFromArrivalLS(this.getDistanceFromArrivalLS());
-        result.setStarType(this.getStarType());
-        result.setPlanetClass(this.getPlanetClass());
-        result.setSurfaceTemperature(this.getSurfaceTemperature());
-        result.setAge_MY(this.getAge_MY());
-        result.setStellarMass(this.getStellarMass());
-        result.setVolcanism(this.getVolcanism());
-        result.setAtmosphere(this.getAtmosphere());
-        result.setTerraformState(this.getTerraformState());
-        result.setMassEM(this.getMassEM());
-        result.setRadius(this.getRadius());
-        result.setSurfaceGravity(this.getSurfaceGravity());
-        result.setSurfacePressure(this.getSurfacePressure());
-        result.setOrbitalPeriod(this.getOrbitalPeriod());
-        result.setSemiMajorAxis(this.getSemiMajorAxis());
-        result.setEccentricity(this.getEccentricity());
-        result.setOrbitalInclination(this.getOrbitalInclination());
-        result.setPeriapsis(this.getPeriapsis());
-        result.setRotationPeriod(this.getRotationPeriod());
-        result.setTidalLock(this.getTidalLock());
-        result.setAxialTilt(this.getAxialTilt());
-        result.setLandable(this.getLandable());
-        result.setReserveLevel(this.getReserveLevel());
-        result.setRings(this.getRings());
-        result.setAtmosphereComposition(this.getAtmosphereComposition());
-        result.setMaterials(this.toNewMaterials(this.getMaterials()));
-        return result;
-    }
+	public ScanEvent toNewScanEvent() {
+		ScanEvent result = new ScanEvent();
+		result.setTimestamp(this.getTimestamp());
+		result.setEvent(this.getEvent());
+		result.setStarSystem(this.getStarSystem());
+		result.setStarPos(this.getStarPos());
+		result.setBodyName(this.getBodyName());
+		result.setDistanceFromArrivalLS(this.getDistanceFromArrivalLS());
+		result.setStarType(this.getStarType());
+		result.setPlanetClass(this.getPlanetClass());
+		result.setSurfaceTemperature(this.getSurfaceTemperature());
+		result.setAge_MY(this.getAge_MY());
+		result.setStellarMass(this.getStellarMass());
+		result.setVolcanism(this.getVolcanism());
+		result.setAtmosphere(this.getAtmosphere());
+		result.setTerraformState(this.getTerraformState());
+		result.setMassEM(this.getMassEM());
+		result.setRadius(this.getRadius());
+		result.setSurfaceGravity(this.getSurfaceGravity());
+		result.setSurfacePressure(this.getSurfacePressure());
+		result.setOrbitalPeriod(this.getOrbitalPeriod());
+		result.setSemiMajorAxis(this.getSemiMajorAxis());
+		result.setEccentricity(this.getEccentricity());
+		result.setOrbitalInclination(this.getOrbitalInclination());
+		result.setPeriapsis(this.getPeriapsis());
+		result.setRotationPeriod(this.getRotationPeriod());
+		result.setTidalLock(this.getTidalLock());
+		result.setAxialTilt(this.getAxialTilt());
+		result.setLandable(this.getLandable());
+		result.setReserveLevel(this.getReserveLevel());
+		result.setRings(this.getRings());
+		result.setAtmosphereComposition(this.getAtmosphereComposition());
+		result.setMaterials(this.toNewMaterials(this.getMaterials()));
+		return result;
+	}
 
-    private List<Share> toNewMaterials(Map<String, Number> oldMaterials) {
-        if(oldMaterials == null || oldMaterials.isEmpty()) {
-        return null;
-        } else {
-            List<Share> result = new ArrayList<>(oldMaterials.size());
-            for(String oldMaterial : oldMaterials.keySet()) {
-                Share share = new Share();
-                share.setName(oldMaterial);
-                share.setPercent(MiscUtil.getAsBigDecimal(oldMaterials.get(oldMaterial)));
-                result.add(share);
-            }
-            return result;
-        }
-    }
+	private List<Share> toNewMaterials(Map<String, Number> oldMaterials) {
+		if (oldMaterials == null || oldMaterials.isEmpty()) {
+			return null;
+		} else {
+			List<Share> result = new ArrayList<>(oldMaterials.size());
+			for (String oldMaterial : oldMaterials.keySet()) {
+				Share share = new Share();
+				share.setName(oldMaterial);
+				share.setPercent(MiscUtil.getAsBigDecimal(oldMaterials.get(oldMaterial)));
+				result.add(share);
+			}
+			return result;
+		}
+	}
 
 }

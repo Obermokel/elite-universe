@@ -27,6 +27,6 @@ public class FSDJumpEvent extends AbstractSystemJournalEvent {
 
 	private BigDecimal FuelLevel = null;
 
-	private String SystemFaction = null;
+	private Faction SystemFaction = null;
 
 }

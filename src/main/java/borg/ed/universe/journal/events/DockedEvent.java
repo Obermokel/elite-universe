@@ -1,12 +1,14 @@
 package borg.ed.universe.journal.events;
 
-import borg.ed.universe.data.Coord;
-import lombok.Getter;
-import lombok.Setter;
+import java.math.BigDecimal;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigDecimal;
+import borg.ed.universe.data.Coord;
+import borg.ed.universe.journal.events.AbstractSystemJournalEvent.Faction;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * DockedEvent
@@ -17,28 +19,26 @@ import java.math.BigDecimal;
 @Setter
 public class DockedEvent extends AbstractJournalEvent {
 
-    private static final long serialVersionUID = -4588032241681280366L;
+	private static final long serialVersionUID = -4588032241681280366L;
 
-    static final Logger logger = LoggerFactory.getLogger(DockedEvent.class);
+	static final Logger logger = LoggerFactory.getLogger(DockedEvent.class);
 
-    private String StationName = null;
+	private String StationName = null;
 
-    private String StationType = null;
+	private String StationType = null;
 
-    private String StarSystem = null;
+	private String StarSystem = null;
 
-    private Coord StarPos = null;
+	private Coord StarPos = null;
 
-    private String StationFaction = null;
+	private Faction StationFaction = null;
 
-    private String FactionState = null;
+	private String StationGovernment = null;
 
-    private String StationGovernment = null;
+	private String StationAllegiance = null;
 
-    private String StationAllegiance = null;
+	private String StationEconomy = null;
 
-    private String StationEconomy = null;
-
-    private BigDecimal DistFromStarLS = null;
+	private BigDecimal DistFromStarLS = null;
 
 }
