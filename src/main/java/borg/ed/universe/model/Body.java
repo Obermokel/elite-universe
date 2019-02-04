@@ -71,7 +71,7 @@ public class Body implements Serializable, UniverseEntity {
 	private String name = null;
 
 	@Field(type = FieldType.Double)
-	private BigDecimal distanceToArrival = null;
+	private BigDecimal distanceToArrivalLs = null;
 
 	//@Field(type = FieldType.String)
 	private StarClass starClass = null;
@@ -80,10 +80,10 @@ public class Body implements Serializable, UniverseEntity {
 	private PlanetClass planetClass = null;
 
 	@Field(type = FieldType.Double)
-	private BigDecimal surfaceTemperature = null; // K
+	private BigDecimal surfaceTemperatureK = null; // K
 
 	@Field(type = FieldType.Double)
-	private BigDecimal age = null; // MY
+	private BigDecimal ageMY = null; // MY
 
 	@Field(type = FieldType.Double)
 	private BigDecimal solarMasses = null;
@@ -117,10 +117,10 @@ public class Body implements Serializable, UniverseEntity {
 	private BigDecimal earthMasses = null;
 
 	@Field(type = FieldType.Double)
-	private BigDecimal radius = null; // km
+	private BigDecimal radiusKm = null; // km
 
 	@Field(type = FieldType.Double)
-	private BigDecimal gravity = null; // G
+	private BigDecimal gravityG = null; // G
 
 	@Field(type = FieldType.Double)
 	private BigDecimal surfacePressure = null; // Atmospheres
@@ -181,10 +181,10 @@ public class Body implements Serializable, UniverseEntity {
 		private BigDecimal massMT = null;
 
 		@Field(type = FieldType.Double)
-		private BigDecimal innerRadius = null; // km
+		private BigDecimal innerRadiusKm = null; // km
 
 		@Field(type = FieldType.Double)
-		private BigDecimal outerRadius = null; // km
+		private BigDecimal outerRadiusKm = null; // km
 
 	}
 

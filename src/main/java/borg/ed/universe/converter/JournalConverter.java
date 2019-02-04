@@ -149,18 +149,18 @@ public class JournalConverter {
 		result.setStarSystemId(StarSystem.generateId(event.getStarPos()));
 		result.setStarSystemName(event.getStarSystem());
 		result.setName(event.getBodyName());
-		result.setDistanceToArrival(event.getDistanceFromArrivalLS());
+		result.setDistanceToArrivalLs(event.getDistanceFromArrivalLS());
 		result.setStarClass(StarClass.fromJournalValue(event.getStarType()));
 		result.setPlanetClass(PlanetClass.fromJournalValue(event.getPlanetClass()));
-		result.setSurfaceTemperature(event.getSurfaceTemperature());
-		result.setAge(event.getAge_MY());
+		result.setSurfaceTemperatureK(event.getSurfaceTemperature());
+		result.setAgeMY(event.getAge_MY());
 		result.setSolarMasses(event.getStellarMass()); // TODO Convert
 		result.setVolcanismType(VolcanismType.fromJournalValue(event.getVolcanism()));
 		result.setAtmosphereType(AtmosphereType.fromJournalValue(event.getAtmosphere()));
 		result.setTerraformingState(TerraformingState.fromJournalValue(event.getTerraformState()));
 		result.setEarthMasses(event.getMassEM()); // TODO Convert
-		result.setRadius(event.getRadius() == null ? null : event.getRadius().divide(new BigDecimal(1000), 0, BigDecimal.ROUND_HALF_UP)); // m -> km
-		result.setGravity(event.getSurfaceGravity() == null ? null : event.getSurfaceGravity().divide(new BigDecimal(9.81), 2, BigDecimal.ROUND_HALF_UP)); // m/s² -> G
+		result.setRadiusKm(event.getRadius() == null ? null : event.getRadius().divide(new BigDecimal(1000), 0, BigDecimal.ROUND_HALF_UP)); // m -> km
+		result.setGravityG(event.getSurfaceGravity() == null ? null : event.getSurfaceGravity().divide(new BigDecimal(9.81), 2, BigDecimal.ROUND_HALF_UP)); // m/s² -> G
 		result.setSurfacePressure(event.getSurfacePressure());
 		result.setOrbitalPeriod(event.getOrbitalPeriod());
 		result.setSemiMajorAxis(event.getSemiMajorAxis());
@@ -191,8 +191,8 @@ public class JournalConverter {
 				ring.setName(ringData.getName());
 				ring.setRingClass(RingClass.fromJournalValue(ringData.getRingClass()));
 				ring.setMassMT(ringData.getMassMT());
-				ring.setInnerRadius(ringData.getInnerRad());
-				ring.setOuterRadius(ringData.getOuterRad());
+				ring.setInnerRadiusKm(ringData.getInnerRad());
+				ring.setOuterRadiusKm(ringData.getOuterRad());
 				result.add(ring);
 			}
 			return result;
