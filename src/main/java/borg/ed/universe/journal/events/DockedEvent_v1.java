@@ -33,6 +33,8 @@ public class DockedEvent_v1 extends AbstractJournalEvent {
 
 	private Coord StarPos = null;
 
+	private BigDecimal MarketID = null;
+
 	private String StationFaction = null;
 
 	private String FactionState = null;
@@ -53,6 +55,7 @@ public class DockedEvent_v1 extends AbstractJournalEvent {
 		result.setStationType(this.getStationType());
 		result.setStarSystem(this.getStarSystem());
 		result.setStarPos(this.getStarPos());
+		result.setMarketID(this.getMarketID());
 		if (StringUtils.isNotEmpty(this.getStationFaction())) {
 			result.setStationFaction(new Faction(this.getStationFaction(), this.getFactionState()));
 		}

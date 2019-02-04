@@ -81,7 +81,7 @@ public class EddnGoogleBgsUpdater implements EddnUpdateListener {
 						}
 						String existingValue = tblInfluence.getCellValue(rowIdx, colIdx);
 						if (StringUtils.isNotEmpty(existingValue) && !existingValue.equals(influence)) {
-							logger.warn("Overwriting " + existingValue + " with " + influence + " for " + factionName + " (" + date + ")");
+							logger.debug("Overwriting " + existingValue + " with " + influence + " for " + factionName + " (" + date + ")");
 						}
 						tblInfluence.setCellValue(rowIdx, colIdx, influence);
 					}
@@ -100,7 +100,7 @@ public class EddnGoogleBgsUpdater implements EddnUpdateListener {
 						}
 						String existingValue = tblState.getCellValue(rowIdx, colIdx);
 						if (StringUtils.isNotEmpty(existingValue) && !existingValue.equals(state)) {
-							logger.warn("Overwriting " + existingValue + " with " + state + " for " + factionName + " (" + date + ")");
+							logger.debug("Overwriting " + existingValue + " with " + state + " for " + factionName + " (" + date + ")");
 						}
 						tblState.setCellValue(rowIdx, colIdx, state);
 					}

@@ -31,6 +31,8 @@ public class DockedEvent extends AbstractJournalEvent {
 
 	private Coord StarPos = null;
 
+	private BigDecimal MarketID = null;
+
 	private Faction StationFaction = null;
 
 	private String StationGovernment = null;

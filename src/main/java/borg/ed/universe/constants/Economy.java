@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public enum Economy {
 
-	NONE, AGRICULTURAL, COLONY, EXTRACTION, HIGH_TECH, INDUSTRIAL, MILITARY, REFINERY, SERVICE, TERRAFORMING, TOURISM;
+	NONE, AGRICULTURAL, COLONY, DAMAGED, EXTRACTION, HIGH_TECH, INDUSTRIAL, MILITARY, PRISON, REFINERY, REPAIR, RESCUE, SERVICE, TERRAFORMING, TOURISM;
 
 	public static Economy fromJournalValue(String value) {
 		if (StringUtils.isEmpty(value)) {
@@ -25,6 +25,9 @@ public enum Economy {
 			case "$economy_Colony;":
 			case "Colony":
 				return Economy.COLONY;
+			case "$economy_Damaged;":
+			case "Damaged":
+				return Economy.DAMAGED;
 			case "$economy_Extraction;":
 			case "Extraction":
 				return Economy.EXTRACTION;
@@ -37,9 +40,18 @@ public enum Economy {
 			case "$economy_Military;":
 			case "Military":
 				return Economy.MILITARY;
+			case "$economy_Prison;":
+			case "Prison":
+				return Economy.PRISON;
 			case "$economy_Refinery;":
 			case "Refinery":
 				return Economy.REFINERY;
+			case "$economy_Repair;":
+			case "Repair":
+				return Economy.REPAIR;
+			case "$economy_Rescue;":
+			case "Rescue":
+				return Economy.RESCUE;
 			case "$economy_Service;":
 			case "Service":
 				return Economy.SERVICE;

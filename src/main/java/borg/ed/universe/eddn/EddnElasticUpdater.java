@@ -1,7 +1,9 @@
 package borg.ed.universe.eddn;
 
+import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -9,15 +11,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import borg.ed.universe.converter.JournalConverter;
+import borg.ed.universe.exceptions.NonUniqueResultException;
 import borg.ed.universe.journal.events.AbstractJournalEvent;
 import borg.ed.universe.journal.events.AbstractSystemJournalEvent;
+import borg.ed.universe.journal.events.DockedEvent;
 import borg.ed.universe.journal.events.ScanEvent;
 import borg.ed.universe.model.Body;
 import borg.ed.universe.model.MinorFaction;
 import borg.ed.universe.model.StarSystem;
+import borg.ed.universe.model.Station;
 import borg.ed.universe.repository.BodyRepository;
 import borg.ed.universe.repository.MinorFactionRepository;
 import borg.ed.universe.repository.StarSystemRepository;
+import borg.ed.universe.repository.StationRepository;
 import borg.ed.universe.service.UniverseService;
 
 /**
@@ -44,6 +50,9 @@ public class EddnElasticUpdater implements EddnUpdateListener {
 	@Autowired
 	private MinorFactionRepository minorFactionRepository = null;
 
+	@Autowired
+	private StationRepository stationRepository = null;
+
 	private boolean updateMinorFactions = true;
 
 	@Override
@@ -58,8 +67,10 @@ public class EddnElasticUpdater implements EddnUpdateListener {
 			this.handleAbstractSystemJournalEvent((AbstractSystemJournalEvent) event);
 		} else if (event instanceof ScanEvent) {
 			this.handleScan((ScanEvent) event);
+		} else if (event instanceof DockedEvent) {
+			this.handleDocked((DockedEvent) event);
 		} else {
-			//logger.warn("Unknown journal event: " + event);
+			logger.warn("Unknown journal event: " + event);
 		}
 	}
 
@@ -73,17 +84,26 @@ public class EddnElasticUpdater implements EddnUpdateListener {
 	}
 
 	private void updateStarSystem(AbstractSystemJournalEvent event) {
-		StarSystem currentStarSystem = this.journalConverter.abstractSystemJournalEventToStarSystem(event);
-		this.starSystemRepository.index(currentStarSystem);
+		try {
+			this.universeService.findStarSystemByName(event.getStarSystem());
+		} catch (NonUniqueResultException e) {
+			logger.warn("Duplicate star system. Will delete all of them: " + e.getOthers());
+			for (String id : e.getOtherIds()) {
+				this.starSystemRepository.deleteById(id);
+			}
+		}
+
+		StarSystem starSystem = this.journalConverter.abstractSystemJournalEventToStarSystem(event);
+		this.starSystemRepository.index(starSystem);
 	}
 
 	private void updateMinorFactions(AbstractSystemJournalEvent event) {
 		if (this.isUpdateMinorFactions()) {
-			List<MinorFaction> currentMinorFactions = this.journalConverter.abstractSystemJournalEventToMinorFactions(event);
+			List<MinorFaction> minorFactions = this.journalConverter.abstractSystemJournalEventToMinorFactions(event);
 
-			if (currentMinorFactions != null) {
-				for (MinorFaction currentMinorFaction : currentMinorFactions) {
-					this.minorFactionRepository.index(currentMinorFaction);
+			if (minorFactions != null) {
+				for (MinorFaction minorFaction : minorFactions) {
+					this.minorFactionRepository.index(minorFaction);
 				}
 			}
 		}
@@ -98,11 +118,50 @@ public class EddnElasticUpdater implements EddnUpdateListener {
 	}
 
 	private void updateBody(ScanEvent event) {
+		boolean starSystemExists = false;
+
+		try {
+			if (this.universeService.findStarSystemByName(event.getStarSystem()) != null) {
+				starSystemExists = true;
+			}
+		} catch (NonUniqueResultException e) {
+			logger.warn("Duplicate star system. Will delete all of them: " + e.getOthers());
+			for (String id : e.getOtherIds()) {
+				this.starSystemRepository.deleteById(id);
+			}
+		}
+
+		if (!starSystemExists) {
+			//logger.warn("Star system '" + event.getStarSystem() + "' not found");
+
+			// Create a dummy star system
+			StarSystem starSystem = new StarSystem();
+			starSystem.setId(StarSystem.generateId(event.getStarPos()));
+			starSystem.setUpdatedAt(Date.from(event.getTimestamp().toInstant()));
+			starSystem.setCoord(event.getStarPos());
+			starSystem.setName(event.getStarSystem());
+			starSystem.setPopulation(BigDecimal.ZERO);
+			this.starSystemRepository.index(starSystem);
+		}
+
 		// Only update with detailed scan events
 		if (event.isDetailedScan()) {
-			Body currentBody = this.journalConverter.scanEventToBody(event);
-			this.bodyRepository.index(currentBody);
+			Body body = this.journalConverter.scanEventToBody(event);
+			this.bodyRepository.index(body);
 		}
+	}
+
+	void handleDocked(DockedEvent event) {
+		try {
+			this.updateStation(event);
+		} catch (IllegalArgumentException e) {
+			logger.error(e.getMessage());
+		}
+	}
+
+	private void updateStation(DockedEvent event) {
+		Station station = this.journalConverter.dockedEventToStation(event);
+		this.stationRepository.index(station);
 	}
 
 	public boolean isUpdateMinorFactions() {

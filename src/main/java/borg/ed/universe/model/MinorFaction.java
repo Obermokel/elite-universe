@@ -97,7 +97,11 @@ public class MinorFaction implements Serializable, UniverseEntity {
 	}
 
 	public String generateId() {
-		return PasswordUtil.md5(String.format(Locale.US, "%s", this.getName()));
+		return generateId(this.getName());
+	}
+
+	public static String generateId(String name) {
+		return PasswordUtil.md5(String.format(Locale.US, "%s", name));
 	}
 
 }

@@ -121,6 +121,8 @@ public class EddnReaderThread extends Thread {
 			for (EddnUpdateListener listener : this.listeners) {
 				try {
 					listener.onNewJournalMessage(gatewayTimestamp, uploaderID, journalEvent);
+				} catch (NullPointerException e) {
+					logger.warn(listener + " failed for message:\n" + jsonMessage, e);
 				} catch (Exception e) {
 					logger.warn(listener + " failed: " + e);
 				}

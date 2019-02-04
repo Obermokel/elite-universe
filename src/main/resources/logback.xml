@@ -9,6 +9,8 @@
     </appender>
 
     <logger name="borg" level="DEBUG" />
+    <logger name="borg.ed.universe.eddn.EddnGoogleBgsUpdater" level="INFO" />
+    <logger name="borg.ed.universe.google.GoogleSpreadsheet" level="INFO" />
 
     <root level="WARN">
         <appender-ref ref="STDOUT" />

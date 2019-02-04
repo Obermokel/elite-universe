@@ -22,11 +22,13 @@ import borg.ed.universe.constants.ReserveLevel;
 import borg.ed.universe.constants.RingClass;
 import borg.ed.universe.constants.StarClass;
 import borg.ed.universe.constants.State;
+import borg.ed.universe.constants.StationType;
 import borg.ed.universe.constants.SystemSecurity;
 import borg.ed.universe.constants.TerraformingState;
 import borg.ed.universe.constants.VolcanismType;
 import borg.ed.universe.journal.events.AbstractSystemJournalEvent;
 import borg.ed.universe.journal.events.AbstractSystemJournalEvent.Faction;
+import borg.ed.universe.journal.events.DockedEvent;
 import borg.ed.universe.journal.events.FSDJumpEvent;
 import borg.ed.universe.journal.events.LocationEvent;
 import borg.ed.universe.journal.events.ScanEvent;
@@ -38,6 +40,7 @@ import borg.ed.universe.model.Body.Ring;
 import borg.ed.universe.model.MinorFaction;
 import borg.ed.universe.model.StarSystem;
 import borg.ed.universe.model.StarSystem.FactionPresence;
+import borg.ed.universe.model.Station;
 
 /**
  * JournalConverter
@@ -238,6 +241,31 @@ public class JournalConverter {
 			}
 			return result;
 		}
+	}
+
+	public Station dockedEventToStation(DockedEvent event) {
+		Station result = new Station();
+
+		result.setUpdatedAt(Date.from(event.getTimestamp().toInstant()));
+		result.setCoord(event.getStarPos());
+		result.setStarSystemId(StarSystem.generateId(event.getStarPos()));
+		result.setStarSystemName(event.getStarSystem());
+		result.setName(event.getStationName());
+		result.setStationType(StationType.fromJournalValue(event.getStationType()));
+		result.setIsPlanetary(result.getStationType().isPlanetary());
+		result.setMaxLandingPadSize(result.getStationType().getMaxLandingPadSize());
+		result.setMarketId(event.getMarketID());
+		result.setDistanceToArrivalLs(event.getDistFromStarLS());
+		if (event.getStationFaction() != null) {
+			result.setMinorFactionId(MinorFaction.generateId(event.getStationFaction().getName()));
+			result.setMinorFactionName(event.getStationFaction().getName());
+			result.setMinorFactionState(State.fromJournalValue(event.getStationFaction().getFactionState()));
+		}
+		result.setPrimaryEconomy(Economy.fromJournalValue(event.getStationEconomy()));
+
+		result.setId(result.generateId());
+
+		return result;
 	}
 
 }
