@@ -23,11 +23,11 @@ import java.util.Map;
 @Getter
 @Setter
 @Deprecated
-public class ScanEventOld extends AbstractJournalEvent {
+public class ScanEvent_v1 extends AbstractJournalEvent {
 
     private static final long serialVersionUID = 6435327132176032477L;
 
-    static final Logger logger = LoggerFactory.getLogger(ScanEventOld.class);
+    static final Logger logger = LoggerFactory.getLogger(ScanEvent_v1.class);
 
     private String StarSystem = null;
 

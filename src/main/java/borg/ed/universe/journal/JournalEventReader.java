@@ -34,7 +34,7 @@ import borg.ed.universe.journal.events.MultiSellExplorationDataEvent;
 import borg.ed.universe.journal.events.MusicEvent;
 import borg.ed.universe.journal.events.ReceiveTextEvent;
 import borg.ed.universe.journal.events.ScanEvent;
-import borg.ed.universe.journal.events.ScanEventOld;
+import borg.ed.universe.journal.events.ScanEvent_v1;
 import borg.ed.universe.journal.events.SellExplorationDataEvent;
 import borg.ed.universe.journal.events.SendTextEvent;
 import borg.ed.universe.journal.events.ShieldStateEvent;
@@ -82,7 +82,7 @@ public class JournalEventReader {
 					try {
 						return this.gson.fromJson(line, ScanEvent.class);
 					} catch (JsonSyntaxException e) {
-						return this.gson.fromJson(line, ScanEventOld.class).toNewScanEvent();
+						return this.gson.fromJson(line, ScanEvent_v1.class).toNewScanEvent();
 					}
 				case "FuelScoop":
 					return this.gson.fromJson(line, FuelScoopEvent.class);
