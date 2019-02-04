@@ -99,7 +99,7 @@ public class EddnElasticUpdater implements EddnUpdateListener {
 	}
 
 	private void readBody(String uploaderID, ScanEvent event) {
-		Body currentBody = this.journalConverter.scanToBody(event);
+		Body currentBody = this.journalConverter.scanEventToBody(event);
 		this.bodyRepository.index(currentBody);
 	}
 
