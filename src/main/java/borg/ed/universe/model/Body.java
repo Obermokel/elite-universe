@@ -181,10 +181,10 @@ public class Body implements Serializable, UniverseEntity {
 		private BigDecimal massMT = null;
 
 		@Field(type = FieldType.Double)
-		private BigDecimal innerRadius = null;
+		private BigDecimal innerRadius = null; // km
 
 		@Field(type = FieldType.Double)
-		private BigDecimal outerRadius = null;
+		private BigDecimal outerRadius = null; // km
 
 	}
 

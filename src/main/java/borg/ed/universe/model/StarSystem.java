@@ -21,7 +21,6 @@ import borg.ed.universe.constants.Economy;
 import borg.ed.universe.constants.Government;
 import borg.ed.universe.constants.Power;
 import borg.ed.universe.constants.PowerState;
-import borg.ed.universe.constants.ReserveLevel;
 import borg.ed.universe.constants.State;
 import borg.ed.universe.constants.SystemSecurity;
 import borg.ed.universe.data.Coord;
@@ -84,9 +83,6 @@ public class StarSystem implements Serializable, UniverseEntity {
 
 	//@Field(type = FieldType.String)
 	private PowerState powerState = null;
-
-	//@Field(type = FieldType.String)
-	private ReserveLevel reserves = null;
 
 	private Boolean needsPermit = null;
 

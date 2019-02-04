@@ -17,14 +17,19 @@ public enum ReserveLevel {
 		} else {
 			switch (value) {
 			case "DepletedResources":
+			case "Depleted":
 				return ReserveLevel.DEPLETED;
 			case "LowResources":
+			case "Low":
 				return ReserveLevel.LOW;
 			case "CommonResources":
+			case "Common":
 				return ReserveLevel.COMMON;
 			case "MajorResources":
+			case "Major":
 				return ReserveLevel.MAJOR;
 			case "PristineResources":
+			case "Pristine":
 				return ReserveLevel.PRISTINE;
 			default:
 				throw new IllegalArgumentException("Unknown value '" + value + "' for ReserveLevel");
