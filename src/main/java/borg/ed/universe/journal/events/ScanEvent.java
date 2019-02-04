@@ -132,4 +132,16 @@ public class ScanEvent extends AbstractJournalEvent {
 		}
 	}
 
+	public boolean isDetailedScan() {
+		if (this.getScanType() == null) {
+			return true; // Old event
+		} else if (ScanEvent.SCAN_TYPE_DETAILED.equals(this.getScanType()) || ScanEvent.SCAN_TYPE_NAV_BEACON_DETAIL.equals(this.getScanType())) {
+			return true; // Obviously detailed
+		} else if (ScanEvent.SCAN_TYPE_AUTO_SCAN.equals(this.getScanType())) {
+			return this.getSurfaceTemperature() != null || StringUtils.isNotEmpty(this.getStarType()); // According to the manual surface temp is only included in detailed scans
+		}
+
+		return false;
+	}
+
 }

@@ -54,7 +54,7 @@ public class JournalConverter {
 	public StarSystem abstractSystemJournalEventToStarSystem(AbstractSystemJournalEvent event) {
 		StarSystem result = new StarSystem();
 
-		result.setUpdatedAt(new Date());
+		result.setUpdatedAt(Date.from(event.getTimestamp().toInstant()));
 		result.setCoord(event.getStarPos());
 		result.setName(event.getStarSystem());
 		result.setPopulation(event.getPopulation());
@@ -132,7 +132,7 @@ public class JournalConverter {
 			for (Faction factionData : event.getFactions()) {
 				MinorFaction minorFaction = new MinorFaction();
 
-				minorFaction.setUpdatedAt(new Date());
+				minorFaction.setUpdatedAt(Date.from(event.getTimestamp().toInstant()));
 				minorFaction.setHomeSystemId(null); // Manually edited
 				minorFaction.setCoord(null); // Manually edited
 				minorFaction.setName(factionData.getName());
@@ -152,7 +152,7 @@ public class JournalConverter {
 	public Body scanEventToBody(ScanEvent event) {
 		Body result = new Body();
 
-		result.setUpdatedAt(new Date());
+		result.setUpdatedAt(Date.from(event.getTimestamp().toInstant()));
 		result.setCoord(event.getStarPos());
 		result.setStarSystemId(StarSystem.generateId(event.getStarPos()));
 		result.setStarSystemName(event.getStarSystem());
