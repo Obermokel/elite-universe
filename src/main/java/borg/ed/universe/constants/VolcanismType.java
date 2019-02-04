@@ -14,12 +14,14 @@ public enum VolcanismType {
 	AMMONIA_MAGMA,
 	CARBON_DIOXIDE_GEYSERS,
 	ROCKY_MAGMA,
+	MAJOR_CARBON_DIOXIDE_GEYSERS,
 	MAJOR_METALLIC_MAGMA,
 	MAJOR_ROCKY_MAGMA,
 	MAJOR_SILICATE_VAPOUR_GEYSERS,
 	MAJOR_WATER_GEYSERS,
 	MAJOR_WATER_MAGMA,
 	METALLIC_MAGMA,
+	METHANE_MAGMA,
 	MINOR_AMMONIA_MAGMA,
 	MINOR_CARBON_DIOXIDE_GEYSERS,
 	MINOR_METALLIC_MAGMA,
@@ -29,6 +31,7 @@ public enum VolcanismType {
 	MINOR_SILICATE_VAPOUR_GEYSERS,
 	MINOR_WATER_GEYSERS,
 	MINOR_WATER_MAGMA,
+	NITROGEN_MAGMA,
 	SILICATE_VAPOUR_GEYSERS,
 	WATER_GEYSERS,
 	WATER_MAGMA;
@@ -50,6 +53,8 @@ public enum VolcanismType {
 			case "rocky magma volcanism":
 			case "rocky magma":
 				return VolcanismType.ROCKY_MAGMA;
+			case "major carbon dioxide geysers":
+				return VolcanismType.MAJOR_CARBON_DIOXIDE_GEYSERS;
 			case "major metallic magma volcanism":
 			case "major metallic magma":
 				return VolcanismType.MAJOR_METALLIC_MAGMA;
@@ -68,6 +73,8 @@ public enum VolcanismType {
 			case "metallic magma volcanism":
 			case "metallic magma":
 				return VolcanismType.METALLIC_MAGMA;
+			case "methane magma":
+				return VolcanismType.METHANE_MAGMA;
 			case "minor ammonia magma volcanism":
 			case "minor ammonia magma":
 				return VolcanismType.MINOR_AMMONIA_MAGMA;
@@ -95,6 +102,8 @@ public enum VolcanismType {
 			case "minor water magma volcanism":
 			case "minor water magma":
 				return VolcanismType.MINOR_WATER_MAGMA;
+			case "nitrogen magma":
+				return VolcanismType.NITROGEN_MAGMA;
 			case "silicate vapour geysers volcanism":
 			case "silicate vapour geysers":
 				return VolcanismType.SILICATE_VAPOUR_GEYSERS;

@@ -19,6 +19,7 @@ public enum AtmosphereType {
 	CARBON_DIOXIDE,
 	CARBON_DIOXIDE_RICH,
 	HELIUM,
+	HOT_ARGON,
 	HOT_CARBON_DIOXIDE,
 	HOT_CARBON_DIOXIDE_RICH,
 	HOT_SILICATE_VAPOUR,
@@ -48,6 +49,7 @@ public enum AtmosphereType {
 	NEON_RICH,
 	NITROGEN,
 	OXYGEN,
+	SUITABLE_FOR_WATER_BASED_LIFE,
 	SULFUR_DIOXIDE,
 	THICK,
 	THICK_AMMONIA,
@@ -61,12 +63,13 @@ public enum AtmosphereType {
 	THICK_METHANE,
 	THICK_METHANE_RICH,
 	THICK_NITROGEN,
+	THICK_SUITABLE_FOR_WATER_BASED_LIFE,
 	THICK_SULFUR_DIOXIDE,
-	THICK_NEON_RICH,
 	THICK_WATER,
 	THICK_WATER_RICH,
 	THIN,
 	THIN_AMMONIA,
+	THIN_AMMONIA_RICH,
 	THIN_AMMONIA_AND_OXYGEN,
 	THIN_ARGON,
 	THIN_ARGON_RICH,
@@ -76,6 +79,7 @@ public enum AtmosphereType {
 	THIN_METHANE,
 	THIN_METHANE_RICH,
 	THIN_NEON,
+	THIN_NEON_RICH,
 	THIN_NITROGEN,
 	THIN_OXYGEN_RICH,
 	THIN_SULFUR_DIOXIDE,
@@ -116,6 +120,8 @@ public enum AtmosphereType {
 			case "helium atmosphere":
 			case "helium":
 				return AtmosphereType.HELIUM;
+			case "hot argon":
+				return AtmosphereType.HOT_ARGON;
 			case "hot carbon dioxide atmosphere":
 			case "hot carbon dioxide":
 				return AtmosphereType.HOT_CARBON_DIOXIDE;
@@ -186,6 +192,7 @@ public enum AtmosphereType {
 			case "hot water":
 				return AtmosphereType.HOT_WATER;
 			case "hot water rich atmosphere":
+			case "hot water-rich":
 				return AtmosphereType.HOT_WATER_RICH;
 			case "methane atmosphere":
 			case "methane":
@@ -205,6 +212,8 @@ public enum AtmosphereType {
 			case "oxygen atmosphere":
 			case "oxygen":
 				return AtmosphereType.OXYGEN;
+			case "suitable for water-based life":
+				return AtmosphereType.SUITABLE_FOR_WATER_BASED_LIFE;
 			case "sulfur dioxide atmosphere":
 			case "sulphur dioxide atmosphere":
 			case "sulphur dioxide":
@@ -243,14 +252,13 @@ public enum AtmosphereType {
 			case "thick nitrogen atmosphere":
 			case "thick nitrogen":
 				return AtmosphereType.THICK_NITROGEN;
+			case "thick suitable for water-based life":
+				return AtmosphereType.THICK_SUITABLE_FOR_WATER_BASED_LIFE;
 			case "thick sulfur dioxide atmosphere":
 			case "thick sulphur dioxide atmosphere":
 			case "thick sulfur dioxide":
 			case "thick sulphur dioxide":
 				return AtmosphereType.THICK_SULFUR_DIOXIDE;
-			case "thin neon rich atmosphere":
-			case "thin neon-rich":
-				return AtmosphereType.THICK_NEON_RICH;
 			case "thick water atmosphere":
 			case "thick water":
 				return AtmosphereType.THICK_WATER;
@@ -262,6 +270,8 @@ public enum AtmosphereType {
 			case "thin ammonia atmosphere":
 			case "thin ammonia":
 				return AtmosphereType.THIN_AMMONIA;
+			case "thin ammonia-rich":
+				return AtmosphereType.THIN_AMMONIA_RICH;
 			case "thin ammonia and oxygen":
 				return AtmosphereType.THIN_AMMONIA_AND_OXYGEN;
 			case "thin argon atmosphere":
@@ -288,6 +298,9 @@ public enum AtmosphereType {
 			case "thin neon atmosphere":
 			case "thin neon":
 				return AtmosphereType.THIN_NEON;
+			case "thin neon rich atmosphere":
+			case "thin neon-rich":
+				return AtmosphereType.THIN_NEON_RICH;
 			case "thin nitrogen atmosphere":
 			case "thin nitrogen":
 				return AtmosphereType.THIN_NITROGEN;
@@ -310,10 +323,14 @@ public enum AtmosphereType {
 			case "water rich atmosphere":
 			case "water-rich":
 				return AtmosphereType.WATER_RICH;
-			case "suitable for water-based life":
 			case "silicate vapour":
 			case "ammonia magma":
+			case "methane magma":
 			case "metallic vapour":
+			case "hot thin metallic vapour":
+			case "thick no atmosphere":
+			case "thin no atmosphere":
+			case "hot thick no atmosphere":
 				return null; // TODO Strange...
 			default:
 				logger.warn("Unknown value '" + value + "' for AtmosphereType");
