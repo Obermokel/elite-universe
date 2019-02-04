@@ -11,8 +11,6 @@ public interface UniverseEntity {
 
 	String getId();
 
-	Date getCreatedAt();
-
 	Date getUpdatedAt();
 
 }

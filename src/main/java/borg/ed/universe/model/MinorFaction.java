@@ -41,10 +41,6 @@ public class MinorFaction implements Serializable, UniverseEntity {
 
 	@Field(type = FieldType.Date, format = DateFormat.date_time_no_millis)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZZ")
-	private Date createdAt = null;
-
-	@Field(type = FieldType.Date, format = DateFormat.date_time_no_millis)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZZ")
 	private Date updatedAt = null;
 
 	private String homeSystemId = null;
