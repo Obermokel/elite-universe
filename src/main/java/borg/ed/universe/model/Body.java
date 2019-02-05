@@ -89,13 +89,13 @@ public class Body implements Serializable, UniverseEntity {
 	private Boolean isScoopable = null;
 
 	@Field(type = FieldType.keyword)
-	private String spectralClass = null;
+	private String spectralClass = null; // TODO Compute from journal
 
 	@Field(type = FieldType.keyword)
-	private String luminosity = null;
+	private String luminosity = null; // TODO Read from journal
 
 	@Field(type = FieldType.Double)
-	private BigDecimal absoluteMagnitude = null;
+	private BigDecimal absoluteMagnitude = null; // TODO Read from journal
 
 	//@Field(type = FieldType.String)
 	private VolcanismType volcanismType = null;
