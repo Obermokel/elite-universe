@@ -63,6 +63,11 @@ public abstract class AbstractSystemJournalEvent extends AbstractJournalEvent {
 
 		private List<AbstractSystemJournalEvent.Faction.State> PendingStates = null;
 
+		@Override
+		public String toString() {
+			return this.getName() + " (" + this.getInfluence() + "%, " + borg.ed.universe.constants.State.fromJournalValue(this.getFactionState()) + ")";
+		}
+
 		@Getter
 		@Setter
 		public static class State implements Serializable {

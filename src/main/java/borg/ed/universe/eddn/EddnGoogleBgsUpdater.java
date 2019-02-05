@@ -65,18 +65,20 @@ public class EddnGoogleBgsUpdater implements EddnUpdateListener {
 				GoogleTable tblState = gplState.getTable(tableNameState);
 
 				for (Faction faction : event.getFactions()) {
+					logger.info(event.getStarSystem() + ": " + faction);
+
 					String factionName = faction.getName().toUpperCase();
 
 					if (faction.getInfluence() != null && faction.getInfluence().floatValue() > 0) {
 						String influence = String.format(Locale.GERMANY, "%.4f%%", faction.getInfluence().multiply(new BigDecimal(100)));
 						int colIdx = tblInfluence.getColumnIndex(factionName);
 						if (colIdx < 0) {
-							logger.info("Adding column '" + factionName + "' to table '" + tableNameInfluence + "'");
+							logger.debug("Adding column '" + factionName + "' to table '" + tableNameInfluence + "'");
 							colIdx = tblInfluence.addColumn(factionName);
 						}
 						int rowIdx = tblInfluence.getRowIndex(date);
 						if (rowIdx < 0) {
-							logger.info("Adding row '" + date + "' to table '" + tableNameInfluence + "'");
+							logger.debug("Adding row '" + date + "' to table '" + tableNameInfluence + "'");
 							rowIdx = tblInfluence.addRow(date);
 						}
 						String existingValue = tblInfluence.getCellValue(rowIdx, colIdx);
@@ -90,12 +92,12 @@ public class EddnGoogleBgsUpdater implements EddnUpdateListener {
 						String state = faction.getFactionState().toUpperCase();
 						int colIdx = tblState.getColumnIndex(factionName);
 						if (colIdx < 0) {
-							logger.info("Adding column '" + factionName + "' to table '" + tableNameState + "'");
+							logger.debug("Adding column '" + factionName + "' to table '" + tableNameState + "'");
 							colIdx = tblState.addColumn(factionName);
 						}
 						int rowIdx = tblState.getRowIndex(date);
 						if (rowIdx < 0) {
-							logger.info("Adding row '" + date + "' to table '" + tableNameState + "'");
+							logger.debug("Adding row '" + date + "' to table '" + tableNameState + "'");
 							rowIdx = tblState.addRow(date);
 						}
 						String existingValue = tblState.getCellValue(rowIdx, colIdx);
