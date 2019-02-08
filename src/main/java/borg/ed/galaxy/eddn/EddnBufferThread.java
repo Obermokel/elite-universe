@@ -132,7 +132,7 @@ public class EddnBufferThread extends Thread {
 
 	public void bufferJsonString(String jsonString) throws InterruptedException {
 		synchronized (this.jsonStringBuffer) {
-			if (this.jsonStringBuffer.size() >= 1000) {
+			if (this.jsonStringBuffer.size() >= 10_000) {
 				logger.warn("JSON string buffer full");
 				this.jsonStringBuffer.wait();
 				logger.info("JSON string buffer ready");

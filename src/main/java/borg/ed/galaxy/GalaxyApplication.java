@@ -23,6 +23,7 @@ import borg.ed.galaxy.eddn.EddnBufferThread;
 import borg.ed.galaxy.eddn.EddnElasticUpdater;
 import borg.ed.galaxy.eddn.EddnGoogleBgsUpdater;
 import borg.ed.galaxy.eddn.EddnReaderThread;
+import borg.ed.galaxy.elastic.ElasticBufferThread;
 import borg.ed.galaxy.journal.JournalEventReader;
 import borg.ed.galaxy.journal.JournalReaderThread;
 import borg.ed.galaxy.journal.StatusReaderThread;
@@ -74,6 +75,11 @@ public class GalaxyApplication {
 	@Bean
 	public EddnBufferThread eddnBufferThread() {
 		return new EddnBufferThread();
+	}
+
+	@Bean
+	public ElasticBufferThread elasticBufferThread() {
+		return new ElasticBufferThread();
 	}
 
 	@Bean
