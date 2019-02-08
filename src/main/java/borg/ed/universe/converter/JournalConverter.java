@@ -178,12 +178,12 @@ public class JournalConverter {
 		result.setRadiusKm(event.getRadius() == null ? null : event.getRadius().divide(new BigDecimal(1000), 0, BigDecimal.ROUND_HALF_UP)); // m -> km
 		result.setGravityG(event.getSurfaceGravity() == null ? null : event.getSurfaceGravity().divide(new BigDecimal(9.81), 2, BigDecimal.ROUND_HALF_UP)); // m/s² -> G
 		result.setSurfacePressure(event.getSurfacePressure());
-		result.setOrbitalPeriod(event.getOrbitalPeriod());
-		result.setSemiMajorAxis(event.getSemiMajorAxis());
+		result.setOrbitalPeriod(event.getOrbitalPeriod() == null ? null : event.getOrbitalPeriod().divide(new BigDecimal(86_400), 4, BigDecimal.ROUND_HALF_UP)); // s -> d
+		result.setSemiMajorAxis(event.getSemiMajorAxis() == null ? null : event.getSemiMajorAxis().divide(new BigDecimal(149_597_870_700L), 4, BigDecimal.ROUND_HALF_UP)); // m -> AU
 		result.setOrbitalEccentricity(event.getEccentricity());
 		result.setOrbitalInclination(event.getOrbitalInclination());
 		result.setArgOfPeriapsis(event.getPeriapsis());
-		result.setRotationalPeriod(event.getRotationPeriod());
+		result.setRotationalPeriod(event.getRotationPeriod() == null ? null : event.getRotationPeriod().divide(new BigDecimal(86_400), 4, BigDecimal.ROUND_HALF_UP)); // s -> d
 		result.setTidallyLocked(event.getTidalLock());
 		result.setAxisTilt(event.getAxialTilt());
 		result.setIsLandable(event.getLandable());

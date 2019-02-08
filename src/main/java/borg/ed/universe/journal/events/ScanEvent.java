@@ -69,9 +69,9 @@ public class ScanEvent extends AbstractJournalEvent {
 
 	private BigDecimal SurfacePressure = null;
 
-	private BigDecimal OrbitalPeriod = null; // TODO This is given in seconds, not in days
+	private BigDecimal OrbitalPeriod = null;
 
-	private BigDecimal SemiMajorAxis = null; // TODO This is given in m, not au. 1 au = 149597870700 m.
+	private BigDecimal SemiMajorAxis = null;
 
 	private BigDecimal Eccentricity = null;
 
@@ -79,7 +79,7 @@ public class ScanEvent extends AbstractJournalEvent {
 
 	private BigDecimal Periapsis = null;
 
-	private BigDecimal RotationPeriod = null; // TODO This is given in seconds, not in days
+	private BigDecimal RotationPeriod = null;
 
 	private Boolean TidalLock = null;
 
