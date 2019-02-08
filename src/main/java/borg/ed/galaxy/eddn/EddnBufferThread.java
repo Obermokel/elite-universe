@@ -80,7 +80,7 @@ public class EddnBufferThread extends Thread {
 					}
 				}
 			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
+				this.shutdown = true;
 			}
 		}
 	}

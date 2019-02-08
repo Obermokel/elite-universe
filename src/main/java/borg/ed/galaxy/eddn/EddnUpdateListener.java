@@ -11,6 +11,6 @@ import borg.ed.galaxy.journal.events.AbstractJournalEvent;
  */
 public interface EddnUpdateListener {
 
-    void onNewJournalMessage(ZonedDateTime gatewayTimestamp, String uploaderID, AbstractJournalEvent event);
+	void onNewJournalMessage(ZonedDateTime gatewayTimestamp, String uploaderID, AbstractJournalEvent event) throws InterruptedException;
 
 }

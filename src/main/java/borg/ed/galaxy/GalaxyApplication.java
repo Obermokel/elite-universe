@@ -42,6 +42,9 @@ public class GalaxyApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
+			ElasticBufferThread elasticBufferThread = ctx.getBean(ElasticBufferThread.class);
+			elasticBufferThread.start();
+
 			EddnBufferThread eddnBufferThread = ctx.getBean(EddnBufferThread.class);
 			eddnBufferThread.addListener(ctx.getBean(EddnElasticUpdater.class));
 			eddnBufferThread.addListener(ctx.getBean(EddnGoogleBgsUpdater.class));
