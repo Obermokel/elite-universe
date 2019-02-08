@@ -92,10 +92,10 @@ public class Body implements Serializable, UniverseEntity {
 	private String spectralClass = null; // TODO Compute from journal
 
 	@Field(type = FieldType.keyword)
-	private String luminosity = null; // TODO Read from journal
+	private String luminosity = null;
 
 	@Field(type = FieldType.Double)
-	private BigDecimal absoluteMagnitude = null; // TODO Read from journal
+	private BigDecimal absoluteMagnitude = null;
 
 	//@Field(type = FieldType.String)
 	private VolcanismType volcanismType = null;

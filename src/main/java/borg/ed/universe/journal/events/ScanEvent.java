@@ -51,6 +51,10 @@ public class ScanEvent extends AbstractJournalEvent {
 
 	private BigDecimal StellarMass = null;
 
+	private String Luminosity = null;
+
+	private BigDecimal AbsoluteMagnitude = null;
+
 	private String Volcanism = null;
 
 	private String Atmosphere = null;

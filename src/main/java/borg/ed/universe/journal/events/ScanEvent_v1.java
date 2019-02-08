@@ -48,6 +48,10 @@ public class ScanEvent_v1 extends AbstractJournalEvent {
 
 	private BigDecimal StellarMass = null;
 
+	private String Luminosity = null;
+
+	private BigDecimal AbsoluteMagnitude = null;
+
 	private String Volcanism = null;
 
 	private String Atmosphere = null;
@@ -101,6 +105,8 @@ public class ScanEvent_v1 extends AbstractJournalEvent {
 		result.setSurfaceTemperature(this.getSurfaceTemperature());
 		result.setAge_MY(this.getAge_MY());
 		result.setStellarMass(this.getStellarMass());
+		result.setLuminosity(this.getLuminosity());
+		result.setAbsoluteMagnitude(this.getAbsoluteMagnitude());
 		result.setVolcanism(this.getVolcanism());
 		result.setAtmosphere(this.getAtmosphere());
 		result.setTerraformState(this.getTerraformState());

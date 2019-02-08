@@ -167,6 +167,8 @@ public class JournalConverter {
 		result.setAgeMY(event.getAge_MY());
 		result.setSolarMasses(event.getStellarMass());
 		result.setSolarRadius(result.getStarClass() != null ? event.getRadius().divide(SOL_RADIUS, 4, BigDecimal.ROUND_HALF_UP) : null);
+		result.setLuminosity(event.getLuminosity());
+		result.setAbsoluteMagnitude(event.getAbsoluteMagnitude());
 		result.setIsMainStar(result.getStarClass() != null && result.getDistanceToArrivalLs().floatValue() <= 0);
 		result.setIsScoopable(result.getStarClass() != null && result.getStarClass().isScoopable());
 		result.setVolcanismType(VolcanismType.fromJournalValue(event.getVolcanism()));
