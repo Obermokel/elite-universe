@@ -93,7 +93,7 @@ public class UniverseApplication {
 
 	@Bean
 	public Client client() {
-		Settings settings = Settings.builder().put("cluster.name", "eddbmirror").build();
+		Settings settings = Settings.builder().put("cluster.name", "EliteGalaxyLocal").build();
 		TransportClient client = new PreBuiltTransportClient(settings);
 		//client.addTransportAddress(new InetSocketTransportAddress(new InetSocketAddress("127.0.0.1", 9300)));
 		//client.addTransportAddress(new InetSocketTransportAddress(new InetSocketAddress("192.168.178.3", 9300))); // 192.168.178.3 = T410s
