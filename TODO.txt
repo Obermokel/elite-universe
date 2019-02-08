@@ -1,4 +1,4 @@
 31.906.933 bodies
 
-- Async elastic indexing and Google updates
-- Rename application
+- Rename application from 'EliteUniverse' to 'EliteGalaxyLocal'
+- Rename elastic cluster from 'eddbmirror' to 'EliteGalaxyLocal'

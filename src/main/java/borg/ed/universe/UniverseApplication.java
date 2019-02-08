@@ -19,6 +19,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
+import borg.ed.universe.eddn.EddnBufferThread;
 import borg.ed.universe.eddn.EddnElasticUpdater;
 import borg.ed.universe.eddn.EddnGoogleBgsUpdater;
 import borg.ed.universe.eddn.EddnReaderThread;
@@ -40,9 +41,12 @@ public class UniverseApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
+			EddnBufferThread eddnBufferThread = ctx.getBean(EddnBufferThread.class);
+			eddnBufferThread.addListener(ctx.getBean(EddnElasticUpdater.class));
+			eddnBufferThread.addListener(ctx.getBean(EddnGoogleBgsUpdater.class));
+			eddnBufferThread.start();
+
 			EddnReaderThread eddnReaderThread = ctx.getBean(EddnReaderThread.class);
-			eddnReaderThread.addListener(ctx.getBean(EddnElasticUpdater.class));
-			eddnReaderThread.addListener(ctx.getBean(EddnGoogleBgsUpdater.class));
 			eddnReaderThread.start();
 		};
 	}
@@ -65,6 +69,11 @@ public class UniverseApplication {
 	@Bean
 	public EddnReaderThread eddnReaderThread() {
 		return new EddnReaderThread();
+	}
+
+	@Bean
+	public EddnBufferThread eddnBufferThread() {
+		return new EddnBufferThread();
 	}
 
 	@Bean
