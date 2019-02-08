@@ -61,6 +61,8 @@ public enum Economy {
 			case "$economy_Tourism;":
 			case "Tourism":
 				return Economy.TOURISM;
+			case "$economy_UNKNOWN_VALUE;":
+				return null;
 			default:
 				throw new IllegalArgumentException("Unknown value '" + value + "' for Economy");
 			}

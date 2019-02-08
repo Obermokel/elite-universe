@@ -30,6 +30,8 @@ public enum PowerState {
 				return PowerState.PREPARED;
 			case "Turmoil":
 				return PowerState.TURMOIL;
+			case "Unknown":
+				return null;
 			default:
 				throw new IllegalArgumentException("Unknown value '" + value + "' for PowerState");
 			}

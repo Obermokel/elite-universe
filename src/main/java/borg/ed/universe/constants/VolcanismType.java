@@ -13,8 +13,7 @@ public enum VolcanismType {
 
 	AMMONIA_MAGMA,
 	CARBON_DIOXIDE_GEYSERS,
-	ROCKY_MAGMA,
-	MAJOR_CARBON_DIOXIDE_GEYSERS,
+	MAJOR_CARBON_DIOXIDE_GEYSERS, // very rare!!!
 	MAJOR_METALLIC_MAGMA,
 	MAJOR_ROCKY_MAGMA,
 	MAJOR_SILICATE_VAPOUR_GEYSERS,
@@ -32,6 +31,7 @@ public enum VolcanismType {
 	MINOR_WATER_GEYSERS,
 	MINOR_WATER_MAGMA,
 	NITROGEN_MAGMA,
+	ROCKY_MAGMA,
 	SILICATE_VAPOUR_GEYSERS,
 	WATER_GEYSERS,
 	WATER_MAGMA;
@@ -45,14 +45,13 @@ public enum VolcanismType {
 			switch (value.toLowerCase()) {
 			case "no volcanism":
 				return null;
+			case "ammonia magma volcanism":
 			case "ammonia magma":
 				return VolcanismType.AMMONIA_MAGMA;
 			case "carbon dioxide geysers volcanism":
 			case "carbon dioxide geysers":
 				return VolcanismType.CARBON_DIOXIDE_GEYSERS;
-			case "rocky magma volcanism":
-			case "rocky magma":
-				return VolcanismType.ROCKY_MAGMA;
+			case "major carbon dioxide geysers volcanism":
 			case "major carbon dioxide geysers":
 				return VolcanismType.MAJOR_CARBON_DIOXIDE_GEYSERS;
 			case "major metallic magma volcanism":
@@ -73,6 +72,7 @@ public enum VolcanismType {
 			case "metallic magma volcanism":
 			case "metallic magma":
 				return VolcanismType.METALLIC_MAGMA;
+			case "methane magma volcanism":
 			case "methane magma":
 				return VolcanismType.METHANE_MAGMA;
 			case "minor ammonia magma volcanism":
@@ -102,8 +102,12 @@ public enum VolcanismType {
 			case "minor water magma volcanism":
 			case "minor water magma":
 				return VolcanismType.MINOR_WATER_MAGMA;
+			case "nitrogen magma volcanism":
 			case "nitrogen magma":
-				return VolcanismType.NITROGEN_MAGMA;
+				return NITROGEN_MAGMA;
+			case "rocky magma volcanism":
+			case "rocky magma":
+				return VolcanismType.ROCKY_MAGMA;
 			case "silicate vapour geysers volcanism":
 			case "silicate vapour geysers":
 				return VolcanismType.SILICATE_VAPOUR_GEYSERS;
