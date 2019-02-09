@@ -2,17 +2,17 @@ package borg.ed.galaxy.elastic;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
-import borg.ed.galaxy.exceptions.NonUniqueResultException;
 import borg.ed.galaxy.model.Body;
 import borg.ed.galaxy.model.MinorFaction;
 import borg.ed.galaxy.model.StarSystem;
@@ -115,10 +115,7 @@ public class ElasticBufferThread extends Thread {
 						this.bodyBuffer.clear();
 						this.bodyBuffer.notifyAll();
 					}
-					this.deleteDuplicateStarSystems(bodies.stream().map(Body::getStarSystemName).collect(Collectors.toList()));
-					for (Body body : bodies) {
-						this.ensureStarSystemForBody(body);
-					}
+					this.ensureStarSystemsForBodies(bodies);
 					this.bodyRepository.saveAll(bodies);
 				}
 			} catch (InterruptedException e) {
@@ -176,30 +173,28 @@ public class ElasticBufferThread extends Thread {
 	}
 
 	private void deleteDuplicateStarSystems(List<String> starSystemNames) {
-		for (String starSystemName : starSystemNames) {
-			try {
-				this.galaxyService.findStarSystemByName(starSystemName);
-			} catch (NonUniqueResultException e) {
-				logger.warn("Duplicate star system. Will delete all of them: " + e.getOthers());
-				for (String id : e.getOtherIds()) {
-					this.starSystemRepository.deleteById(id);
-				}
-			}
-		}
+		this.galaxyService.findStarSystemsByName(starSystemNames, true);
 	}
 
-	private void ensureStarSystemForBody(Body body) {
-		Page<StarSystem> page = this.starSystemRepository.findByName(body.getStarSystemName(), PageRequest.of(0, 1));
+	private void ensureStarSystemsForBodies(List<Body> bodies) {
+		List<String> starSystemNames = bodies.stream().map(Body::getStarSystemName).collect(Collectors.toList());
+		Map<String, StarSystem> starSystemsByName = this.galaxyService.findStarSystemsByName(starSystemNames, true);
 
-		if (!page.hasContent()) {
-			// Create a dummy star system
-			StarSystem starSystem = new StarSystem();
-			starSystem.setId(StarSystem.generateId(body.getCoord()));
-			starSystem.setUpdatedAt(body.getUpdatedAt());
-			starSystem.setCoord(body.getCoord());
-			starSystem.setName(body.getStarSystemName());
-			starSystem.setPopulation(BigDecimal.ZERO);
-			this.starSystemRepository.index(starSystem);
+		for (Body body : bodies) {
+			Set<StarSystem> missingStarSystems = new HashSet<StarSystem>();
+			if (starSystemsByName.get(body.getStarSystemName()) == null) {
+				// Create a dummy star system
+				StarSystem starSystem = new StarSystem();
+				starSystem.setId(StarSystem.generateId(body.getCoord()));
+				starSystem.setUpdatedAt(body.getUpdatedAt());
+				starSystem.setCoord(body.getCoord());
+				starSystem.setName(body.getStarSystemName());
+				starSystem.setPopulation(BigDecimal.ZERO);
+				missingStarSystems.add(starSystem);
+			}
+			if (!missingStarSystems.isEmpty()) {
+				this.starSystemRepository.saveAll(missingStarSystems);
+			}
 		}
 	}
 
