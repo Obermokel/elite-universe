@@ -431,6 +431,28 @@ public class ShipControl {
 		return 0;
 	}
 
+	public synchronized long targetWingman1() {
+		return this.pressKey(KeyEvent.VK_I);
+	}
+
+	public synchronized long targetWingman2() {
+		return this.pressKey(KeyEvent.VK_O);
+	}
+
+	public synchronized long targetWingman3() {
+		return this.pressKey(KeyEvent.VK_P);
+	}
+
+	public synchronized long selectWingmanTarget() {
+		// TODO selectPrevHostileTarget ß
+		return 0;
+	}
+
+	public synchronized long wingmanNavlock() {
+		// TODO selectPrevHostileTarget ´
+		return 0;
+	}
+
 	public synchronized long fighterOrderRecall() {
 		return this.pressKey(KeyEvent.VK_F5);
 	}
