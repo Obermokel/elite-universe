@@ -9,6 +9,7 @@
     </appender>
 
     <logger name="borg" level="DEBUG" />
+    <logger name="borg.ed.galaxy.journal.JournalReaderThread" level="TRACE" />
     <logger name="borg.ed.galaxy.eddn.EddnGoogleBgsUpdater" level="INFO" />
     <logger name="borg.ed.galaxy.google.GoogleSpreadsheet" level="INFO" />
 

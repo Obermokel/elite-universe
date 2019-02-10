@@ -1,5 +1,8 @@
 package borg.ed.galaxy;
 
+import java.awt.AWTException;
+import java.awt.GraphicsEnvironment;
+import java.awt.Robot;
 import java.net.InetSocketAddress;
 
 import org.elasticsearch.client.Client;
@@ -28,6 +31,7 @@ import borg.ed.galaxy.google.GoogleBufferThread;
 import borg.ed.galaxy.journal.JournalEventReader;
 import borg.ed.galaxy.journal.JournalReaderThread;
 import borg.ed.galaxy.journal.StatusReaderThread;
+import borg.ed.galaxy.robot.ShipControl;
 
 @SpringBootApplication
 @EnableElasticsearchRepositories(basePackages = "borg.ed.galaxy.repository")
@@ -120,6 +124,20 @@ public class GalaxyApplication {
 		//		TransportClient client = TransportClient.builder().settings(settings).build();
 		//		client.addTransportAddress(new InetSocketTransportAddress(new InetSocketAddress("192.168.178.31", 9300)));
 		//		return client;
+	}
+
+	@Bean
+	public Robot robot() {
+		try {
+			return new Robot(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice());
+		} catch (AWTException e) {
+			throw new RuntimeException("Failed to obtain a robot", e);
+		}
+	}
+
+	@Bean
+	public ShipControl shipControl() {
+		return new ShipControl();
 	}
 
 }
