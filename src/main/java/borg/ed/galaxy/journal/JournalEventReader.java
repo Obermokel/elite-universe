@@ -13,6 +13,7 @@ import com.google.gson.JsonSyntaxException;
 
 import borg.ed.galaxy.data.Coord;
 import borg.ed.galaxy.journal.events.AbstractJournalEvent;
+import borg.ed.galaxy.journal.events.BountyEvent;
 import borg.ed.galaxy.journal.events.CargoEvent;
 import borg.ed.galaxy.journal.events.CommitCrimeEvent;
 import borg.ed.galaxy.journal.events.DiedEvent;
@@ -156,8 +157,9 @@ public class JournalEventReader {
 			return this.gson.fromJson(line, UnderAttackEvent.class);
 		case "FSSSignalDiscovered":
 			return this.gson.fromJson(line, FSSSignalDiscoveredEvent.class);
-		case "Scanned":
 		case "Bounty":
+			return this.gson.fromJson(line, BountyEvent.class);
+		case "Scanned":
 		case "RedeemVoucher":
 		case "Screenshot":
 		case "Friends":
