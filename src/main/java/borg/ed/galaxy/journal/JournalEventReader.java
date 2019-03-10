@@ -24,6 +24,7 @@ import borg.ed.galaxy.journal.events.DockedEvent_v1;
 import borg.ed.galaxy.journal.events.FSDJumpEvent;
 import borg.ed.galaxy.journal.events.FSDJumpEvent_v1;
 import borg.ed.galaxy.journal.events.FSDTargetEvent;
+import borg.ed.galaxy.journal.events.FSSDiscoveryScanEvent;
 import borg.ed.galaxy.journal.events.FSSSignalDiscoveredEvent;
 import borg.ed.galaxy.journal.events.FighterDestroyedEvent;
 import borg.ed.galaxy.journal.events.FighterRebuiltEvent;
@@ -155,6 +156,8 @@ public class JournalEventReader {
 			return this.gson.fromJson(line, ShipTargetedEvent.class);
 		case "UnderAttack":
 			return this.gson.fromJson(line, UnderAttackEvent.class);
+		case "FSSDiscoveryScan":
+			return this.gson.fromJson(line, FSSDiscoveryScanEvent.class);
 		case "FSSSignalDiscovered":
 			return this.gson.fromJson(line, FSSSignalDiscoveredEvent.class);
 		case "Bounty":
