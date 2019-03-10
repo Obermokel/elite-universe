@@ -2,6 +2,7 @@ package borg.ed.galaxy;
 
 import java.awt.AWTException;
 import java.awt.GraphicsEnvironment;
+import java.awt.HeadlessException;
 import java.awt.Robot;
 import java.net.InetSocketAddress;
 
@@ -132,12 +133,20 @@ public class GalaxyApplication {
 			return new Robot(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice());
 		} catch (AWTException e) {
 			throw new RuntimeException("Failed to obtain a robot", e);
+		} catch (HeadlessException e) {
+			logger.warn("No robot available, this is a headless machine");
+			return null;
 		}
 	}
 
 	@Bean
 	public ShipControl shipControl() {
-		return new ShipControl();
+		try {
+			return new ShipControl();
+		} catch (HeadlessException e) {
+			logger.warn("No robot available, this is a headless machine");
+			return null;
+		}
 	}
 
 }
