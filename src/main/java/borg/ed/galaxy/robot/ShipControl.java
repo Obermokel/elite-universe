@@ -20,6 +20,7 @@ public class ShipControl {
 
 	public static final String SHIP_ANACONDA = "Anaconda";
 	public static final String SHIP_ASP_SCOUT = "Asp_Scout";
+	public static final String SHIP_FEDERAL_CORVETTE = "Federation_Corvette";
 	public static final String SHIP_KRAIT_MK2 = "Krait_MkII";
 	public static final String SHIP_ORCA = "Orca";
 	public static final String SHIP_TYPE9 = "Type9";
@@ -34,6 +35,7 @@ public class ShipControl {
 	static {
 		PITCH_180_MILLIS.put(SHIP_ANACONDA, 24000L);
 		PITCH_180_MILLIS.put(SHIP_ASP_SCOUT, 10000L);
+		PITCH_180_MILLIS.put(SHIP_FEDERAL_CORVETTE, 16000L);
 		PITCH_180_MILLIS.put(SHIP_KRAIT_MK2, 16000L);
 		PITCH_180_MILLIS.put(SHIP_ORCA, 18000L);
 		PITCH_180_MILLIS.put(SHIP_TYPE9, 30000L);
@@ -47,6 +49,11 @@ public class ShipControl {
 		PITCH_FACTOR.put(SHIP_ASP_SCOUT, 0.4f);
 		ROLL_FACTOR.put(SHIP_ASP_SCOUT, 0.5f);
 		YAW_FACTOR.put(SHIP_ASP_SCOUT, 0.5f);
+
+		// Federal Corvette
+		PITCH_FACTOR.put(SHIP_FEDERAL_CORVETTE, 2.2f);
+		ROLL_FACTOR.put(SHIP_FEDERAL_CORVETTE, 1.1f);
+		YAW_FACTOR.put(SHIP_FEDERAL_CORVETTE, 3.5f);
 
 		// Krait MkII
 		PITCH_FACTOR.put(SHIP_KRAIT_MK2, 2.0f);
@@ -68,7 +75,7 @@ public class ShipControl {
 	public static final int UI_PREV_TAB = KeyEvent.VK_PAGE_DOWN;
 	public static final int DEPLOY_HEATSINK = KeyEvent.VK_H;
 
-	@Autowired
+	@Autowired(required = false)
 	private Robot robot = null;
 	private Rectangle screenRect = null;
 	private MouseUtil mouseUtil = null;
