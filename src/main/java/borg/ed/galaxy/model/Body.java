@@ -38,7 +38,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Document(indexName = "body", type = "body", shards = 5, replicas = 0)
+@Document(indexName = "body", type = "body", shards = 20, replicas = 1)
 public class Body implements Serializable, GalaxyEntity {
 
 	private static final long serialVersionUID = 4859358199300000217L;

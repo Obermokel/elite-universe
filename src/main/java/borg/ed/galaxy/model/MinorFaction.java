@@ -29,7 +29,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Document(indexName = "faction", type = "faction", shards = 5, replicas = 0)
+@Document(indexName = "faction", type = "faction", shards = 1, replicas = 1)
 public class MinorFaction implements Serializable, GalaxyEntity {
 
 	private static final long serialVersionUID = -171165054433075808L;
