@@ -21,124 +21,126 @@ import borg.ed.galaxy.util.GsonZonedDateTime;
 
 public class StatusReaderThread extends Thread {
 
-    static final Logger logger = LoggerFactory.getLogger(StatusReaderThread.class);
+	static final Logger logger = LoggerFactory.getLogger(StatusReaderThread.class);
 
-    public volatile boolean shutdown = false;
+	public volatile boolean shutdown = false;
 
-    private final Path statusFile;
+	private final Path statusFile;
 
-    private final Gson gson = new GsonBuilder().registerTypeAdapter(ZonedDateTime.class, new GsonZonedDateTime()).registerTypeAdapter(Coord.class, new GsonCoord()).create();
+	private final Gson gson = new GsonBuilder().registerTypeAdapter(ZonedDateTime.class, new GsonZonedDateTime()).registerTypeAdapter(Coord.class, new GsonCoord()).create();
 
-    private final List<StatusUpdateListener> listeners = new ArrayList<>();
+	private final List<StatusUpdateListener> listeners = new ArrayList<>();
 
-    public StatusReaderThread() {
-        this.setName("StatusReaderThread");
-        this.setDaemon(true);
+	public StatusReaderThread() {
+		this.setName("StatusReaderThread");
+		this.setDaemon(true);
 
-        statusFile = lookupStatusFile();
-    }
+		statusFile = lookupStatusFile();
 
-    private Path lookupStatusFile() {
-        Path homeDir = Paths.get(System.getProperty("user.home"));
-        Path journalDir = homeDir.resolve("Saved Games\\Frontier Developments\\Elite Dangerous\\Status.json");
+		logger.debug("statusFile = " + statusFile);
+	}
 
-        if (Files.exists(journalDir)) {
-            return journalDir;
-        } else {
-            journalDir = homeDir.resolve("Google Drive\\Elite Dangerous\\Journal\\Status.json");
+	private Path lookupStatusFile() {
+		Path homeDir = Paths.get(System.getProperty("user.home"));
+		Path journalDir = homeDir.resolve("Saved Games\\Frontier Developments\\Elite Dangerous\\Status.json");
 
-            if (Files.exists(journalDir)) {
-                return journalDir;
-            } else {
-                throw new RuntimeException("Status file not found");
-            }
-        }
-    }
+		if (Files.exists(journalDir)) {
+			return journalDir;
+		} else {
+			journalDir = homeDir.resolve("Google Drive\\Elite Dangerous\\Journal\\Status.json");
 
-    @Override
-    public void run() {
-        logger.info(this.getName() + " started");
+			if (Files.exists(journalDir)) {
+				return journalDir;
+			} else {
+				throw new RuntimeException("Status file not found");
+			}
+		}
+	}
 
-        this.watchUsingThreadSleep();
+	@Override
+	public void run() {
+		logger.info(this.getName() + " started");
 
-        logger.info(this.getName() + " terminated");
-    }
+		this.watchUsingThreadSleep();
 
-    void watchUsingThreadSleep() {
-        byte[] lastData = null;
+		logger.info(this.getName() + " terminated");
+	}
 
-        while (!Thread.currentThread().isInterrupted() && !this.shutdown) {
-            try {
-                byte[] currentData = Files.readAllBytes(statusFile);
+	void watchUsingThreadSleep() {
+		byte[] lastData = null;
 
-                if (areArraysDifferent(lastData, currentData)) {
-                    try {
-                        this.updateStatus(new String(currentData, "UTF-8"));
-                    } finally {
-                        lastData = currentData;
-                    }
-                }
+		while (!Thread.currentThread().isInterrupted() && !this.shutdown) {
+			try {
+				byte[] currentData = Files.readAllBytes(statusFile);
 
-                Thread.sleep(50);
-            } catch (InterruptedException | ClosedByInterruptException e) {
-                Thread.currentThread().interrupt();
-            } catch (IOException e) {
-                logger.error("IOException in " + this.getName(), e);
-            }
-        }
-    }
+				if (areArraysDifferent(lastData, currentData)) {
+					try {
+						this.updateStatus(new String(currentData, "UTF-8"));
+					} finally {
+						lastData = currentData;
+					}
+				}
 
-    private static boolean areArraysDifferent(byte[] a, byte[] b) {
-        if (a == null && b == null) {
-            return false;
-        } else if (a == null && b != null) {
-            return true;
-        } else if (a != null && b == null) {
-            return true;
-        } else if (a.length != b.length) {
-            return true;
-        } else {
-            for (int i = 0; i < a.length; i++) {
-                if (a[i] != b[i]) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
+				Thread.sleep(50);
+			} catch (InterruptedException | ClosedByInterruptException e) {
+				Thread.currentThread().interrupt();
+			} catch (IOException e) {
+				logger.error("IOException in " + this.getName(), e);
+			}
+		}
+	}
 
-    private void updateStatus(String jsonString) {
-        try {
-            Status status = this.gson.fromJson(jsonString, Status.class);
+	private static boolean areArraysDifferent(byte[] a, byte[] b) {
+		if (a == null && b == null) {
+			return false;
+		} else if (a == null && b != null) {
+			return true;
+		} else if (a != null && b == null) {
+			return true;
+		} else if (a.length != b.length) {
+			return true;
+		} else {
+			for (int i = 0; i < a.length; i++) {
+				if (a[i] != b[i]) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
 
-            if (status != null) {
-                for (StatusUpdateListener listener : this.listeners) {
-                    try {
-                        listener.onNewStatus(status);
-                    } catch (Exception e) {
-                        logger.warn(listener + " failed", e);
-                    }
-                }
-            }
-        } catch (RuntimeException e) {
-            logger.error("Failed to read status file " + this.statusFile, e);
-        }
-    }
+	private void updateStatus(String jsonString) {
+		try {
+			Status status = this.gson.fromJson(jsonString, Status.class);
 
-    public boolean addListener(StatusUpdateListener listener) {
-        if (listener == null || this.listeners.contains(listener)) {
-            return false;
-        } else {
-            return this.listeners.add(listener);
-        }
-    }
+			if (status != null) {
+				for (StatusUpdateListener listener : this.listeners) {
+					try {
+						listener.onNewStatus(status);
+					} catch (Exception e) {
+						logger.warn(listener + " failed", e);
+					}
+				}
+			}
+		} catch (RuntimeException e) {
+			logger.error("Failed to read status file " + this.statusFile, e);
+		}
+	}
 
-    public boolean removeListener(StatusUpdateListener listener) {
-        if (listener == null) {
-            return false;
-        } else {
-            return this.listeners.remove(listener);
-        }
-    }
+	public boolean addListener(StatusUpdateListener listener) {
+		if (listener == null || this.listeners.contains(listener)) {
+			return false;
+		} else {
+			return this.listeners.add(listener);
+		}
+	}
+
+	public boolean removeListener(StatusUpdateListener listener) {
+		if (listener == null) {
+			return false;
+		} else {
+			return this.listeners.remove(listener);
+		}
+	}
 
 }
