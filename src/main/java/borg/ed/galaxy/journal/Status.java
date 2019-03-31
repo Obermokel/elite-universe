@@ -210,52 +210,64 @@ public class Status implements Serializable {
 		return testBit(this.Flags, 28);
 	}
 
-	//    public boolean guiFocusNone() {
-	//        return testBit(this.GuiFocus, 0);
-	//    }
+	public boolean guiFocusNone() {
+		return this.GuiFocus == 0;
+		//return testBit(this.GuiFocus, 0);
+	}
 
 	public boolean guiFocusRightPanel() {
-		return testBit(this.GuiFocus, 1);
+		return this.GuiFocus == 1;
+		//return testBit(this.GuiFocus, 1);
 	}
 
 	public boolean guiFocusLeftPanel() {
-		return testBit(this.GuiFocus, 2);
+		return this.GuiFocus == 2;
+		//return testBit(this.GuiFocus, 2);
 	}
 
 	public boolean guiFocusCommsPanel() {
-		return testBit(this.GuiFocus, 3);
+		return this.GuiFocus == 3;
+		//return testBit(this.GuiFocus, 3);
 	}
 
 	public boolean guiFocusBottomPanel() {
-		return testBit(this.GuiFocus, 4);
+		return this.GuiFocus == 4;
+		//return testBit(this.GuiFocus, 4);
 	}
 
 	public boolean guiFocusStationServices() {
-		return testBit(this.GuiFocus, 5);
+		return this.GuiFocus == 5;
+		//return testBit(this.GuiFocus, 5);
 	}
 
 	public boolean guiFocusGalaxyMap() {
-		return testBit(this.GuiFocus, 6);
+		return this.GuiFocus == 6;
+		//return testBit(this.GuiFocus, 6);
 	}
 
 	public boolean guiFocusSystemMap() {
-		return testBit(this.GuiFocus, 7);
+		return this.GuiFocus == 7;
+		//return testBit(this.GuiFocus, 7);
 	}
 
 	public boolean guiFocusOrrery() {
-		return testBit(this.GuiFocus, 8);
+		return this.GuiFocus == 8;
+		//return testBit(this.GuiFocus, 8);
 	}
 
 	public boolean guiFocusFss() {
-		return testBit(this.GuiFocus, 9);
+		return this.GuiFocus == 9;
+		//return testBit(this.GuiFocus, 9);
 	}
 
 	public boolean guiFocusDss() {
-		return testBit(this.GuiFocus, 10);
+		return this.GuiFocus == 10;
+		//return testBit(this.GuiFocus, 10);
 	}
 
 	public boolean guiFocusCodex() {
-		return testBit(this.GuiFocus, 11);
+		return this.GuiFocus == 11;
+		//return testBit(this.GuiFocus, 11);
 	}
 
 	private static boolean testBit(int n, int pos) {
