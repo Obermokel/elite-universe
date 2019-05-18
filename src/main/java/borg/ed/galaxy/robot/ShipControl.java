@@ -484,7 +484,7 @@ public class ShipControl {
 	public synchronized long exitToMainMenu(long dangerWaitMillis) {
 		try {
 			// Compute mouse positions for menu
-			Point pExitToMainMenu = mouseUtil.imageToScreen(new Point(200, 390));
+			Point pExitToMainMenu = mouseUtil.imageToScreen(new Point(260, 605));
 			Point pYes = mouseUtil.imageToScreen(new Point(900, 660));
 
 			// Start exiting
